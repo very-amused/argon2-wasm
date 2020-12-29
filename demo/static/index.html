@@ -1,11 +1,25 @@
 <html>
   <head>
-    <title>test</title>
+    <title>argon2-wasm demo</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <script src="/dom.js" defer></script>
+
+    <script type="module">
+      import { loadArgon2 } from '/argon2.js'
+
+      document.querySelector('button#loadButton').onclick = loadArgon2
+    </script>
   </head>
 
   <body>
-    <form>
-      <input type="text">
+    <h1>argon2-wasm demo</h1>
+    <button id="loadButton">Load Argon2 WebAssembly</button>
+    <form id="demoForm">
+      <label for="text">Text passed to argon2, please don't use real passwords here:</label>
+      <br>
+      <input id="text" type="text">
+      <br>
+      <input type="submit" value="Run">
     </form>
   </body>
 </html>

@@ -8,12 +8,13 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "demo": "ts-node-script demo/server.ts"
+    "build-demo": "tsc --project demo/ts && cp out/*.wasm demo/static/",
+    "demo": "ts-node demo/server.ts"
   },
   "dependencies": {
     "@types/polka": "^0.5.1",
     "polka": "^0.5.2",
-    "sirv": "^1.0.10",
+    "serve-static": "^1.14.1",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.3"
   }
