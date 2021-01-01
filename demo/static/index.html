@@ -2,12 +2,22 @@
   <head>
     <title>argon2-wasm demo</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <script src="/dom.js" defer></script>
 
     <script type="module">
-      import { loadArgon2 } from '/argon2.js'
+      import { Argon2_Actions } from './argon2.js'
+      import { initResponseListener, nextMessage } from './listen.js'
+      const worker = new Worker('/worker.js')
+      initResponseListener(worker)
 
-      document.querySelector('button#loadButton').onclick = loadArgon2
+      document.querySelector('form#demoForm').onsubmit = async (evt) => {
+        evt.preventDefault()
+
+        worker.postMessage({
+          action: Argon2_Actions.LoadArgon2
+        })
+
+        const message = await nextMessage(worker)
+      }
     </script>
   </head>
 
@@ -16,8 +26,10 @@
     <button id="loadButton">Load Argon2 WebAssembly</button>
     <form id="demoForm">
       <label for="text">Text passed to argon2, please don't use real passwords here:</label>
+      <input id="password" type="text">
       <br>
-      <input id="text" type="text">
+      <label for="t_cost">Time cost:</label>
+      <input id="t_cost" type="number" value="1">
       <br>
       <input type="submit" value="Run">
     </form>

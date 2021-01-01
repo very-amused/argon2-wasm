@@ -15,7 +15,7 @@ void free_buffer(void *ptr) {
 
 // Hash function - 2i version
 EMSCRIPTEN_KEEPALIVE
-int hash_argon2i(
+int hash_2i(
   const uint32_t t_cost, // Time cost
   const uint32_t m_cost, // Memory cost
   const uint32_t parallelism, // Parallelism factor

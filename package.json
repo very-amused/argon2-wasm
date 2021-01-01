@@ -8,14 +8,17 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build-demo": "tsc --project demo/ts && cp out/*.wasm demo/static/",
-    "demo": "ts-node demo/server.ts"
+    "build-demo": "tsc --outdir demo/static && rollup -c && cp out/*.wasm demo/static/",
+    "demo": "node demo/server.js"
   },
   "dependencies": {
+    "@rollup/plugin-typescript": "^8.1.0",
     "@types/polka": "^0.5.1",
     "polka": "^0.5.2",
+    "rollup": "^2.35.1",
     "serve-static": "^1.14.1",
     "ts-node": "^9.1.1",
+    "tslib": "^2.0.3",
     "typescript": "^4.1.3"
   }
 }

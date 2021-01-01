@@ -1,5 +1,5 @@
-import * as polka from 'polka'
-import * as serveStatic from 'serve-static'
+const polka = require('polka')
+const serveStatic = require('serve-static')
 
 const server = polka()
 
