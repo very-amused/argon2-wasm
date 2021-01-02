@@ -2,66 +2,9 @@
   <head>
     <title>argon2-wasm demo</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-
-    <script type="module">
-      import { Argon2_Actions } from './argon2.js'
-      import { initResponseListener, nextMessage } from './listen.js'
-      const worker = new Worker('./worker.js')
-      initResponseListener(worker)
-
-      document.querySelector('form#demoForm').onsubmit = async (evt) => {
-        evt.preventDefault()
-        // Disable the run button until the demo is done running, this prevents throwing the event loop out of wack with the worker
-        document.querySelector('input#submit').disabled = true
-
-        let message
-
-        worker.postMessage({
-          action: Argon2_Actions.LoadArgon2
-        })
-
-        message = await nextMessage(worker)
-        if (message.code !== 0) {
-          throw new Error(message.code)
-        }
-
-        // If a salt has been provided, decode and use that one
-        let salt
-        let encodedSalt = document.querySelector('input#salt').value
-        if (encodedSalt.length) {
-          const raw = atob(encodedSalt)
-          salt = new Uint8Array(raw.length)
-          for (let i = 0; i < raw.length; i++) {
-            salt[i] = raw.charCodeAt(i)
-          }
-        } else {
-          // Otherwise generate a random salt
-          salt = new Uint8Array(16)
-          crypto.getRandomValues(salt)
-          encodedSalt = btoa(String.fromCharCode.apply(null, Array.from(salt)))
-          document.querySelector('input#salt').value = encodedSalt
-        }
-
-        worker.postMessage({
-          action: Argon2_Actions.Hash2i,
-          body: {
-            options: {
-              password: document.querySelector('input#password').value,
-              salt,
-              timeCost: parseInt(document.querySelector('input#t_cost').value),
-              memoryCost: 1 << parseInt(document.querySelector('input#m_cost').value),
-              hashLen: 32
-            }
-          }
-        })
-        message = await nextMessage(worker)
-
-        const encodedHash = btoa(String.fromCharCode.apply(null, Array.from(message.body)))
-        document.querySelector('pre#result').textContent = encodedHash
-
-        document.querySelector('input#submit').disabled = false
-      }
-    </script>
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <script type="module" src="./demo.js"></script>
   </head>
 
   <body>
@@ -70,17 +13,24 @@
       <label for="text">Text passed to argon2, please don't use real passwords here:</label>
       <input id="password" type="text">
       <br>
-      <label for="salt">Base64 encoded salt passed to argon2</label>
+      <label for="salt">Base64 encoded salt (leave empty to generate randomly):</label>
       <input id="salt" type="text">
       <br>
+      <label for="argon2_type">Argon2 hash type:</label>
+      <select id="argon2_type">
+        <option value="2i">argon2i</option>
+        <option value="2d" disabled>argon2d</option>
+      </select>
+      <br>
       <label for="t_cost">Time cost:</label>
-      <input id="t_cost" type="number" value="1">
-      <label for="m_cost">Memory cost (1 << x):</label>
-      <input id="m_cost" type="number" value="16">
+      <input id="t_cost" type="number" value="1" autocomplete="off">
+      <br>
+      <label for="m_cost">Memory cost (KB, MB, GB):</label>
+      <input id="m_cost" type="text" value="128MB" autocomplete="off">
       <br>
       <input id="submit" type="submit" value="Run">
     </form>
-
+    <hr>
     <header>Result:</header>
     <pre id="result"></pre>
   </body>

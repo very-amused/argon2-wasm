@@ -10,7 +10,7 @@
   "scripts": {
     "build-demo": "tsc --outdir demo/static && rollup -c && cp out/*.wasm demo/static/",
     "demo": "node demo/server.js",
-    "build-pages": "yarn run build-demo && cp demo/static/* pages/"
+    "build-pages": "yarn run build-demo && cp -r demo/static/* pages/"
   },
   "dependencies": {
     "@rollup/plugin-typescript": "^8.1.0",

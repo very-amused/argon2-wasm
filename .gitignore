@@ -1,4 +1,5 @@
 out
 node_modules
-demo/static
+demo/static/*
 !demo/static/index.html
+!demo/static/demo.js
