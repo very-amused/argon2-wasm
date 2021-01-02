@@ -12,7 +12,6 @@ initResponseListener(worker);
   })
   
   const loadMessage = await nextMessage(worker)
-  console.log(loadMessage)
   if (loadMessage.code !== 0) {
     displayError(loadMessage.code)
     return
@@ -89,7 +88,6 @@ document.querySelector('form#demoForm').onsubmit = async (evt) => {
       throw new Error(errorMsg)
     }
   }
-  console.log(memoryCost)
 
   worker.postMessage({
     action: Argon2_Actions.Hash2i,
