@@ -11,27 +11,77 @@
 
       document.querySelector('form#demoForm').onsubmit = async (evt) => {
         evt.preventDefault()
+        // Disable the run button until the demo is done running, this prevents throwing the event loop out of wack with the worker
+        document.querySelector('input#submit').disabled = true
+
+        let message
 
         worker.postMessage({
           action: Argon2_Actions.LoadArgon2
         })
 
-        const message = await nextMessage(worker)
+        message = await nextMessage(worker)
+        if (message.code !== 0) {
+          throw new Error(message.code)
+        }
+
+        // If a salt has been provided, decode and use that one
+        let salt
+        let encodedSalt = document.querySelector('input#salt').value
+        if (encodedSalt.length) {
+          const raw = atob(encodedSalt)
+          salt = new Uint8Array(raw.length)
+          for (let i = 0; i < raw.length; i++) {
+            salt[i] = raw.charCodeAt(i)
+          }
+        } else {
+          // Otherwise generate a random salt
+          salt = new Uint8Array(16)
+          crypto.getRandomValues(salt)
+          encodedSalt = btoa(String.fromCharCode.apply(null, Array.from(salt)))
+          document.querySelector('input#salt').value = encodedSalt
+        }
+
+        worker.postMessage({
+          action: Argon2_Actions.Hash2i,
+          body: {
+            options: {
+              password: document.querySelector('input#password').value,
+              salt,
+              timeCost: parseInt(document.querySelector('input#t_cost').value),
+              memoryCost: 1 << parseInt(document.querySelector('input#m_cost').value),
+              hashLen: 32
+            }
+          }
+        })
+        message = await nextMessage(worker)
+
+        const encodedHash = btoa(String.fromCharCode.apply(null, Array.from(message.body)))
+        document.querySelector('pre#result').textContent = encodedHash
+
+        document.querySelector('input#submit').disabled = false
       }
     </script>
   </head>
 
   <body>
     <h1>argon2-wasm demo</h1>
-    <button id="loadButton">Load Argon2 WebAssembly</button>
     <form id="demoForm">
       <label for="text">Text passed to argon2, please don't use real passwords here:</label>
       <input id="password" type="text">
       <br>
+      <label for="salt">Base64 encoded salt passed to argon2</label>
+      <input id="salt" type="text">
+      <br>
       <label for="t_cost">Time cost:</label>
       <input id="t_cost" type="number" value="1">
+      <label for="m_cost">Memory cost (1 << x):</label>
+      <input id="m_cost" type="number" value="16">
       <br>
-      <input type="submit" value="Run">
+      <input id="submit" type="submit" value="Run">
     </form>
+
+    <header>Result:</header>
+    <pre id="result"></pre>
   </body>
 </html>

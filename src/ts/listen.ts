@@ -19,14 +19,16 @@ export function removeResponseListener(worker: Worker): number {
 }
 
 export async function nextMessage(worker: Worker) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     // If a message has already been received, immediately resolve with it
     if (data.length) {
       resolve(data[data.length - 1])
+      data.splice(data.length - 1, 1)
     }
 
     worker.addEventListener('message', () => {
       resolve(data[data.length - 1])
+      data.splice(data.length - 1, 1)
     }, {
       once: true // Remove itself after being called
     })

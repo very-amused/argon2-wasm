@@ -24,16 +24,25 @@ export interface Argon2_Exports {
   memory: WebAssembly.Memory
 }
 
+// Argon2 params in the form of an object for the sake of pass by reference
+export interface Argon2_Parameters {
+  password: string,
+  salt: Uint8Array,
+  timeCost: number,
+  memoryCost: number,
+  hashLen: number
+}
+
 export enum Argon2_Actions {
-  ResponseExpected, // Control action sent to notify the worker that the client is ready for receive a response
-  LoadArgon2
+  LoadArgon2,
+  Hash2i
 }
 
 // Messages posted from the main thread TO the web worker to initiate an action
 // Do not post more than one message before waiting for a response, otherwise you'll introduce undefined behavior
 export interface Argon2_Request {
   action: Argon2_Actions
-  body?: object
+  body?: { [index: string]: any }
 }
 
 // Messages posted FROM the web worker to the main thread,
@@ -110,8 +119,7 @@ export enum Argon2_ErrorCodes {
   // Begin non-standard error codes
   ARGON2WASM_UNKNOWN = 1,
   ARGON2WASM_BAD_REQUEST = 2,
-  ARGON2WASM_UNSUPPORTED_BROWSER = 3,
-  ARGON2WASM_BAD_ORIGIN = 4
+  ARGON2WASM_UNSUPPORTED_BROWSER = 3
 }
 
 const opts = {
@@ -133,16 +141,6 @@ async function loadArgon2(path: string = '/argon2.wasm'): Promise<Argon2_Exports
   return source.instance.exports
 }
 
-// Helpful to await a response from a web worker
-function nextMessage(worker: Worker): Promise<Argon2_Response> {
-  return new Promise((resolve, reject) => {
-    worker.onmessage = (evt) => {
-      resolve(evt.data)
-    }
-  })
-}
-
 export {
-  loadArgon2,
-  nextMessage
+  loadArgon2
 }

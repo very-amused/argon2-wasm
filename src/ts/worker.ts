@@ -1,4 +1,4 @@
-import { Argon2_Exports, Argon2_ErrorCodes, loadArgon2, Argon2_Request, Argon2_Actions } from './argon2.js'
+import { Argon2_Exports, Argon2_ErrorCodes, loadArgon2, Argon2_Request, Argon2_Actions, Argon2_Parameters, Argon2_Response } from './argon2.js'
 
 let argon2: Argon2_Exports
 
@@ -23,6 +23,78 @@ function postError(err: any): void {
       message: getErrorMessage(err)
     })
   }
+}
+
+// Overwrite a view with cryptographically random data
+function overwriteSecure(view: Uint8Array, passes = 3) {
+  for (let i = 0; i < passes; i++) {
+    crypto.getRandomValues(view)
+  }
+}
+
+function hash(options: Argon2_Parameters): void {
+  // Copy the salt into the argon2 buffer
+  const saltLen = options.salt.byteLength
+  const saltPtr = argon2.malloc_buffer(saltLen)
+  let saltView = new Uint8Array(argon2.memory.buffer, saltPtr, saltLen)
+  for (let i = 0; i < saltLen; i++) {
+    saltView[i] = options.salt[i]
+  }
+
+  // Normalize and encode the password as bytes
+  const encoded = new TextEncoder().encode(
+    options.password.normalize('NFKC')
+  )
+  // Copy the encoded password into the argon2 buffer
+  const passwordLen = encoded.byteLength
+  const passwordPtr = argon2.malloc_buffer(passwordLen)
+  let passwordView = new Uint8Array(argon2.memory.buffer, passwordPtr, passwordLen)
+  for (let i = 0; i < passwordLen; i++) {
+    passwordView[i] = encoded[i]
+  }
+  // Immediately overwrite the encoded password in js memory with random data now that it's no longer needed
+  overwriteSecure(encoded)
+
+  // Allocate memory for the final hash
+  const hashLen = options.hashLen
+  const hashPtr = argon2.malloc_buffer(hashLen)
+
+  // Run the hash function
+  const code = argon2.hash_2i(
+    options.timeCost,
+    options.memoryCost,
+    1, // Parallelism is constant at 1 until better support for shared array buffers
+    passwordPtr,
+    passwordLen,
+    saltPtr,
+    saltLen,
+    hashPtr,
+    hashLen
+  )
+
+  // Overwrite and free he password and salt from memory (views have to be re-initialized because the webasm buffer growing destroys existing views)
+  passwordView = new Uint8Array(argon2.memory.buffer, passwordPtr, passwordLen)
+  overwriteSecure(passwordView)
+  argon2.free_buffer(passwordPtr)
+  saltView = new Uint8Array(argon2.memory.buffer, saltPtr, saltLen)
+  overwriteSecure(saltView)
+  argon2.free_buffer(saltPtr)
+
+  // Copy the hash into JS memory to be transferred to the main thread
+  const hash = new Uint8Array(hashLen)
+  const hashView = new Uint8Array(argon2.memory.buffer, hashPtr, hashLen)
+  for (let i = 0; i < hashLen; i++) {
+    hash[i] = hashView[i]
+  }
+  // Overwrite and free the hash from the argon2 buffer
+  overwriteSecure(hashView)
+  argon2.free_buffer(hashPtr)
+
+  // Respond with the hash and the result code directly from argon2
+  postMessage({
+    code,
+    body: hash
+  }, [hash.buffer]) // Transfer the hash by reference
 }
 
 // This code is run as a web worker, not on the main thread
@@ -50,11 +122,14 @@ onmessage = async function(evt: MessageEvent): Promise<void> {
         code: Argon2_ErrorCodes.ARGON2_OK
       })
       break
+    
+    case Argon2_Actions.Hash2i:
+      hash(req.body.options)
+      break
 
     default:
       postMessage({
-        code: Argon2_ErrorCodes.ARGON2WASM_BAD_REQUEST,
-        body: null
+        code: Argon2_ErrorCodes.ARGON2WASM_BAD_REQUEST
       })
   }
 }
