@@ -131,7 +131,7 @@ const opts = {
 }
 
 // Load the argon2 wasm library from the given path or URL, /argon2.wasm by default
-async function loadArgon2(path: string = '/argon2.wasm'): Promise<Argon2_Exports> {
+async function loadArgon2(path: string = './argon2.wasm'): Promise<Argon2_Exports> {
   // TODO: check SIMD features to load the SIMD wasm library if available
   if (typeof WebAssembly !== 'object') {
     throw Argon2_ErrorCodes.ARGON2WASM_UNSUPPORTED_BROWSER
