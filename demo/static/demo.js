@@ -23,6 +23,12 @@ document.onbeforeunload = () => {
   removeResponseListener(worker)
 }
 
+// Remove the flashing cursor and write text to the result field
+function writeResult(text) {
+  document.querySelector('pre#result').classList.remove('show-cursor')
+  document.querySelector('pre#result').textContent = text
+}
+
 function displayError(code) {
   let errorName = ''
   for (const name in Argon2_ErrorCodes) {
@@ -31,15 +37,19 @@ function displayError(code) {
       break
     }
   }
-  document.querySelector('pre#result').textContent = `Error: ${errorName} (code ${code})`
+  writeResult(`Error: ${errorName} (code ${code})`)
 }
 
 document.querySelector('form#demoForm').onsubmit = async (evt) => {
   evt.preventDefault()
   // Disable the run button until the demo is done running, this prevents throwing the event loop out of wack with the worker
   document.querySelector('input#submit').disabled = true
-  // Clear any previous resuls
-  document.querySelector('pre#result').textContent = ''
+  // Clear any previous resuls and show the flashing cursor
+  const resultEl = document.querySelector('pre#result')
+  resultEl.textContent = ''
+  if (!resultEl.classList.contains('show-cursor')) {
+    resultEl.classList.add('show-cursor')
+  }
 
   // If a salt has been provided, decode and use that one
   let salt
@@ -54,7 +64,7 @@ document.querySelector('form#demoForm').onsubmit = async (evt) => {
     } catch (err) {
       document.querySelector('input#submit').disabled = false
       const errorMsg = `Failed to decode salt (${err})`
-      document.querySelector('pre#result').textContent = `Error: ${errorMsg}`
+      writeResult(`Error: ${errorMsg}`)
       throw new Error(errorMsg)
     }
   } else {
@@ -83,8 +93,8 @@ document.querySelector('form#demoForm').onsubmit = async (evt) => {
       }
     } catch (err) {
       document.querySelector('input#submit').disabled = false
-      let errorMsg = `Failed to parse memory cost (${err})`
-      document.querySelector('pre#result').textContent = `Error: ${errorMsg}`
+      const errorMsg = `Failed to parse memory cost (${err})`
+      writeResult(`Error: ${errorMsg}`)
       throw new Error(errorMsg)
     }
   }
@@ -95,7 +105,7 @@ document.querySelector('form#demoForm').onsubmit = async (evt) => {
       options: {
         password: document.querySelector('input#password').value,
         salt,
-        timeCost: parseInt(document.querySelector('input#t_cost').value),
+        timeCost,
         memoryCost,
         hashLen: 32
       }
@@ -105,7 +115,7 @@ document.querySelector('form#demoForm').onsubmit = async (evt) => {
 
   if (message.code === 0) {
     const encodedHash = btoa(String.fromCharCode.apply(null, Array.from(message.body)))
-    document.querySelector('pre#result').textContent = encodedHash  
+    writeResult(encodedHash)  
   } else {
     // Get the argon2 error code's name from the Argon2_ErrorCodes enum
     displayError(message.code)

@@ -1,4 +1,4 @@
-import { Argon2_Exports, Argon2_ErrorCodes, loadArgon2, Argon2_Request, Argon2_Actions, Argon2_Parameters, Argon2_Response } from './argon2.js'
+import { Argon2_Exports, Argon2_ErrorCodes, Argon2_Request, Argon2_Actions, Argon2_Parameters } from './argon2_h.js'
 
 let argon2: Argon2_Exports
 
@@ -30,6 +30,33 @@ function overwriteSecure(view: Uint8Array, passes = 3) {
   for (let i = 0; i < passes; i++) {
     crypto.getRandomValues(view)
   }
+}
+
+async function loadArgon2(path = './argon2.wasm'): Promise<Argon2_Exports> {
+  if (typeof WebAssembly !== 'object') {
+    throw Argon2_ErrorCodes.ARGON2WASM_UNSUPPORTED_BROWSER
+  }
+
+  // Imports passed to the WebAssembly instance
+  const opts = {
+    env: {
+      // If there are any persistent views of the argon2 heap, update them here as this will be called any time the heap grows
+      emscripten_notify_memory_growth() {
+      }
+    }
+  }
+
+  // Detect if instantiateStreaming is supported, fallback to download then instantiate
+  let source: WebAssembly.WebAssemblyInstantiatedSource
+  if (typeof WebAssembly.instantiateStreaming === 'function') {
+    source = await WebAssembly.instantiateStreaming(fetch(path), opts)
+  } else {
+    const res = await fetch(path)
+    const raw = await res.arrayBuffer()
+    source = await WebAssembly.instantiate(raw, opts)
+  }
+  // @ts-ignore
+  return source.instance.exports
 }
 
 function hash(options: Argon2_Parameters): void {
@@ -79,6 +106,8 @@ function hash(options: Argon2_Parameters): void {
   saltView = new Uint8Array(argon2.memory.buffer, saltPtr, saltLen)
   overwriteSecure(saltView)
   argon2.free_buffer(saltPtr)
+  // Overwrite the value-passed copy of the salt from parameters
+  overwriteSecure(options.salt)
 
   // Copy the hash into JS memory to be transferred to the main thread
   const hash = new Uint8Array(hashLen)

@@ -1,5 +1,5 @@
 // This file contains helper functions for awaiting the next message of a web worker
-import { Argon2_Response } from './argon2'
+import { Argon2_Response } from './argon2_h'
 
 let data: Argon2_Response[] = []
 

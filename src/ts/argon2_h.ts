@@ -1,11 +1,4 @@
-// This file contains environment agnostic async functions for interacting with argon2,
-// It is recommended that these functions are not called directly by the user, but rather through posting messages to worker.ts,
-// So that unavoidably costly computations are not run on the main thread
-
-// These functions throw a promise either resolving to an interface defined in this file,
-// Or rejecting with an error. This error (entire body, not a class instance) may be one of the values in Argon2_ErrorCodes,
-// In which case this code can be checked to find out where something went wrong.
-// If the error is not in Argon2_ErrorCodes, no guarantee can be made about the accuracy or value of the information contained in the error
+// This file only contains interface and export declarations, API is defined and implemented in worker.ts
 
 export interface Argon2_Exports {
   malloc_buffer(size: number): number
@@ -122,25 +115,3 @@ export enum Argon2_ErrorCodes {
   ARGON2WASM_UNSUPPORTED_BROWSER = 3
 }
 
-const opts = {
-  env: {
-    // If there are any persistent views of the argon2 heap, update them here as this will be called any time the heap grows
-    emscripten_notify_memory_growth() {
-    }
-  }
-}
-
-// Load the argon2 wasm library from the given path or URL, /argon2.wasm by default
-async function loadArgon2(path: string = './argon2.wasm'): Promise<Argon2_Exports> {
-  // TODO: check SIMD features to load the SIMD wasm library if available
-  if (typeof WebAssembly !== 'object') {
-    throw Argon2_ErrorCodes.ARGON2WASM_UNSUPPORTED_BROWSER
-  }
-  const source = await WebAssembly.instantiateStreaming(fetch(path), opts)
-  // @ts-ignore
-  return source.instance.exports
-}
-
-export {
-  loadArgon2
-}
