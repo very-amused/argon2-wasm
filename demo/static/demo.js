@@ -1,4 +1,4 @@
-import { Argon2_Actions, Argon2_ErrorCodes } from './argon2.js'
+import { Argon2_Actions, Argon2_ErrorCodes } from './argon2_h.js'
 import { initResponseListener, removeResponseListener, nextMessage } from './listen.js'
 const worker = new Worker('./worker.js')
 
@@ -100,7 +100,7 @@ document.querySelector('form#demoForm').onsubmit = async (evt) => {
   }
 
   worker.postMessage({
-    action: Argon2_Actions.Hash2i,
+    action: Argon2_Actions.Hash2d,
     body: {
       options: {
         password: document.querySelector('input#password').value,

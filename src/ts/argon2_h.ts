@@ -1,9 +1,31 @@
 // This file only contains interface and export declarations, API is defined and implemented in worker.ts
 
 export interface Argon2_Exports {
-  malloc_buffer(size: number): number
-  free_buffer(ptr: number): void
-  hash_2i(
+  malloc(size: number): number
+  free(ptr: number): void
+  argon2i_hash_raw(
+    t_cost: number,
+    m_cost: number,
+    parallelism: number,
+    pwd: number,
+    pwdlen: number,
+    salt: number,
+    saltlen: number,
+    hash: number,
+    hashlen: number
+  ): number
+  argon2d_hash_raw(
+    t_cost: number,
+    m_cost: number,
+    parallelism: number,
+    pwd: number,
+    pwdlen: number,
+    salt: number,
+    saltlen: number,
+    hash: number,
+    hashlen: number
+  ): number
+  argon2id_hash_raw(
     t_cost: number,
     m_cost: number,
     parallelism: number,
@@ -17,6 +39,12 @@ export interface Argon2_Exports {
   memory: WebAssembly.Memory
 }
 
+export const enum Argon2_Types {
+  Argon2i,
+  Argon2d,
+  Argon2id
+}
+
 // Argon2 params in the form of an object for the sake of pass by reference
 export interface Argon2_Parameters {
   password: string,
@@ -28,7 +56,9 @@ export interface Argon2_Parameters {
 
 export enum Argon2_Actions {
   LoadArgon2,
-  Hash2i
+  Hash2i,
+  Hash2d,
+  Hash2id
 }
 
 // Messages posted from the main thread TO the web worker to initiate an action

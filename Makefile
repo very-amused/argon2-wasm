@@ -8,8 +8,9 @@ OUTPUT=out/argon2.wasm
 O=-O3
 ARGON2_SRC=argon2,core,encoding,blake2/blake2b
 LINK=-I argon2/include argon2/src/{$(ARGON2_SRC)}.c
-CFLAGS=$(O) -Wall -g --no-entry -s ALLOW_MEMORY_GROWTH=1 -DARGON2_NO_THREADS
-EMCC=emcc $(CFLAGS) $(LINK) $(INPUT) -o $(OUTPUT)
+EXPORTED_FUNCTIONS="['_malloc', '_free', '_argon2i_hash_raw', '_argon2d_hash_raw', '_argon2id_hash_raw']"
+CFLAGS=$(O) -Wall -g --no-entry -s EXPORTED_FUNCTIONS=$(EXPORTED_FUNCTIONS) -s ALLOW_MEMORY_GROWTH=1 -DARGON2_NO_THREADS
+EMCC=emcc $(CFLAGS) $(LINK) -o $(OUTPUT)
 
 # Build regular webasm, this should load properly and perform well on all major browsers
 all:

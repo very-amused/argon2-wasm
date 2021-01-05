@@ -1,4 +1,4 @@
-import { Argon2_Exports, Argon2_ErrorCodes, Argon2_Request, Argon2_Actions, Argon2_Parameters } from './argon2_h.js'
+import { Argon2_Exports, Argon2_ErrorCodes, Argon2_Request, Argon2_Actions, Argon2_Parameters, Argon2_Types } from './argon2_h.js'
 
 let argon2: Argon2_Exports
 
@@ -59,10 +59,10 @@ async function loadArgon2(path = './argon2.wasm'): Promise<Argon2_Exports> {
   return source.instance.exports
 }
 
-function hash(options: Argon2_Parameters): void {
+function hash(options: Argon2_Parameters, type: Argon2_Types): void {
   // Copy the salt into the argon2 buffer
   const saltLen = options.salt.byteLength
-  const saltPtr = argon2.malloc_buffer(saltLen)
+  const saltPtr = argon2.malloc(saltLen)
   let saltView = new Uint8Array(argon2.memory.buffer, saltPtr, saltLen)
   for (let i = 0; i < saltLen; i++) {
     saltView[i] = options.salt[i]
@@ -74,7 +74,7 @@ function hash(options: Argon2_Parameters): void {
   )
   // Copy the encoded password into the argon2 buffer
   const passwordLen = encoded.byteLength
-  const passwordPtr = argon2.malloc_buffer(passwordLen)
+  const passwordPtr = argon2.malloc(passwordLen)
   let passwordView = new Uint8Array(argon2.memory.buffer, passwordPtr, passwordLen)
   for (let i = 0; i < passwordLen; i++) {
     passwordView[i] = encoded[i]
@@ -84,10 +84,10 @@ function hash(options: Argon2_Parameters): void {
 
   // Allocate memory for the final hash
   const hashLen = options.hashLen
-  const hashPtr = argon2.malloc_buffer(hashLen)
+  const hashPtr = argon2.malloc(hashLen)
 
   // Run the hash function
-  const code = argon2.hash_2i(
+  const args = [
     options.timeCost,
     options.memoryCost,
     1, // Parallelism is constant at 1 until better support for shared array buffers
@@ -97,15 +97,27 @@ function hash(options: Argon2_Parameters): void {
     saltLen,
     hashPtr,
     hashLen
-  )
+  ]
+  let code: number
+  switch (type) {
+    case Argon2_Types.Argon2i:
+      code = argon2.argon2i_hash_raw.apply(null, args)
+      break
+    case Argon2_Types.Argon2d:
+      code = argon2.argon2d_hash_raw.apply(null, args)
+      break
+    case Argon2_Types.Argon2id:
+      code = argon2.argon2id_hash_raw.apply(null, args)
+      break
+  }
 
   // Overwrite and free he password and salt from memory (views have to be re-initialized because the webasm buffer growing destroys existing views)
   passwordView = new Uint8Array(argon2.memory.buffer, passwordPtr, passwordLen)
   overwriteSecure(passwordView)
-  argon2.free_buffer(passwordPtr)
+  argon2.free(passwordPtr)
   saltView = new Uint8Array(argon2.memory.buffer, saltPtr, saltLen)
   overwriteSecure(saltView)
-  argon2.free_buffer(saltPtr)
+  argon2.free(saltPtr)
   // Overwrite the value-passed copy of the salt from parameters
   overwriteSecure(options.salt)
 
@@ -117,7 +129,7 @@ function hash(options: Argon2_Parameters): void {
   }
   // Overwrite and free the hash from the argon2 buffer
   overwriteSecure(hashView)
-  argon2.free_buffer(hashPtr)
+  argon2.free(hashPtr)
 
   // Respond with the hash and the result code directly from argon2
   postMessage({
@@ -153,7 +165,13 @@ onmessage = async function(evt: MessageEvent): Promise<void> {
       break
     
     case Argon2_Actions.Hash2i:
-      hash(req.body.options)
+      hash(req.body.options, Argon2_Types.Argon2i)
+      break
+    case Argon2_Actions.Hash2d:
+      hash(req.body.options, Argon2_Types.Argon2d)
+      break
+    case Argon2_Actions.Hash2id:
+      hash(req.body.options, Argon2_Types.Argon2id)
       break
 
     default:
