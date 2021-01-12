@@ -1,7 +1,16 @@
-import { Argon2_Exports, Argon2_ErrorCodes, Argon2_Request, Argon2_Actions, Argon2_Parameters, Argon2_Types } from './argon2_h.js'
+/**
+ * Web worker that loads and communicates with the Argon2 WASM binary on its own thread.
+ * @packageDocumentation
+ * @internal
+ */
+import { Argon2_Exports, Argon2_ErrorCodes, Argon2_Request, Argon2_Actions, Argon2_Parameters, Argon2_Types } from './argon2.js'
 
 let argon2: Argon2_Exports
 
+/**
+ * @internal
+ * Get a detailed message from an error, sent in the message field when code === ARGON2WASM_UNKNOWN
+ */
 function getErrorMessage(err: any): string {
   if (err instanceof Error) {
     return err.message
@@ -12,6 +21,10 @@ function getErrorMessage(err: any): string {
   }
 }
 
+/**
+ * @internal
+ * Parse an error object to post to the main thread
+ */
 function postError(err: any): void {
   if (err in Argon2_ErrorCodes) {
     postMessage({
@@ -165,13 +178,13 @@ onmessage = async function(evt: MessageEvent): Promise<void> {
       break
     
     case Argon2_Actions.Hash2i:
-      hash(req.body.options, Argon2_Types.Argon2i)
+      hash(req.body, Argon2_Types.Argon2i)
       break
     case Argon2_Actions.Hash2d:
-      hash(req.body.options, Argon2_Types.Argon2d)
+      hash(req.body, Argon2_Types.Argon2d)
       break
     case Argon2_Actions.Hash2id:
-      hash(req.body.options, Argon2_Types.Argon2id)
+      hash(req.body, Argon2_Types.Argon2id)
       break
 
     default:

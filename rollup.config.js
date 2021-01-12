@@ -3,7 +3,7 @@ import typescript from '@rollup/plugin-typescript'
 import { include, compilerOptions } from './tsconfig.json'
 
 export default {
-  input: 'src/ts/worker.ts',
+  input: 'src/worker.ts',
   output: {
     file: 'demo/static/worker.js'
   },

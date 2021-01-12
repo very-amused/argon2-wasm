@@ -8,9 +8,10 @@
     "module": "es2020",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "removeComments": true
+    "removeComments": true,
+    "stripInternal": true
   },
   "include": [
-    "src/ts/*.ts"
+    "src/*.ts"
   ]
 }

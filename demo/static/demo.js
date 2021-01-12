@@ -3,30 +3,29 @@ import { initResponseListener, removeResponseListener, nextMessage } from './lis
 const worker = new Worker('./worker.js')
 
 // Initialize the listener for messages from the worker (guarantees we receive the last message posted when we await nextMessage)
-initResponseListener(worker);
+const id = 0
+initResponseListener(worker, id)
 
 // Now that the response listener is initialized, we can tell the worker to load the WebAssembly binary and check for errors
-(async function() {
+;(async function() {
   worker.postMessage({
     action: Argon2_Actions.LoadArgon2
   })
   
-  const loadMessage = await nextMessage(worker)
+  const loadMessage = await nextMessage(worker, id)
   if (loadMessage.code !== 0) {
     displayError(loadMessage.code)
-    return
   }
 })()
 
 // Unload this listener before the document unloads
 document.onbeforeunload = () => {
-  removeResponseListener(worker)
+  removeResponseListener(worker, id)
 }
 
 // Remove the flashing cursor and write text to the result field
 function writeResult(text) {
-  document.querySelector('pre#result').classList.remove('show-cursor')
-  document.querySelector('pre#result').textContent = text
+  document.querySelector('span#result').textContent = text
 }
 
 function displayError(code) {
@@ -45,11 +44,8 @@ document.querySelector('form#demoForm').onsubmit = async (evt) => {
   // Disable the run button until the demo is done running, this prevents throwing the event loop out of wack with the worker
   document.querySelector('input#submit').disabled = true
   // Clear any previous resuls and show the flashing cursor
-  const resultEl = document.querySelector('pre#result')
+  const resultEl = document.querySelector('span#result')
   resultEl.textContent = ''
-  if (!resultEl.classList.contains('show-cursor')) {
-    resultEl.classList.add('show-cursor')
-  }
 
   // If a salt has been provided, decode and use that one
   let salt
@@ -102,16 +98,14 @@ document.querySelector('form#demoForm').onsubmit = async (evt) => {
   worker.postMessage({
     action: Argon2_Actions.Hash2d,
     body: {
-      options: {
-        password: document.querySelector('input#password').value,
-        salt,
-        timeCost,
-        memoryCost,
-        hashLen: 32
-      }
+      password: document.querySelector('input#password').value,
+      salt,
+      timeCost,
+      memoryCost,
+      hashLen: 32
     }
   })
-  const message = await nextMessage(worker)
+  const message = await nextMessage(worker, id)
 
   if (message.code === 0) {
     const encodedHash = btoa(String.fromCharCode.apply(null, Array.from(message.body)))

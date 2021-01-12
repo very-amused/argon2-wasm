@@ -1,5 +1,7 @@
-// This file only contains interface and export declarations, API is defined and implemented in worker.ts
-
+/**
+ * @internal
+ * Functions and data exported by the argon2 WASM module.
+ */
 export interface Argon2_Exports {
   malloc(size: number): number
   free(ptr: number): void
@@ -39,47 +41,74 @@ export interface Argon2_Exports {
   memory: WebAssembly.Memory
 }
 
+/**
+ * @internal
+ * Enumeration of different argon2 types, used internally and inlined at compile time
+ */
 export const enum Argon2_Types {
   Argon2i,
   Argon2d,
   Argon2id
 }
 
-// Argon2 params in the form of an object for the sake of pass by reference
 export interface Argon2_Parameters {
+  /** The password to be hashed. */
   password: string,
+  /** A cryptographically random salt.  */
   salt: Uint8Array,
+  /** Linear time cost to use, leave at 1 if unsure. */
   timeCost: number,
+  /**
+   * Memory cost in KiB to use,
+   * this should be as much memory as a client is able to sacrifice without making the hash function intolerably slow
+   * As outlined in the [Argon2 reference document](https://github.com/P-H-C/phc-winner-argon2/blob/master/argon2-specs.pdf), section 9,
+   * memory cost should be increased as high as possible before adjusting time cost,
+   * as memory is a fiscally difficult resource for an attacker to obtain large amounts of, thus greatly slowing down a potential bruteforce attack
+   * by reducing the number of hashes an attacker is able to crack at a time.
+   */
   memoryCost: number,
+  /** Desired length of the resulting hash in bytes (e.g 32 bytes for a 256-bit key.) */
   hashLen: number
 }
 
 export enum Argon2_Actions {
+  /** Load the Argon2 WebAssembly build. */
   LoadArgon2,
+  /** Hash in 2i mode. */
   Hash2i,
+  /** Hash in 2d mode. */
   Hash2d,
+  /** Hash in 2id mode (mix of 2i and 2d). */
   Hash2id
 }
 
-// Messages posted from the main thread TO the web worker to initiate an action
-// Do not post more than one message before waiting for a response, otherwise you'll introduce undefined behavior
+/**
+ * A request posted to the worker.
+ * For {@link Argon2_Actions.LoadArgon2 | LoadArgon2}, no body is required.
+ * For hash actions ({@link Argon2_Actions.Hash2i | Hash2i}, {@link Argon2_Actions.Hash2d | Hash2d}, {@link Argon2_Actions.Hash2id | Hash2id}), the body should be valid {@link Argon2_Parameters}.
+ */
 export interface Argon2_Request {
   action: Argon2_Actions
-  body?: { [index: string]: any }
+  body?: Argon2_Parameters
 }
 
-// Messages posted FROM the web worker to the main thread,
-// Message will be empty unless code === ARGON2WASM_UNKNOWN, in which case it will contain detail extracted from the error as a fallback to using error codes
-// body will be empty unless code === 0 and the requested action implies returned information
+/**
+ * Messages posted from the web worker to the main thread.
+ * `message` will be empty unless `code` === {@link Argon2_ErrorCodes.ARGON2WASM_UNKNOWN | ARGON2WASM_UNKNOWN},
+ * in which case it will contain detail extracted from the error as a fallback to using error codes.
+ * `body` will be empty unless `code` === 0 and the requested action implies returned information.
+ */
 export interface Argon2_Response {
   code: Argon2_ErrorCodes
   message?: string
-  body?: object
+  body?: Uint8Array
 }
 
-// This is a direct copy of Argon2_ErrorCodes from argon2.h, with additional non-standard codes specified at the bottom
-// Non-standard codes are prefixed with ARGON2WASM_ instead of ARGON2_, and begin enumeration at 1 and increase positively,
-// So it can be assumed that neither the name nor value of any non-standard code here will conflict in the future with argon2 itself
+/**
+ * Copied error codes from `argon2.h`. Additional non-standard codes are defined after standard codes.
+ * Non-standard codes are prefixed with `ARGON2WASM_` instead of `ARGON2_`, and begin enumeration at 1, increasing positively.
+ * This ensures that neither the name nor value of any non-standard code defined here will conflict in the future with argon2 upstream.
+ */
 export enum Argon2_ErrorCodes {
   ARGON2_OK = 0,
 
@@ -144,4 +173,3 @@ export enum Argon2_ErrorCodes {
   ARGON2WASM_BAD_REQUEST = 2,
   ARGON2WASM_UNSUPPORTED_BROWSER = 3
 }
-
