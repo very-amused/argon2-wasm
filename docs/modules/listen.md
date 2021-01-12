@@ -51,7 +51,7 @@ Name | Type |
 
 **Returns:** *void*
 
-Defined in: listen.ts:39
+Defined in: [listen.ts:39](https://github.com/very-amused/argon2-wasm/blob/0b86b26/src/listen.ts#L39)
 
 ___
 
@@ -70,7 +70,7 @@ Name | Type |
 
 **Returns:** *Promise*<[*Argon2\_Response*](../interfaces/argon2.argon2_response.md)\>
 
-Defined in: listen.ts:61
+Defined in: [listen.ts:61](https://github.com/very-amused/argon2-wasm/blob/0b86b26/src/listen.ts#L61)
 
 ___
 
@@ -89,4 +89,4 @@ Name | Type |
 
 **Returns:** *number*
 
-Defined in: listen.ts:51
+Defined in: [listen.ts:51](https://github.com/very-amused/argon2-wasm/blob/0b86b26/src/listen.ts#L51)
