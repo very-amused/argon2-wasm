@@ -45,7 +45,17 @@ function overwriteSecure(view: Uint8Array, passes = 3) {
   }
 }
 
-async function loadArgon2(path = './argon2.wasm'): Promise<Argon2_Exports> {
+/**
+ * Test if SIMD instructions are supported
+ * @internal
+ */
+async function simdSupported(wasmRoot = '.'): Promise<boolean> {
+  const res = await fetch(`${wasmRoot}/simd-test.wasm`)
+  const raw = await res.arrayBuffer()
+  return WebAssembly.validate(raw)
+}
+
+async function loadArgon2(wasmRoot = '.'): Promise<Argon2_Exports> {
   if (typeof WebAssembly !== 'object') {
     throw Argon2_ErrorCodes.ARGON2WASM_UNSUPPORTED_BROWSER
   }
@@ -59,12 +69,15 @@ async function loadArgon2(path = './argon2.wasm'): Promise<Argon2_Exports> {
     }
   }
 
+  // Load the wasm file containing SIMD instructions if SIMD is supported
+  const file = (await simdSupported(wasmRoot)) ? 'argon2-simd.wasm' : 'argon2.wasm'
+
   // Detect if instantiateStreaming is supported, fallback to download then instantiate
   let source: WebAssembly.WebAssemblyInstantiatedSource
   if (typeof WebAssembly.instantiateStreaming === 'function') {
-    source = await WebAssembly.instantiateStreaming(fetch(path), opts)
+    source = await WebAssembly.instantiateStreaming(fetch(`${wasmRoot}/${file}`), opts)
   } else {
-    const res = await fetch(path)
+    const res = await fetch(`${wasmRoot}/${file}`)
     const raw = await res.arrayBuffer()
     source = await WebAssembly.instantiate(raw, opts)
   }

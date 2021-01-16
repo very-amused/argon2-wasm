@@ -1,17 +1,20 @@
 import typescript from '@rollup/plugin-typescript'
-// Import tsconfig but override exclude list
-import { include, compilerOptions } from './tsconfig.json'
+import { terser } from 'rollup-plugin-terser'
 
 export default {
   input: 'src/worker.ts',
-  output: {
-    file: 'demo/static/worker.js'
-  },
+  output: [
+    {
+      file: 'out/worker.js'
+    },
+    {
+      file: 'out/worker.min.js',
+      plugins: [
+        terser()
+      ]
+    }
+  ],
   plugins: [
-    typescript({
-      tsconfig: false,
-      include,
-      ...compilerOptions
-    })
+    typescript()
   ]
 }

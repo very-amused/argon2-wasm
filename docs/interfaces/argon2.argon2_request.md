@@ -23,7 +23,7 @@ For hash actions ([Hash2i](../enums/argon2.argon2_actions.md#hash2i), [Hash2d](.
 
 • **action**: [*Argon2\_Actions*](../enums/argon2.argon2_actions.md)
 
-Defined in: [argon2.ts:91](https://github.com/very-amused/argon2-wasm/blob/0b86b26/src/argon2.ts#L91)
+Defined in: [argon2.ts:91](https://github.com/very-amused/argon2-wasm/blob/3a18a48/src/argon2.ts#L91)
 
 ___
 
@@ -31,4 +31,4 @@ ___
 
 • `Optional` **body**: [*Argon2\_Parameters*](argon2.argon2_parameters.md)
 
-Defined in: [argon2.ts:92](https://github.com/very-amused/argon2-wasm/blob/0b86b26/src/argon2.ts#L92)
+Defined in: [argon2.ts:92](https://github.com/very-amused/argon2-wasm/blob/3a18a48/src/argon2.ts#L92)

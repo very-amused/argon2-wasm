@@ -19,7 +19,7 @@
 
 Hash in 2d mode.
 
-Defined in: [argon2.ts:80](https://github.com/very-amused/argon2-wasm/blob/0b86b26/src/argon2.ts#L80)
+Defined in: [argon2.ts:80](https://github.com/very-amused/argon2-wasm/blob/3a18a48/src/argon2.ts#L80)
 
 ___
 
@@ -29,7 +29,7 @@ ___
 
 Hash in 2i mode.
 
-Defined in: [argon2.ts:78](https://github.com/very-amused/argon2-wasm/blob/0b86b26/src/argon2.ts#L78)
+Defined in: [argon2.ts:78](https://github.com/very-amused/argon2-wasm/blob/3a18a48/src/argon2.ts#L78)
 
 ___
 
@@ -39,7 +39,7 @@ ___
 
 Hash in 2id mode (mix of 2i and 2d).
 
-Defined in: [argon2.ts:82](https://github.com/very-amused/argon2-wasm/blob/0b86b26/src/argon2.ts#L82)
+Defined in: [argon2.ts:82](https://github.com/very-amused/argon2-wasm/blob/3a18a48/src/argon2.ts#L82)
 
 ___
 
@@ -49,4 +49,4 @@ ___
 
 Load the Argon2 WebAssembly build.
 
-Defined in: [argon2.ts:76](https://github.com/very-amused/argon2-wasm/blob/0b86b26/src/argon2.ts#L76)
+Defined in: [argon2.ts:76](https://github.com/very-amused/argon2-wasm/blob/3a18a48/src/argon2.ts#L76)

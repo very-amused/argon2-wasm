@@ -8,8 +8,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "prebuild:demo": "make && cp out/*.wasm demo/static/",
-    "build:demo": "tsc --outdir demo/static && rollup -c",
+    "prebuild": "make",
+    "build": "tsc --outdir out && rollup -c",
+    "predemo": "cp out/* demo/static/",
     "demo": "node demo/server.js",
     "build:pages": "yarn run build-demo && cp -r demo/static/* pages/",
     "build:docs": "typedoc --plugin typedoc-plugin-markdown --readme docs_readme.md src/*.ts --out docs/",
@@ -26,6 +27,8 @@
     "typescript": "^4.1.3"
   },
   "devDependencies": {
+    "rollup-plugin-terser": "^7.0.2",
+    "terser": "^5.5.1",
     "typedoc": "^0.20.12",
     "typedoc-plugin-markdown": "^3.3.0"
   }
