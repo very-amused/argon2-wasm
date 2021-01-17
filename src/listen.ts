@@ -13,7 +13,11 @@
  * 
  * ;(async function () {
  *  worker.postMessage({
- *    action: Argon2_Actions.LoadArgon2
+ *    action: Argon2_Actions.LoadArgon2,
+ *    body: {
+ *      wasmRoot: '.',
+ *      simd: true
+ *    }
  *  })
  *  const message = await nextMessage(worker, id)
  *  console.log(message.code) 

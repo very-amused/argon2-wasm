@@ -1,0 +1,7 @@
+*
+!package.json
+!Makefile
+!*.tsconfig.json
+!yarn.lock
+!lib/*.{js,d.ts}
+!out/*.{js,wasm}
