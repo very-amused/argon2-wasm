@@ -8,3 +8,4 @@
 
 * [argon2](modules/argon2.md)
 * [listen](modules/listen.md)
+* [worker](modules/worker.md)

@@ -1,4 +1,4 @@
-import { Argon2_Actions, Argon2_ErrorCodes } from './argon2_h.js'
+import { Argon2_Actions, Argon2_ErrorCodes } from './argon2.js'
 import { initResponseListener, removeResponseListener, nextMessage } from './listen.js'
 const worker = new Worker('./worker.js')
 
@@ -9,7 +9,11 @@ initResponseListener(worker, id)
 // Now that the response listener is initialized, we can tell the worker to load the WebAssembly binary and check for errors
 ;(async function() {
   worker.postMessage({
-    action: Argon2_Actions.LoadArgon2
+    action: Argon2_Actions.LoadArgon2,
+    body: {
+      wasmRoot: '.',
+      simd: true
+    }
   })
   
   const loadMessage = await nextMessage(worker, id)

@@ -71,6 +71,13 @@ export interface Argon2_Parameters {
   hashLen: number
 }
 
+export interface Argon2_LoadParameters {
+  /** The root path of all WASM binaries (at least argon2.wasm, binaries needed for additional features are described below). */
+  wasmRoot: string,
+  /** Test for and use binaries with SIMD support, requires simd-test.wasm and argon2-simd.wasm to be under wasmRoot. */
+  simd: boolean
+}
+
 export enum Argon2_Actions {
   /** Load the Argon2 WebAssembly build. */
   LoadArgon2,
@@ -89,7 +96,7 @@ export enum Argon2_Actions {
  */
 export interface Argon2_Request {
   action: Argon2_Actions
-  body?: Argon2_Parameters
+  body?: Argon2_Parameters|Argon2_LoadParameters
 }
 
 /**

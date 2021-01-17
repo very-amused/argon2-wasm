@@ -3,7 +3,7 @@
  * @packageDocumentation
  * @internal
  */
-import { Argon2_Exports, Argon2_ErrorCodes, Argon2_Request, Argon2_Actions, Argon2_Parameters, Argon2_Types } from './argon2.js'
+import { Argon2_Exports, Argon2_ErrorCodes, Argon2_Request, Argon2_Response, Argon2_Actions, Argon2_Parameters, Argon2_Types, Argon2_LoadParameters } from './argon2.js'
 
 let argon2: Argon2_Exports
 
@@ -55,7 +55,7 @@ async function simdSupported(wasmRoot = '.'): Promise<boolean> {
   return WebAssembly.validate(raw)
 }
 
-async function loadArgon2(wasmRoot = '.'): Promise<Argon2_Exports> {
+async function loadArgon2(wasmRoot = '.', simd = false): Promise<Argon2_Exports> {
   if (typeof WebAssembly !== 'object') {
     throw Argon2_ErrorCodes.ARGON2WASM_UNSUPPORTED_BROWSER
   }
@@ -69,8 +69,8 @@ async function loadArgon2(wasmRoot = '.'): Promise<Argon2_Exports> {
     }
   }
 
-  // Load the wasm file containing SIMD instructions if SIMD is supported
-  const file = (await simdSupported(wasmRoot)) ? 'argon2-simd.wasm' : 'argon2.wasm'
+  // Load the wasm file containing SIMD instructions if SIMD testing is enabled in params and SIMD support is found
+  const file = (simd && (await simdSupported(wasmRoot))) ? 'argon2-simd.wasm' : 'argon2.wasm'
 
   // Detect if instantiateStreaming is supported, fallback to download then instantiate
   let source: WebAssembly.WebAssemblyInstantiatedSource
@@ -180,7 +180,8 @@ onmessage = async function(evt: MessageEvent): Promise<void> {
   switch (req.action) {
     case Argon2_Actions.LoadArgon2:
       try {
-        argon2 = await loadArgon2()
+        const params = <Argon2_LoadParameters>req.body
+        argon2 = await loadArgon2(params.wasmRoot, params.simd)
       } catch (err) {
         postError(err)
         return
@@ -191,13 +192,13 @@ onmessage = async function(evt: MessageEvent): Promise<void> {
       break
     
     case Argon2_Actions.Hash2i:
-      hash(req.body, Argon2_Types.Argon2i)
+      hash(<Argon2_Parameters>req.body, Argon2_Types.Argon2i)
       break
     case Argon2_Actions.Hash2d:
-      hash(req.body, Argon2_Types.Argon2d)
+      hash(<Argon2_Parameters>req.body, Argon2_Types.Argon2d)
       break
     case Argon2_Actions.Hash2id:
-      hash(req.body, Argon2_Types.Argon2id)
+      hash(<Argon2_Parameters>req.body, Argon2_Types.Argon2id)
       break
 
     default:
