@@ -13,7 +13,7 @@
     "clean": "rm -f demo/static/[!demo]*.{js,wasm}",
     "predemo": "cp out/*.{js,wasm} lib/*.js demo/static/",
     "demo": "node demo/server.js",
-    "build:pages": "yarn run build-demo && cp -r demo/static/* pages/",
+    "build:pages": "yarn run build && yarn run predemo && cp -r demo/static/* pages/",
     "build:docs": "typedoc --plugin typedoc-plugin-markdown --readme docs_readme.md src/*.ts --out docs/",
     "docs": "xdg-open docs/index.html"
   },
