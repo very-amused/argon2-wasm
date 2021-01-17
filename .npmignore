@@ -1,7 +1,10 @@
 *
+# Pack source, built files, and build tooling
 !package.json
-!Makefile
-!*.tsconfig.json
 !yarn.lock
+!Makefile
+!rollup.config.js
+!*.tsconfig.json
 !lib/*.{js,d.ts}
 !out/*.{js,wasm}
+!src/*

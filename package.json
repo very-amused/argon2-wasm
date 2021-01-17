@@ -1,12 +1,11 @@
 {
-  "name": "argon2-wasm",
+  "name": "@very-amused/argon2-wasm",
   "version": "0.1.0",
   "description": "Implementation of the argon2 key derivation function using WebAssembly and Typescript, to be run clientside in web applications.",
   "main": "index.js",
-  "repository": "git@github.com:very-amused/argon2-wasm.git",
+  "repository": "git+https://github.com/very-amused/argon2-wasm",
   "author": "very-amused <very-amused@pm.me>",
   "license": "MIT",
-  "private": true,
   "scripts": {
     "prebuild": "make",
     "build": "tsc -p lib.tsconfig.json && rollup -c",
