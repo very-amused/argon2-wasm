@@ -1,8 +1,10 @@
+export namespace Argon2 {
+
 /**
  * @internal
  * Functions and data exported by the argon2 WASM module.
  */
-export interface Argon2_Exports {
+export interface Exports {
   malloc(size: number): number
   free(ptr: number): void
   argon2i_hash_raw(
@@ -45,13 +47,13 @@ export interface Argon2_Exports {
  * @internal
  * Enumeration of different argon2 types, used internally and inlined at compile time
  */
-export const enum Argon2_Types {
+export const enum Types {
   Argon2i,
   Argon2d,
   Argon2id
 }
 
-export interface Argon2_Parameters {
+export interface Parameters {
   /** The password to be hashed. */
   password: string,
   /** A cryptographically random salt.  */
@@ -71,14 +73,14 @@ export interface Argon2_Parameters {
   hashLen: number
 }
 
-export interface Argon2_LoadParameters {
+export interface LoadParameters {
   /** The root path of all WASM binaries (at least argon2.wasm, binaries needed for additional features are described below). */
   wasmRoot: string,
   /** Test for and use binaries with SIMD support, requires simd-test.wasm and argon2-simd.wasm to be under wasmRoot. */
   simd: boolean
 }
 
-export enum Argon2_Actions {
+export enum Actions {
   /** Load the Argon2 WebAssembly build. */
   LoadArgon2,
   /** Hash in 2i mode. */
@@ -91,22 +93,22 @@ export enum Argon2_Actions {
 
 /**
  * A request posted to the worker.
- * For {@link Argon2_Actions.LoadArgon2 | LoadArgon2}, no body is required.
- * For hash actions ({@link Argon2_Actions.Hash2i | Hash2i}, {@link Argon2_Actions.Hash2d | Hash2d}, {@link Argon2_Actions.Hash2id | Hash2id}), the body should be valid {@link Argon2_Parameters}.
+ * For {@link Actions.LoadArgon2 | LoadArgon2}, no body is required.
+ * For hash actions ({@link Actions.Hash2i | Hash2i}, {@link Actions.Hash2d | Hash2d}, {@link Actions.Hash2id | Hash2id}), the body should be valid {@link Parameters}.
  */
-export interface Argon2_Request {
-  action: Argon2_Actions
-  body?: Argon2_Parameters|Argon2_LoadParameters
+export interface Request {
+  action: Actions
+  body?: Parameters|LoadParameters
 }
 
 /**
  * Messages posted from the web worker to the main thread.
- * `message` will be empty unless `code` === {@link Argon2_ErrorCodes.ARGON2WASM_UNKNOWN | ARGON2WASM_UNKNOWN},
+ * `message` will be empty unless `code` === {@link ErrorCodes.ARGON2WASM_UNKNOWN | ARGON2WASM_UNKNOWN},
  * in which case it will contain detail extracted from the error as a fallback to using error codes.
  * `body` will be empty unless `code` === 0 and the requested action implies returned information.
  */
-export interface Argon2_Response {
-  code: Argon2_ErrorCodes
+export interface Response {
+  code: ErrorCodes
   message?: string
   body?: Uint8Array
 }
@@ -116,7 +118,7 @@ export interface Argon2_Response {
  * Non-standard codes are prefixed with `ARGON2WASM_` instead of `ARGON2_`, and begin enumeration at 1, increasing positively.
  * This ensures that neither the name nor value of any non-standard code defined here will conflict in the future with argon2 upstream.
  */
-export enum Argon2_ErrorCodes {
+export enum ErrorCodes {
   ARGON2_OK = 0,
 
   ARGON2_OUTPUT_PTR_NULL = -1,
@@ -179,4 +181,6 @@ export enum Argon2_ErrorCodes {
   ARGON2WASM_UNKNOWN = 1,
   ARGON2WASM_BAD_REQUEST = 2,
   ARGON2WASM_UNSUPPORTED_BROWSER = 3
+}
+
 }

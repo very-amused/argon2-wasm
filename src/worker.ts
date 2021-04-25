@@ -3,9 +3,9 @@
  * @packageDocumentation
  * @internal
  */
-import { Argon2_Exports, Argon2_ErrorCodes, Argon2_Request, Argon2_Response, Argon2_Actions, Argon2_Parameters, Argon2_Types, Argon2_LoadParameters } from './argon2.js'
+import { Argon2 } from './argon2'
 
-let argon2: Argon2_Exports
+let argon2: Argon2.Exports
 
 /**
  * @internal
@@ -26,13 +26,13 @@ function getErrorMessage(err: any): string {
  * Parse an error object to post to the main thread
  */
 function postError(err: any): void {
-  if (err in Argon2_ErrorCodes) {
+  if (err in Argon2.ErrorCodes) {
     postMessage({
       code: err
     })
   } else {
     postMessage({
-      code: Argon2_ErrorCodes.ARGON2WASM_UNKNOWN,
+      code: Argon2.ErrorCodes.ARGON2WASM_UNKNOWN,
       message: getErrorMessage(err)
     })
   }
@@ -55,9 +55,9 @@ async function simdSupported(wasmRoot = '.'): Promise<boolean> {
   return WebAssembly.validate(raw)
 }
 
-async function loadArgon2(wasmRoot = '.', simd = false): Promise<Argon2_Exports> {
+async function loadArgon2(wasmRoot = '.', simd = false): Promise<Argon2.Exports> {
   if (typeof WebAssembly !== 'object') {
-    throw Argon2_ErrorCodes.ARGON2WASM_UNSUPPORTED_BROWSER
+    throw Argon2.ErrorCodes.ARGON2WASM_UNSUPPORTED_BROWSER
   }
 
   // Imports passed to the WebAssembly instance
@@ -85,7 +85,7 @@ async function loadArgon2(wasmRoot = '.', simd = false): Promise<Argon2_Exports>
   return source.instance.exports
 }
 
-function hash(options: Argon2_Parameters, type: Argon2_Types): void {
+function hash(options: Argon2.Parameters, type: Argon2.Types): void {
   // Copy the salt into the argon2 buffer
   const saltLen = options.salt.byteLength
   const saltPtr = argon2.malloc(saltLen)
@@ -126,13 +126,13 @@ function hash(options: Argon2_Parameters, type: Argon2_Types): void {
   ]
   let code: number
   switch (type) {
-    case Argon2_Types.Argon2i:
+    case Argon2.Types.Argon2i:
       code = argon2.argon2i_hash_raw.apply(null, args)
       break
-    case Argon2_Types.Argon2d:
+    case Argon2.Types.Argon2d:
       code = argon2.argon2d_hash_raw.apply(null, args)
       break
-    case Argon2_Types.Argon2id:
+    case Argon2.Types.Argon2id:
       code = argon2.argon2id_hash_raw.apply(null, args)
       break
   }
@@ -170,40 +170,40 @@ onmessage = async function(evt: MessageEvent): Promise<void> {
   // Because arrays will test positive as objects in JS
   if (Array.isArray(evt.data) || typeof evt.data !== 'object') {
     postMessage({
-      code: Argon2_ErrorCodes.ARGON2WASM_BAD_REQUEST,
+      code: Argon2.ErrorCodes.ARGON2WASM_BAD_REQUEST,
       body: null
     })
   }
 
-  const req: Argon2_Request = evt.data
+  const req: Argon2.Request = evt.data
 
   switch (req.action) {
-    case Argon2_Actions.LoadArgon2:
+    case Argon2.Actions.LoadArgon2:
       try {
-        const params = <Argon2_LoadParameters>req.body
+        const params = <Argon2.LoadParameters>req.body
         argon2 = await loadArgon2(params.wasmRoot, params.simd)
       } catch (err) {
         postError(err)
         return
       }
       postMessage({
-        code: Argon2_ErrorCodes.ARGON2_OK
+        code: Argon2.ErrorCodes.ARGON2_OK
       })
       break
     
-    case Argon2_Actions.Hash2i:
-      hash(<Argon2_Parameters>req.body, Argon2_Types.Argon2i)
+    case Argon2.Actions.Hash2i:
+      hash(<Argon2.Parameters>req.body, Argon2.Types.Argon2i)
       break
-    case Argon2_Actions.Hash2d:
-      hash(<Argon2_Parameters>req.body, Argon2_Types.Argon2d)
+    case Argon2.Actions.Hash2d:
+      hash(<Argon2.Parameters>req.body, Argon2.Types.Argon2d)
       break
-    case Argon2_Actions.Hash2id:
-      hash(<Argon2_Parameters>req.body, Argon2_Types.Argon2id)
+    case Argon2.Actions.Hash2id:
+      hash(<Argon2.Parameters>req.body, Argon2.Types.Argon2id)
       break
 
     default:
       postMessage({
-        code: Argon2_ErrorCodes.ARGON2WASM_BAD_REQUEST
+        code: Argon2.ErrorCodes.ARGON2WASM_BAD_REQUEST
       })
   }
 }

@@ -29,9 +29,9 @@
  * 
  * @packageDocumentation
  */
-import { Argon2_Response } from './argon2'
+import { Argon2 } from './argon2'
 
-const data: { [workerID: number]: Argon2_Response[] } = {}
+const data: { [workerID: number]: Argon2.Response[] } = {}
 
 function onWorkerMessage(evt: MessageEvent, id: number) {
   data[id].push(evt.data)
@@ -62,7 +62,7 @@ export function removeResponseListener(worker: Worker, id: number): number {
 /**
  * Await the next message from a web worker
  */
-export async function nextMessage(worker: Worker, id: number): Promise<Argon2_Response> {
+export async function nextMessage(worker: Worker, id: number): Promise<Argon2.Response> {
   return new Promise((resolve) => {
     // If a message has already been received, immediately resolve with it
     if (data[id].length) {

@@ -1,0 +1,126 @@
+:root {
+  font-family: 'Fira Sans', sans-serif;
+  font-weight: 400;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+body {
+  background-color: #22222F;
+  color: white;
+}
+input,select {
+  background-color: #39393F;
+  color: white;
+  padding: 0.3em;
+}
+
+@media screen and (min-width: 1201px) {
+  h1,header,
+  label,input,select,
+  hr,progress,header,span,a#docs {
+    margin: 0.5rem 15rem;
+    width: calc(100% - 2*15rem);
+  }
+}
+@media screen and (max-width: 1200px) {
+  h1,header,
+  label,input,select,
+  hr,progress,header,span,a#docs {
+    margin: 0.5rem;
+    width: calc(100% - 2*0.5rem);
+  }
+  label {
+    display: block;
+  }
+}
+
+hr {
+  color: #aaa;
+}
+
+form#demoForm input,select {
+  border: 1px solid #aaa;
+}
+
+input#submit {
+  font-size: 125%;
+}
+input#submit:hover {
+  filter: contrast(115%);
+  cursor: pointer;
+}
+input#submit:active {
+  filter: contrast(125%);
+}
+input#submit:disabled {
+  filter: contrast(50%);
+  cursor: not-allowed;
+}
+
+span#result {
+  display: inline-block;
+  background-color: #39393F;
+  padding: 0.3em 0.5em;
+  /* 2x0.3em vertical padding + 1em font height + potential 2px bottom border */
+  min-height: calc(1.8em + 2px);
+  font-family: 'Fira Mono', monospace;
+  
+  /* Wrap text overflow */
+  white-space: normal;
+  word-break: break-all;
+}
+
+@keyframes flash {
+  0% {
+    opacity: 100%;
+  }
+  49% {
+    opacity: 100%;
+  }
+  50% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 0%;
+  }
+}
+
+/* Show a blinking cursor when the result field is empty */
+span#result:empty::after {
+  display: inline-block;
+  content: "";
+  width: 1ch;
+  border-bottom: 2px solid white;
+  animation: flash 1s linear infinite;
+}
+
+/* Footer containing doc information */
+a#docs {
+  display: block;
+  background-color: inherit;
+  padding: 0.3rem 0.5rem;
+  width: max-content;
+  border-left: 2px solid #aaa;
+  position: relative;
+}
+
+/* Add a contrast effect and animated underline on hover */
+a#docs:hover {
+  filter: contrast(115%);
+}
+a#docs::before {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  content: "";
+  width: 0%;
+  border-top: 2px solid #aaa;
+  transition: 0.2s linear width;
+}
+a#docs:hover::before {
+  width: 100%;
+}

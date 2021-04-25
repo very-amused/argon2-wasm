@@ -1,7 +1,5 @@
 import typescript from '@rollup/plugin-typescript'
 import { terser } from 'rollup-plugin-terser'
-import { compilerOptions } from './tsconfig.json'
-delete compilerOptions.outDir
 
 export default {
   input: 'src/worker.ts',

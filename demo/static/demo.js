@@ -1,4 +1,4 @@
-import { Argon2_Actions, Argon2_ErrorCodes } from './argon2.js'
+import { Argon2 } from './argon2.js'
 import { initResponseListener, removeResponseListener, nextMessage } from './listen.js'
 const worker = new Worker('./worker.js')
 
@@ -9,7 +9,7 @@ initResponseListener(worker, id)
 // Now that the response listener is initialized, we can tell the worker to load the WebAssembly binary and check for errors
 ;(async function() {
   worker.postMessage({
-    action: Argon2_Actions.LoadArgon2,
+    action: Argon2.Actions.LoadArgon2,
     body: {
       wasmRoot: '.',
       simd: true
@@ -34,8 +34,8 @@ function writeResult(text) {
 
 function displayError(code) {
   let errorName = ''
-  for (const name in Argon2_ErrorCodes) {
-    if (Argon2_ErrorCodes[name] === code) {
+  for (const name in Argon2.ErrorCodes) {
+    if (Argon2.ErrorCodes[name] === code) {
       errorName = name
       break
     }
@@ -100,7 +100,7 @@ document.querySelector('form#demoForm').onsubmit = async (evt) => {
   }
 
   worker.postMessage({
-    action: Argon2_Actions.Hash2d,
+    action: Argon2.Actions.Hash2d,
     body: {
       password: document.querySelector('input#password').value,
       salt,
@@ -115,7 +115,7 @@ document.querySelector('form#demoForm').onsubmit = async (evt) => {
     const encodedHash = btoa(String.fromCharCode.apply(null, Array.from(message.body)))
     writeResult(encodedHash)  
   } else {
-    // Get the argon2 error code's name from the Argon2_ErrorCodes enum
+    // Get the argon2 error code's name from the Argon2.ErrorCodes enum
     displayError(message.code)
   }
 
