@@ -87,15 +87,12 @@ export enum Methods {
   Hash2i
 }
 
-export type Port = number
-
 /**
  * A request posted to the worker.
  * For {@link Actions.LoadArgon2 | LoadArgon2}, no body is required.
  * For hash actions ({@link Actions.Hash2i | Hash2i}, {@link Actions.Hash2d | Hash2d}, {@link Actions.Hash2id | Hash2id}), the body should be valid {@link Parameters}.
  */
 export interface Request {
-  port: number
   method: Methods
   params?: Parameters|LoadParameters
 }
@@ -107,7 +104,6 @@ export interface Request {
  * `body` will be empty unless `code` === 0 and the requested action implies returned information.
  */
 export interface Response {
-  port: number
   code: ErrorCodes
   message?: string
   body?: Uint8Array

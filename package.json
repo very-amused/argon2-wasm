@@ -13,7 +13,7 @@
     "predemo": "cp runtime/index.js demo/static/argon2.js && cp build/*.{js,wasm} demo/static/",
     "demo": "node demo/server.js",
     "build:pages": "yarn run build && yarn run predemo && cp -r demo/static/* pages/",
-    "build:docs": "typedoc --plugin typedoc-plugin-markdown --readme docs_readme.md src/*.ts --out docs/",
+    "build:docs": "typedoc --plugin typedoc-plugin-markdown --readme docs_readme.md src/index.ts --out docs/",
     "docs": "xdg-open docs/index.html",
     "prepack": "yarn run clean && yarn run build"
   },
@@ -27,8 +27,8 @@
     "terser": "^5.5.1",
     "ts-node": "^9.1.1",
     "tslib": "^2.2.0",
-    "typedoc": "^0.20.12",
-    "typedoc-plugin-markdown": "^3.3.0",
+    "typedoc": "^0.20.36",
+    "typedoc-plugin-markdown": "^3.7.2",
     "typescript": "^4.2.4"
   }
 }

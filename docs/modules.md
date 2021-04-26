@@ -1,11 +1,13 @@
-[argon2-wasm](README.md) / Modules
+[@very-amused/argon2-wasm](README.md) / Exports
 
-# argon2-wasm
+# @very-amused/argon2-wasm
 
-## Index
+## Table of contents
 
-### Modules
+### Namespaces
 
-* [argon2](modules/argon2.md)
-* [listen](modules/listen.md)
-* [worker](modules/worker.md)
+- [Argon2](modules/argon2.md)
+
+### Classes
+
+- [WorkerConnection](classes/workerconnection.md)

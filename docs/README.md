@@ -1,4 +1,4 @@
-argon2-wasm / [Modules](modules.md)
+@very-amused/argon2-wasm / [Exports](modules.md)
 
 # API Docs
 

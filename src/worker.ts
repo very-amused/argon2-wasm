@@ -38,6 +38,14 @@ function postError(err: any): void {
   }
 }
 
+/**
+ * @internal
+ * Typed override to send responses
+ */
+function postMessage(message: Argon2.Response, transfer: Transferable[] = []) {
+  self.postMessage(message, transfer)
+}
+
 // Zero out a view at least one time
 function overwriteSecure(view: Uint8Array, passes = 1) {
   for (let i = 0; i < passes; i++) {
@@ -174,8 +182,7 @@ onmessage = async function(evt: MessageEvent): Promise<void> {
   // Because arrays will test positive as objects in JS
   if (Array.isArray(evt.data) || typeof evt.data !== 'object') {
     postMessage({
-      code: Argon2.ErrorCodes.ARGON2WASM_BAD_REQUEST,
-      body: null
+      code: Argon2.ErrorCodes.ARGON2WASM_BAD_REQUEST
     })
   }
 
@@ -191,23 +198,20 @@ onmessage = async function(evt: MessageEvent): Promise<void> {
         return
       }
       postMessage({
-        port: req.port,
         code: Argon2.ErrorCodes.ARGON2_OK
       })
       break
     
     case Argon2.Methods.Hash2i:
       const result = hash(req.params as Argon2.Parameters, Argon2.Types.Argon2i)
-      postMessage({
-        port: req.port,
+      postMessage(<Argon2.Response>{
         code: result.code,
         body: result.body
       }, [result.body!.buffer])
       break
 
     default:
-      postMessage({
-        port: req.port,
+      postMessage(<Argon2.Response>{
         code: Argon2.ErrorCodes.ARGON2WASM_BAD_REQUEST
       })
   }
