@@ -1,22 +1,17 @@
 import { Argon2 } from './argon2.js'
-import { initResponseListener, removeResponseListener, nextMessage } from './listen.js'
-const worker = new Worker('./worker.js')
-
-// Initialize the listener for messages from the worker (guarantees we receive the last message posted when we await nextMessage)
-const id = 0
-initResponseListener(worker, id)
+import { WorkerConnection } from './connection.js'
+const conn = new WorkerConnection(new Worker('./worker.js'))
 
 // Now that the response listener is initialized, we can tell the worker to load the WebAssembly binary and check for errors
 ;(async function() {
-  worker.postMessage({
-    action: Argon2.Actions.LoadArgon2,
-    body: {
+  const loadMessage = await conn.postMessage({
+    method: Argon2.Methods.LoadArgon2,
+    params: {
       wasmRoot: '.',
       simd: true
     }
   })
   
-  const loadMessage = await nextMessage(worker, id)
   if (loadMessage.code !== 0) {
     displayError(loadMessage.code)
   }
@@ -24,7 +19,7 @@ initResponseListener(worker, id)
 
 // Unload this listener before the document unloads
 document.onbeforeunload = () => {
-  removeResponseListener(worker, id)
+  conn.deinit()
 }
 
 // Remove the flashing cursor and write text to the result field
@@ -99,9 +94,9 @@ document.querySelector('form#demoForm').onsubmit = async (evt) => {
     }
   }
 
-  worker.postMessage({
-    action: Argon2.Actions.Hash2d,
-    body: {
+  const result = await conn.postMessage({
+    method: Argon2.Methods.Hash2i,
+    params: {
       password: document.querySelector('input#password').value,
       salt,
       timeCost,
@@ -109,14 +104,13 @@ document.querySelector('form#demoForm').onsubmit = async (evt) => {
       hashLen: 32
     }
   })
-  const message = await nextMessage(worker, id)
 
-  if (message.code === 0) {
-    const encodedHash = btoa(String.fromCharCode.apply(null, Array.from(message.body)))
+  if (result.code === 0) {
+    const encodedHash = btoa(String.fromCharCode.apply(null, Array.from(result.body)))
     writeResult(encodedHash)  
   } else {
     // Get the argon2 error code's name from the Argon2.ErrorCodes enum
-    displayError(message.code)
+    displayError(result.code)
   }
 
   document.querySelector('input#submit').disabled = false

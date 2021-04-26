@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "prebuild": "make",
-    "build": "tsc -p lib.tsconfig.json && rollup -c",
+    "build": "tsc -p tsconfig-lib.json && rollup -c",
     "clean": "rm -f demo/static/[!demo]*.{js,wasm}",
     "predemo": "cp out/*.{js,wasm} lib/*.js demo/static/",
     "demo": "node demo/server.js",

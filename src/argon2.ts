@@ -2,7 +2,7 @@ export namespace Argon2 {
 
 /**
  * @internal
- * Functions and data exported by the argon2 WASM module.
+ * Functions and data exported by the argon2 WASM module
  */
 export interface Exports {
   malloc(size: number): number
@@ -80,16 +80,14 @@ export interface LoadParameters {
   simd: boolean
 }
 
-export enum Actions {
+export enum Methods {
   /** Load the Argon2 WebAssembly build. */
   LoadArgon2,
   /** Hash in 2i mode. */
-  Hash2i,
-  /** Hash in 2d mode. */
-  Hash2d,
-  /** Hash in 2id mode (mix of 2i and 2d). */
-  Hash2id
+  Hash2i
 }
+
+export type Port = number
 
 /**
  * A request posted to the worker.
@@ -97,8 +95,9 @@ export enum Actions {
  * For hash actions ({@link Actions.Hash2i | Hash2i}, {@link Actions.Hash2d | Hash2d}, {@link Actions.Hash2id | Hash2id}), the body should be valid {@link Parameters}.
  */
 export interface Request {
-  action: Actions
-  body?: Parameters|LoadParameters
+  port: number
+  method: Methods
+  params?: Parameters|LoadParameters
 }
 
 /**
@@ -108,6 +107,7 @@ export interface Request {
  * `body` will be empty unless `code` === 0 and the requested action implies returned information.
  */
 export interface Response {
+  port: number
   code: ErrorCodes
   message?: string
   body?: Uint8Array

@@ -38,10 +38,12 @@ function postError(err: any): void {
   }
 }
 
-// Overwrite a view with cryptographically random data
-function overwriteSecure(view: Uint8Array, passes = 3) {
+// Zero out a view at least one time
+function overwriteSecure(view: Uint8Array, passes = 1) {
   for (let i = 0; i < passes; i++) {
-    crypto.getRandomValues(view)
+    for (let j = 0; j < view.length; j++) {
+      view[j] = 0x00
+    }
   }
 }
 
@@ -85,7 +87,10 @@ async function loadArgon2(wasmRoot = '.', simd = false): Promise<Argon2.Exports>
   return source.instance.exports
 }
 
-function hash(options: Argon2.Parameters, type: Argon2.Types): void {
+function hash(options: Argon2.Parameters, type: Argon2.Types): {
+  code: Argon2.ErrorCodes,
+  body: Argon2.Response['body']
+} {
   // Copy the salt into the argon2 buffer
   const saltLen = options.salt.byteLength
   const saltPtr = argon2.malloc(saltLen)
@@ -158,10 +163,10 @@ function hash(options: Argon2.Parameters, type: Argon2.Types): void {
   argon2.free(hashPtr)
 
   // Respond with the hash and the result code directly from argon2
-  postMessage({
+  return {
     code,
     body: hash
-  }, [hash.buffer]) // Transfer the hash by reference
+  }
 }
 
 // This code is run as a web worker, not on the main thread
@@ -177,32 +182,33 @@ onmessage = async function(evt: MessageEvent): Promise<void> {
 
   const req: Argon2.Request = evt.data
 
-  switch (req.action) {
-    case Argon2.Actions.LoadArgon2:
+  switch (req.method) {
+    case Argon2.Methods.LoadArgon2:
       try {
-        const params = <Argon2.LoadParameters>req.body
+        const params = req.params as Argon2.LoadParameters
         argon2 = await loadArgon2(params.wasmRoot, params.simd)
       } catch (err) {
         postError(err)
         return
       }
       postMessage({
+        port: req.port,
         code: Argon2.ErrorCodes.ARGON2_OK
       })
       break
     
-    case Argon2.Actions.Hash2i:
-      hash(<Argon2.Parameters>req.body, Argon2.Types.Argon2i)
-      break
-    case Argon2.Actions.Hash2d:
-      hash(<Argon2.Parameters>req.body, Argon2.Types.Argon2d)
-      break
-    case Argon2.Actions.Hash2id:
-      hash(<Argon2.Parameters>req.body, Argon2.Types.Argon2id)
+    case Argon2.Methods.Hash2i:
+      const result = hash(req.params as Argon2.Parameters, Argon2.Types.Argon2i)
+      postMessage({
+        port: req.port,
+        code: result.code,
+        body: result.body
+      }, [result.body.buffer])
       break
 
     default:
       postMessage({
+        port: req.port,
         code: Argon2.ErrorCodes.ARGON2WASM_BAD_REQUEST
       })
   }
