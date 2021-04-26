@@ -23,7 +23,7 @@ in which case it will contain detail extracted from the error as a fallback to u
 
 • `Optional` **body**: *Uint8Array*
 
-Defined in: [argon2.ts:109](https://github.com/very-amused/argon2-wasm/blob/ee8c702/src/argon2.ts#L109)
+Defined in: [argon2.ts:77](https://github.com/very-amused/argon2-wasm/blob/77e9cc4/src/argon2.ts#L77)
 
 ___
 
@@ -31,7 +31,7 @@ ___
 
 • **code**: [*ErrorCodes*](../enums/argon2.errorcodes.md)
 
-Defined in: [argon2.ts:107](https://github.com/very-amused/argon2-wasm/blob/ee8c702/src/argon2.ts#L107)
+Defined in: [argon2.ts:75](https://github.com/very-amused/argon2-wasm/blob/77e9cc4/src/argon2.ts#L75)
 
 ___
 
@@ -39,4 +39,4 @@ ___
 
 • `Optional` **message**: *string*
 
-Defined in: [argon2.ts:108](https://github.com/very-amused/argon2-wasm/blob/ee8c702/src/argon2.ts#L108)
+Defined in: [argon2.ts:76](https://github.com/very-amused/argon2-wasm/blob/77e9cc4/src/argon2.ts#L76)

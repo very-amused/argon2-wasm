@@ -19,7 +19,7 @@
 
 Hash in 2i mode.
 
-Defined in: [argon2.ts:87](https://github.com/very-amused/argon2-wasm/blob/ee8c702/src/argon2.ts#L87)
+Defined in: [argon2.ts:55](https://github.com/very-amused/argon2-wasm/blob/77e9cc4/src/argon2.ts#L55)
 
 ___
 
@@ -29,4 +29,4 @@ ___
 
 Load the Argon2 WebAssembly build.
 
-Defined in: [argon2.ts:85](https://github.com/very-amused/argon2-wasm/blob/ee8c702/src/argon2.ts#L85)
+Defined in: [argon2.ts:53](https://github.com/very-amused/argon2-wasm/blob/77e9cc4/src/argon2.ts#L53)

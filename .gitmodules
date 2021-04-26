@@ -1,6 +1,3 @@
 [submodule "argon2"]
 	path = argon2
 	url = https://github.com/P-H-C/phc-winner-argon2
-[submodule "pages"]
-	path = pages
-	url = git@github.com:very-amused/argon2-wasm-demo.git

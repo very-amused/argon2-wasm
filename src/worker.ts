@@ -40,7 +40,7 @@ function postError(err: any): void {
 
 /**
  * @internal
- * Typed override to send responses
+ * @override
  */
 function postMessage(message: Argon2.Response, transfer: Transferable[] = []) {
   self.postMessage(message, transfer)
@@ -95,7 +95,7 @@ async function loadArgon2(wasmRoot = '.', simd = false): Promise<Argon2.Exports>
   return source.instance.exports
 }
 
-function hash(options: Argon2.Parameters, type: Argon2.Types): {
+function hash(options: Argon2.Parameters): {
   code: Argon2.ErrorCodes,
   body: Argon2.Response['body']
 } {
@@ -203,15 +203,15 @@ onmessage = async function(evt: MessageEvent): Promise<void> {
       break
     
     case Argon2.Methods.Hash2i:
-      const result = hash(req.params as Argon2.Parameters, Argon2.Types.Argon2i)
-      postMessage(<Argon2.Response>{
+      const result = hash(req.params as Argon2.Parameters)
+      postMessage({
         code: result.code,
         body: result.body
       }, [result.body!.buffer])
       break
 
     default:
-      postMessage(<Argon2.Response>{
+      postMessage({
         code: Argon2.ErrorCodes.ARGON2WASM_BAD_REQUEST
       })
   }

@@ -21,7 +21,7 @@ For hash actions ({@link Actions.Hash2i | Hash2i}, {@link Actions.Hash2d | Hash2
 
 • **method**: [*Methods*](../enums/argon2.methods.md)
 
-Defined in: [argon2.ts:96](https://github.com/very-amused/argon2-wasm/blob/ee8c702/src/argon2.ts#L96)
+Defined in: [argon2.ts:64](https://github.com/very-amused/argon2-wasm/blob/77e9cc4/src/argon2.ts#L64)
 
 ___
 
@@ -29,4 +29,4 @@ ___
 
 • `Optional` **params**: [*Parameters*](argon2.parameters.md) \| [*LoadParameters*](argon2.loadparameters.md)
 
-Defined in: [argon2.ts:97](https://github.com/very-amused/argon2-wasm/blob/ee8c702/src/argon2.ts#L97)
+Defined in: [argon2.ts:65](https://github.com/very-amused/argon2-wasm/blob/77e9cc4/src/argon2.ts#L65)

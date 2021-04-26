@@ -15,9 +15,7 @@ Functions and data exported by the argon2 WASM module
 
 ### Methods
 
-- [argon2d\_hash\_raw](argon2.exports.md#argon2d_hash_raw)
 - [argon2i\_hash\_raw](argon2.exports.md#argon2i_hash_raw)
-- [argon2id\_hash\_raw](argon2.exports.md#argon2id_hash_raw)
 - [free](argon2.exports.md#free)
 - [malloc](argon2.exports.md#malloc)
 
@@ -27,33 +25,9 @@ Functions and data exported by the argon2 WASM module
 
 • **memory**: Memory
 
-Defined in: [argon2.ts:43](https://github.com/very-amused/argon2-wasm/blob/ee8c702/src/argon2.ts#L43)
+Defined in: [argon2.ts:21](https://github.com/very-amused/argon2-wasm/blob/77e9cc4/src/argon2.ts#L21)
 
 ## Methods
-
-### argon2d\_hash\_raw
-
-▸ **argon2d_hash_raw**(`t_cost`: *number*, `m_cost`: *number*, `parallelism`: *number*, `pwd`: *number*, `pwdlen`: *number*, `salt`: *number*, `saltlen`: *number*, `hash`: *number*, `hashlen`: *number*): *number*
-
-#### Parameters:
-
-| Name | Type |
-| :------ | :------ |
-| `t_cost` | *number* |
-| `m_cost` | *number* |
-| `parallelism` | *number* |
-| `pwd` | *number* |
-| `pwdlen` | *number* |
-| `salt` | *number* |
-| `saltlen` | *number* |
-| `hash` | *number* |
-| `hashlen` | *number* |
-
-**Returns:** *number*
-
-Defined in: [argon2.ts:21](https://github.com/very-amused/argon2-wasm/blob/ee8c702/src/argon2.ts#L21)
-
-___
 
 ### argon2i\_hash\_raw
 
@@ -75,31 +49,7 @@ ___
 
 **Returns:** *number*
 
-Defined in: [argon2.ts:10](https://github.com/very-amused/argon2-wasm/blob/ee8c702/src/argon2.ts#L10)
-
-___
-
-### argon2id\_hash\_raw
-
-▸ **argon2id_hash_raw**(`t_cost`: *number*, `m_cost`: *number*, `parallelism`: *number*, `pwd`: *number*, `pwdlen`: *number*, `salt`: *number*, `saltlen`: *number*, `hash`: *number*, `hashlen`: *number*): *number*
-
-#### Parameters:
-
-| Name | Type |
-| :------ | :------ |
-| `t_cost` | *number* |
-| `m_cost` | *number* |
-| `parallelism` | *number* |
-| `pwd` | *number* |
-| `pwdlen` | *number* |
-| `salt` | *number* |
-| `saltlen` | *number* |
-| `hash` | *number* |
-| `hashlen` | *number* |
-
-**Returns:** *number*
-
-Defined in: [argon2.ts:32](https://github.com/very-amused/argon2-wasm/blob/ee8c702/src/argon2.ts#L32)
+Defined in: [argon2.ts:10](https://github.com/very-amused/argon2-wasm/blob/77e9cc4/src/argon2.ts#L10)
 
 ___
 
@@ -115,7 +65,7 @@ ___
 
 **Returns:** *void*
 
-Defined in: [argon2.ts:9](https://github.com/very-amused/argon2-wasm/blob/ee8c702/src/argon2.ts#L9)
+Defined in: [argon2.ts:9](https://github.com/very-amused/argon2-wasm/blob/77e9cc4/src/argon2.ts#L9)
 
 ___
 
@@ -131,4 +81,4 @@ ___
 
 **Returns:** *number*
 
-Defined in: [argon2.ts:8](https://github.com/very-amused/argon2-wasm/blob/ee8c702/src/argon2.ts#L8)
+Defined in: [argon2.ts:8](https://github.com/very-amused/argon2-wasm/blob/77e9cc4/src/argon2.ts#L8)

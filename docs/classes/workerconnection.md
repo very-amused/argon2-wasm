@@ -3,8 +3,6 @@
 # Class: WorkerConnection
 
 Wrap communication with a Web Worker in a promise based interface.
-Calls to [postMessage](workerconnection.md#postmessage) will return a promise that will resolve to the `data` attribute of the next message sent from the worker.
-[deinit](workerconnection.md#deinit) terminates both the connection with the worker and the worker itself, it should be called when a worker is no longer needed (such as before page unmount).
 
 ## Table of contents
 
@@ -37,7 +35,7 @@ Calls to [postMessage](workerconnection.md#postmessage) will return a promise th
 
 **Returns:** [*WorkerConnection*](workerconnection.md)
 
-Defined in: [connection.ts:10](https://github.com/very-amused/argon2-wasm/blob/ee8c702/src/connection.ts#L10)
+Defined in: [connection.ts:8](https://github.com/very-amused/argon2-wasm/blob/77e9cc4/src/connection.ts#L8)
 
 ## Properties
 
@@ -57,9 +55,9 @@ Defined in: [connection.ts:10](https://github.com/very-amused/argon2-wasm/blob/e
 
 **Returns:** *void*
 
-Defined in: [connection.ts:10](https://github.com/very-amused/argon2-wasm/blob/ee8c702/src/connection.ts#L10)
+Defined in: [connection.ts:8](https://github.com/very-amused/argon2-wasm/blob/77e9cc4/src/connection.ts#L8)
 
-Defined in: [connection.ts:10](https://github.com/very-amused/argon2-wasm/blob/ee8c702/src/connection.ts#L10)
+Defined in: [connection.ts:8](https://github.com/very-amused/argon2-wasm/blob/77e9cc4/src/connection.ts#L8)
 
 ___
 
@@ -67,7 +65,7 @@ ___
 
 • `Private` **worker**: Worker
 
-Defined in: [connection.ts:9](https://github.com/very-amused/argon2-wasm/blob/ee8c702/src/connection.ts#L9)
+Defined in: [connection.ts:7](https://github.com/very-amused/argon2-wasm/blob/77e9cc4/src/connection.ts#L7)
 
 ## Methods
 
@@ -77,7 +75,7 @@ Defined in: [connection.ts:9](https://github.com/very-amused/argon2-wasm/blob/ee
 
 **Returns:** *void*
 
-Defined in: [connection.ts:39](https://github.com/very-amused/argon2-wasm/blob/ee8c702/src/connection.ts#L39)
+Defined in: [connection.ts:37](https://github.com/very-amused/argon2-wasm/blob/77e9cc4/src/connection.ts#L37)
 
 ___
 
@@ -93,7 +91,7 @@ ___
 
 **Returns:** *void*
 
-Defined in: [connection.ts:21](https://github.com/very-amused/argon2-wasm/blob/ee8c702/src/connection.ts#L21)
+Defined in: [connection.ts:19](https://github.com/very-amused/argon2-wasm/blob/77e9cc4/src/connection.ts#L19)
 
 ___
 
@@ -110,4 +108,4 @@ ___
 
 **Returns:** *Promise*<[*Response*](../interfaces/argon2.response.md)\>
 
-Defined in: [connection.ts:31](https://github.com/very-amused/argon2-wasm/blob/ee8c702/src/connection.ts#L31)
+Defined in: [connection.ts:29](https://github.com/very-amused/argon2-wasm/blob/77e9cc4/src/connection.ts#L29)

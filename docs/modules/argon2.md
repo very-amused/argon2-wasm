@@ -8,7 +8,6 @@
 
 - [ErrorCodes](../enums/argon2.errorcodes.md)
 - [Methods](../enums/argon2.methods.md)
-- [Types](../enums/argon2.types.md)
 
 ### Interfaces
 

@@ -18,39 +18,7 @@ export interface Exports {
     hash: number,
     hashlen: number
   ): number
-  argon2d_hash_raw(
-    t_cost: number,
-    m_cost: number,
-    parallelism: number,
-    pwd: number,
-    pwdlen: number,
-    salt: number,
-    saltlen: number,
-    hash: number,
-    hashlen: number
-  ): number
-  argon2id_hash_raw(
-    t_cost: number,
-    m_cost: number,
-    parallelism: number,
-    pwd: number,
-    pwdlen: number,
-    salt: number,
-    saltlen: number,
-    hash: number,
-    hashlen: number
-  ): number
   memory: WebAssembly.Memory
-}
-
-/**
- * @internal
- * Enumeration of different argon2 types, used internally and inlined at compile time
- */
-export const enum Types {
-  Argon2i,
-  Argon2d,
-  Argon2id
 }
 
 export interface Parameters {

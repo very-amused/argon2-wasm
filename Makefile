@@ -6,13 +6,16 @@ O=-O3
 OUTDIR=build
 ARGON2_SRC=argon2,core,encoding,blake2/blake2b
 LINK=-I argon2/include argon2/src/{$(ARGON2_SRC)}.c
-EXPORTED_FUNCTIONS="['_malloc', '_free', '_argon2i_hash_raw', '_argon2d_hash_raw', '_argon2id_hash_raw']"
+EXPORTED_FUNCTIONS="['_malloc', '_free', '_argon2i_hash_raw']"
 CFLAGS=$(O) -Wall -g --no-entry -s EXPORTED_FUNCTIONS=$(EXPORTED_FUNCTIONS) -s ALLOW_MEMORY_GROWTH=1 -DARGON2_NO_THREADS
 EMCC=emcc $(CFLAGS) $(LINK)
 
-# Build regular webasm, this should load properly and perform well on all major browsers
-all: no-simd simd feature-detect
+all: build-dir no-simd simd feature-detect
 
+build-dir:
+	[ -d "$(OUTDIR)" ] || mkdir "$(OUTDIR)"
+
+# Build regular webasm, this should load properly and perform well on all major browsers
 no-simd:
 	$(eval ARGON2_SRC_OLD:=$(ARGON2_SRC))
 	$(eval ARGON2_SRC:=$(ARGON2_SRC),ref)
