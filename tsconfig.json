@@ -9,7 +9,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "removeComments": true,
-    "stripInternal": true
+    "strict": true
   },
   "include": [
     "src/*.ts"

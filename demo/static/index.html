@@ -12,28 +12,22 @@
   <body>
     <h1>Argon2-wasm Demo</h1>
     <form id="demoForm">
-      <label for="text">Text passed to argon2, please don't use real passwords here:</label>
+      <label for="text">Text passed to argon2, please don't use real passwords here</label>
       <input id="password" type="text">
       <br>
-      <label for="salt">Base64 encoded salt (leave empty to generate randomly):</label>
+      <label for="salt">Base64 encoded salt (leave empty to generate randomly)</label>
       <input id="salt" type="text">
       <br>
-      <label for="argon2_type">Argon2 hash type:</label>
-      <select id="argon2_type">
-        <option value="2i">argon2i</option>
-        <option value="2d" disabled>argon2d</option>
-      </select>
-      <br>
-      <label for="t_cost">Time cost:</label>
+      <label for="t_cost">Time cost</label>
       <input id="t_cost" type="number" value="1" autocomplete="off">
       <br>
-      <label for="m_cost">Memory cost (KB, MB, GB):</label>
+      <label for="m_cost">Memory cost (KB, MB, GB)</label>
       <input id="m_cost" type="text" value="128MB" autocomplete="off">
       <br>
       <input id="submit" type="submit" value="Run">
     </form>
     <hr>
-    <header>Result:</header>
+    <header>Result</header>
     <span id="result"></span>
 
     <a id="docs" href="https://github.com/very-amused/argon2-wasm/tree/main/docs/README.md">Docs</a>

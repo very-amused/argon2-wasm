@@ -4,7 +4,7 @@
 !yarn.lock
 !Makefile
 !rollup.config.js
-!*.tsconfig.json
-!lib/*.{js,d.ts}
-!out/*.{js,wasm}
+!tsconfig*.json
+!runtime/*.{js,d.ts}
+!build/*.{js,wasm}
 !src/*

@@ -3,7 +3,7 @@
 # which are still disabled in many major browsers (opera, safari, all mobile browsers except firefox android)
 # Until proper support for multithreading is more solid among browsers, it is irresponsible to not disable threads in builds
 O=-O3
-OUTDIR=out
+OUTDIR=build
 ARGON2_SRC=argon2,core,encoding,blake2/blake2b
 LINK=-I argon2/include argon2/src/{$(ARGON2_SRC)}.c
 EXPORTED_FUNCTIONS="['_malloc', '_free', '_argon2i_hash_raw', '_argon2d_hash_raw', '_argon2id_hash_raw']"

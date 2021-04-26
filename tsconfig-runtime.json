@@ -1,8 +1,8 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "lib",
-    "declaration": true
+    "declaration": true,
+    "outDir": "runtime"
   },
   "exclude": [
     "src/worker.ts"

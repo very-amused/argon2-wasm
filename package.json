@@ -2,15 +2,15 @@
   "name": "@very-amused/argon2-wasm",
   "version": "0.1.0",
   "description": "Implementation of the argon2 key derivation function using WebAssembly and Typescript, to be run clientside in web applications.",
-  "main": "index.js",
+  "main": "runtime/index.js",
   "repository": "git+https://github.com/very-amused/argon2-wasm",
   "author": "very-amused <very-amused@pm.me>",
   "license": "MIT",
   "scripts": {
-    "prebuild": "make",
-    "build": "tsc -p tsconfig-lib.json && rollup -c",
+    "build:argon2": "make",
+    "build": "rollup -c",
     "clean": "rm -f demo/static/[!demo]*.{js,wasm}",
-    "predemo": "cp out/*.{js,wasm} lib/*.js demo/static/",
+    "predemo": "cp runtime/index.js demo/static/argon2.js && cp build/*.{js,wasm} demo/static/",
     "demo": "node demo/server.js",
     "build:pages": "yarn run build && yarn run predemo && cp -r demo/static/* pages/",
     "build:docs": "typedoc --plugin typedoc-plugin-markdown --readme docs_readme.md src/*.ts --out docs/",
@@ -18,17 +18,17 @@
     "prepack": "yarn run clean && yarn run build"
   },
   "devDependencies": {
-    "@rollup/plugin-typescript": "^8.1.0",
+    "@rollup/plugin-typescript": "^8.2.1",
     "@types/polka": "^0.5.2",
     "polka": "^0.5.2",
-    "rollup": "^2.36.2",
+    "rollup": "^2.45.2",
     "rollup-plugin-terser": "^7.0.2",
     "serve-static": "^1.14.1",
     "terser": "^5.5.1",
     "ts-node": "^9.1.1",
-    "tslib": "^2.1.0",
+    "tslib": "^2.2.0",
     "typedoc": "^0.20.12",
     "typedoc-plugin-markdown": "^3.3.0",
-    "typescript": "^4.1.3"
+    "typescript": "^4.2.4"
   }
 }

@@ -129,18 +129,17 @@ function hash(options: Argon2.Parameters, type: Argon2.Types): {
     hashPtr,
     hashLen
   ]
-  let code: number
-  switch (type) {
-    case Argon2.Types.Argon2i:
-      code = argon2.argon2i_hash_raw.apply(null, args)
-      break
-    case Argon2.Types.Argon2d:
-      code = argon2.argon2d_hash_raw.apply(null, args)
-      break
-    case Argon2.Types.Argon2id:
-      code = argon2.argon2id_hash_raw.apply(null, args)
-      break
-  }
+  const code = argon2.argon2i_hash_raw(
+    options.timeCost,
+    options.memoryCost,
+    1,
+    passwordPtr,
+    passwordLen,
+    saltPtr,
+    saltLen,
+    hashPtr,
+    hashLen
+  )
 
   // Overwrite and free he password and salt from memory (views have to be re-initialized because the webasm buffer growing destroys existing views)
   passwordView = new Uint8Array(argon2.memory.buffer, passwordPtr, passwordLen)
@@ -203,7 +202,7 @@ onmessage = async function(evt: MessageEvent): Promise<void> {
         port: req.port,
         code: result.code,
         body: result.body
-      }, [result.body.buffer])
+      }, [result.body!.buffer])
       break
 
     default:

@@ -33,15 +33,15 @@ import { Argon2 } from './argon2'
 
 export class WorkerConnection {
   private worker: Worker
-  private resolve: (value: Argon2.Response) => void
+  private resolve?: (value: Argon2.Response) => void
 
   constructor(worker: Worker) {
     this.worker = worker
 
     // Create an event listener to receive messages on
-    this.worker.addEventListener('message', function(evt: MessageEvent) {
-      (this as WorkerConnection).onMessage(evt)
-    }.bind(this), true)
+    this.worker.addEventListener('message', (evt: MessageEvent) => {
+      this.onMessage(evt)
+    }, true)
   }
 
   private onMessage(evt: MessageEvent & {
@@ -63,9 +63,9 @@ export class WorkerConnection {
   }
 
   public deinit() {
-    this.worker.removeEventListener('message', function(evt: MessageEvent) {
+    this.worker.removeEventListener('message', (evt: MessageEvent) => {
       this.onMessage(evt)
-    }.bind(this), true)
+    }, true)
     this.worker.terminate()
   }
 }

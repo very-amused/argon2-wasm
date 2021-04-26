@@ -1,5 +1,5 @@
-out
-lib
+build
+runtime
 node_modules
 demo/static/*
 !demo/static/index.html

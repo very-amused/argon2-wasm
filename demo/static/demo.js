@@ -1,5 +1,4 @@
-import { Argon2 } from './argon2.js'
-import { WorkerConnection } from './connection.js'
+import { Argon2, WorkerConnection } from './argon2.js'
 const conn = new WorkerConnection(new Worker('./worker.js'))
 
 // Now that the response listener is initialized, we can tell the worker to load the WebAssembly binary and check for errors
