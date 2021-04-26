@@ -42,7 +42,7 @@ function postError(err: any): void {
  * @internal
  * @override
  */
-function postMessage(message: Argon2.Response, transfer: Transferable[] = []) {
+const postMessage = (message: Argon2.Response, transfer: Transferable[] = []) => {
   self.postMessage(message, transfer)
 }
 

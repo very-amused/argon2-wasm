@@ -72,9 +72,9 @@ function postError(err) {
         });
     }
 }
-function postMessage(message, transfer = []) {
+const postMessage = (message, transfer = []) => {
     self.postMessage(message, transfer);
-}
+};
 function overwriteSecure(view, passes = 1) {
     for (let i = 0; i < passes; i++) {
         for (let j = 0; j < view.length; j++) {
