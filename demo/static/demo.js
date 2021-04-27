@@ -1,6 +1,8 @@
 import { Argon2, WorkerConnection } from './argon2.js'
 const conn = new WorkerConnection(new Worker('./worker.js'))
 
+let simdEnabled = document.querySelector('input#simd_enabled').checked
+
 // Now that the response listener is initialized, we can tell the worker to load the WebAssembly binary and check for errors
 ;(async function() {
   const loadMessage = await conn.postMessage({
@@ -21,8 +23,8 @@ document.onbeforeunload = () => {
   conn.deinit()
 }
 
-// Remove the flashing cursor and write text to the result field
 function writeResult(text) {
+  document.querySelector('input#submit').disabled = false
   document.querySelector('span#result').textContent = text
 }
 
@@ -39,15 +41,43 @@ function displayError(code) {
 
 document.querySelector('form#demoForm').onsubmit = async (evt) => {
   evt.preventDefault()
+
+  const els = {
+    password: document.querySelector('input#password'),
+    salt: document.querySelector('input#salt'),
+    timeCost: document.querySelector('input#t_cost'),
+    memoryCost: document.querySelector('input#m_cost'),
+    simd: document.querySelector('input#simd_enabled'),
+    showTimer: document.querySelector('input#timer_enabled'),
+    run: document.querySelector('input#submit'),
+    result: document.querySelector('span#result')
+  }
+
   // Disable the run button until the demo is done running, this prevents throwing the event loop out of wack with the worker
-  document.querySelector('input#submit').disabled = true
+  els.run.disabled = true
   // Clear any previous resuls and show the flashing cursor
-  const resultEl = document.querySelector('span#result')
-  resultEl.textContent = ''
+  els.result.textContent = ''
+
+  // Reload argon2 if SIMD toggle has changed
+  const simd = els.simd.checked
+  if (simd !== simdEnabled) {
+    const loadMessage = await conn.postMessage({
+      method: Argon2.Methods.LoadArgon2,
+      params: {
+        wasmRoot: '.',
+        simd
+      }
+    })
+    if (loadMessage.code !== 0) {
+      displayError(loadMessage.code)
+      return
+    }
+    simdEnabled = simd
+  }
 
   // If a salt has been provided, decode and use that one
   let salt
-  let encodedSalt = document.querySelector('input#salt').value
+  let encodedSalt = els.salt.value
   if (encodedSalt.length) {
     try {
       const raw = atob(encodedSalt)
@@ -56,23 +86,22 @@ document.querySelector('form#demoForm').onsubmit = async (evt) => {
         salt[i] = raw.charCodeAt(i)
       }
     } catch (err) {
-      document.querySelector('input#submit').disabled = false
       const errorMsg = `Failed to decode salt (${err})`
       writeResult(`Error: ${errorMsg}`)
-      throw new Error(errorMsg)
+      return
     }
   } else {
     // Otherwise generate a random salt
     salt = new Uint8Array(16)
     crypto.getRandomValues(salt)
     encodedSalt = btoa(String.fromCharCode.apply(null, Array.from(salt)))
-    document.querySelector('input#salt').value = encodedSalt
+    els.salt.value = encodedSalt
   }
 
   // Parse the time and memory cost
-  const timeCost = parseInt(document.querySelector('input#t_cost').value)
+  const timeCost = parseInt(els.timeCost.value)
   // Argon2 expects memory cost in the form of KiB, so we have to parse this value as such
-  const memoryCostValue = document.querySelector('input#m_cost').value.toUpperCase()
+  const memoryCostValue = els.memoryCost.value.toUpperCase()
   let memoryCost = 0
   if (memoryCostValue.endsWith('MB')) {
     memoryCost = 1024 * parseInt(memoryCostValue)
@@ -86,17 +115,16 @@ document.querySelector('form#demoForm').onsubmit = async (evt) => {
         throw 'Value entered in form is NaN'
       }
     } catch (err) {
-      document.querySelector('input#submit').disabled = false
       const errorMsg = `Failed to parse memory cost (${err})`
       writeResult(`Error: ${errorMsg}`)
-      throw new Error(errorMsg)
+      return
     }
   }
 
   const result = await conn.postMessage({
     method: Argon2.Methods.Hash2i,
     params: {
-      password: document.querySelector('input#password').value,
+      password: els.password.value,
       salt,
       timeCost,
       memoryCost,
@@ -111,6 +139,4 @@ document.querySelector('form#demoForm').onsubmit = async (evt) => {
     // Get the argon2 error code's name from the Argon2.ErrorCodes enum
     displayError(result.code)
   }
-
-  document.querySelector('input#submit').disabled = false
 }

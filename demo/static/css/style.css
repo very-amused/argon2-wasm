@@ -20,11 +20,16 @@ input,select {
 
 @media screen and (min-width: 1201px) {
   h1,main {
-    margin: 0 15rem;
+    margin: 0.5rem 15rem;
   }
-  main > * > *:not(.no-expand) {
+  main > h1,hr,span,a,
+  main > form > label,
+  main > form > input {
     margin: 0.5rem 0;
     width: 100%;
+  }
+  main > form {
+    margin-bottom: 1rem;
   }
 }
 @media screen and (max-width: 1200px) {
@@ -43,21 +48,24 @@ hr {
 
 section#toggles {
   display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+}
+div.toggle {
+  display: inline-flex;
   flex-direction: row;
   align-items: center;
   justify-content: left;
 }
-div.toggle {
-  display: inline-flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  justify-content: left;
-}
-div.toggle:first-child > *:last-child {
+div.toggle *:first-child {
   margin-left: 0;
 }
-div.toggle:last-child > *:first-child {
+div.toggle > *:last-child {
   margin-right: 0;
+}
+div.toggle:not(:last-child) {
+  margin-right: 3rem;
 }
 
 form#demoForm input,select {

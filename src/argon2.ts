@@ -2,9 +2,18 @@ export namespace Argon2 {
 
 /**
  * @internal
+ */
+export type Source = WebAssembly.WebAssemblyInstantiatedSource & {
+  instance: WebAssembly.WebAssemblyInstantiatedSource['instance'] & {
+    exports: Exports
+  }
+}
+
+/**
+ * @internal
  * Functions and data exported by the argon2 WASM module
  */
-export interface Exports {
+export type Exports = {
   malloc(size: number): number
   free(ptr: number): void
   argon2i_hash_raw(

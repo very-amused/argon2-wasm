@@ -83,15 +83,14 @@ async function loadArgon2(wasmRoot = '.', simd = false): Promise<Argon2.Exports>
   const file = (simd && (await simdSupported(wasmRoot))) ? 'argon2-simd.wasm' : 'argon2.wasm'
 
   // Detect if instantiateStreaming is supported, fallback to download then instantiate
-  let source: WebAssembly.WebAssemblyInstantiatedSource
+  let source: Argon2.Source
   if (typeof WebAssembly.instantiateStreaming === 'function') {
-    source = await WebAssembly.instantiateStreaming(fetch(`${wasmRoot}/${file}`), opts)
+    source = await WebAssembly.instantiateStreaming(fetch(`${wasmRoot}/${file}`), opts) as Argon2.Source
   } else {
     const res = await fetch(`${wasmRoot}/${file}`)
     const raw = await res.arrayBuffer()
-    source = await WebAssembly.instantiate(raw, opts)
+    source = await WebAssembly.instantiate(raw, opts) as Argon2.Source
   }
-  // @ts-ignore
   return source.instance.exports
 }
 
