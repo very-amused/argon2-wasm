@@ -18,28 +18,23 @@ input,select {
   padding: 0.3em;
 }
 
-@media screen and (min-width: 1201px) {
-  h1,main {
-    margin: 0.5rem 15rem;
-  }
-  main > h1,hr,span,a,
-  main > form > label,
-  main > form > input {
-    margin: 0.5rem 0;
-    width: 100%;
-  }
-  main > form {
-    margin-bottom: 1rem;
+main {
+  margin: 0.5rem 15%;
+}
+@media screen and (max-width: 800px) {
+  main {
+    margin: 0.5rem 5%;
   }
 }
-@media screen and (max-width: 1200px) {
-  h1,main {
-    margin: 0.5rem;
-    width: calc(100% - 2*0.5rem);
-  }
-  label {
-    display: block;
-  }
+
+hr,span,a,
+main > form > label,
+main > form > input {
+  margin: 0.5rem 0;
+  width: 100%;
+}
+main > form {
+  margin-bottom: 1rem;
 }
 
 hr {
@@ -88,7 +83,14 @@ input#submit:disabled {
   cursor: not-allowed;
 }
 
-span#result {
+section#timer {
+  display: none;
+}
+section#timer.show {
+  display: block;
+}
+
+span#result, span#timer_value {
   display: inline-block;
   background-color: #39393F;
   padding: 0.3em 0.5em;
@@ -99,6 +101,9 @@ span#result {
   /* Wrap text overflow */
   white-space: normal;
   word-break: break-all;
+}
+span#timer_value {
+  min-height: calc(1.8em + 4px);
 }
 
 @keyframes flash {

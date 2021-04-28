@@ -3,6 +3,19 @@ const conn = new WorkerConnection(new Worker('./worker.js'))
 
 let simdEnabled = document.querySelector('input#simd_enabled').checked
 
+const els = {
+  password: document.querySelector('input#password'),
+  salt: document.querySelector('input#salt'),
+  timeCost: document.querySelector('input#t_cost'),
+  memoryCost: document.querySelector('input#m_cost'),
+  simd: document.querySelector('input#simd_enabled'),
+  showTimer: document.querySelector('input#timer_enabled'),
+  run: document.querySelector('input#submit'),
+  result: document.querySelector('span#result'),
+  timer: document.querySelector('section#timer'),
+  timerValue: document.querySelector('span#timer_value')
+}
+
 // Now that the response listener is initialized, we can tell the worker to load the WebAssembly binary and check for errors
 ;(async function() {
   const loadMessage = await conn.postMessage({
@@ -23,9 +36,14 @@ document.onbeforeunload = () => {
   conn.deinit()
 }
 
+// Toggle the timer's visibility when the 'Display execution time' checkbox is clicked
+els.showTimer.addEventListener('click', (evt) => {
+  els.timer.classList = evt.target.checked ? 'show' : ''
+})
+
 function writeResult(text) {
-  document.querySelector('input#submit').disabled = false
-  document.querySelector('span#result').textContent = text
+  els.run.disabled = false
+  els.result.textContent = text
 }
 
 function displayError(code) {
@@ -42,17 +60,7 @@ function displayError(code) {
 document.querySelector('form#demoForm').onsubmit = async (evt) => {
   evt.preventDefault()
 
-  const els = {
-    password: document.querySelector('input#password'),
-    salt: document.querySelector('input#salt'),
-    timeCost: document.querySelector('input#t_cost'),
-    memoryCost: document.querySelector('input#m_cost'),
-    simd: document.querySelector('input#simd_enabled'),
-    showTimer: document.querySelector('input#timer_enabled'),
-    run: document.querySelector('input#submit'),
-    result: document.querySelector('span#result')
-  }
-
+  const start = performance.now()
   // Disable the run button until the demo is done running, this prevents throwing the event loop out of wack with the worker
   els.run.disabled = true
   // Clear any previous resuls and show the flashing cursor
@@ -139,4 +147,13 @@ document.querySelector('form#demoForm').onsubmit = async (evt) => {
     // Get the argon2 error code's name from the Argon2.ErrorCodes enum
     displayError(result.code)
   }
+
+  let elapsed = performance.now() - start
+  const minutes = Math.floor(elapsed / 6000).toString().padStart(2, '0')
+  elapsed -= 6000 * minutes
+  const seconds = Math.floor(elapsed / 1000).toString().padStart(2, '0')
+  elapsed -= 1000 * seconds
+  const ms = elapsed.toString().padStart(2, '0')
+
+  els.timerValue.textContent = `${minutes}:${seconds}:${ms}`
 }
