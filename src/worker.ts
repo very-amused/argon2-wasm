@@ -125,17 +125,6 @@ function hash(options: Argon2.Parameters): {
   const hashPtr = argon2.malloc(hashLen)
 
   // Run the hash function
-  const args = [
-    options.timeCost,
-    options.memoryCost,
-    1, // Parallelism is constant at 1 until better support for shared array buffers
-    passwordPtr,
-    passwordLen,
-    saltPtr,
-    saltLen,
-    hashPtr,
-    hashLen
-  ]
   const code = argon2.argon2i_hash_raw(
     options.timeCost,
     options.memoryCost,

@@ -126,17 +126,6 @@ function hash(options) {
     overwriteSecure(encoded);
     const hashLen = options.hashLen;
     const hashPtr = argon2.malloc(hashLen);
-    [
-        options.timeCost,
-        options.memoryCost,
-        1,
-        passwordPtr,
-        passwordLen,
-        saltPtr,
-        saltLen,
-        hashPtr,
-        hashLen
-    ];
     const code = argon2.argon2i_hash_raw(options.timeCost, options.memoryCost, 1, passwordPtr, passwordLen, saltPtr, saltLen, hashPtr, hashLen);
     passwordView = new Uint8Array(argon2.memory.buffer, passwordPtr, passwordLen);
     overwriteSecure(passwordView);
