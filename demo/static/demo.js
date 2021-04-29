@@ -22,7 +22,7 @@ const els = {
     method: Argon2.Methods.LoadArgon2,
     params: {
       wasmRoot: '.',
-      simd: true
+      simd: simdEnabled
     }
   })
   
@@ -149,8 +149,8 @@ document.querySelector('form#demoForm').onsubmit = async (evt) => {
   }
 
   let elapsed = performance.now() - start
-  const minutes = Math.floor(elapsed / 6000).toString().padStart(2, '0')
-  elapsed -= 6000 * minutes
+  const minutes = Math.floor(elapsed / 60000).toString().padStart(2, '0')
+  elapsed -= 60000 * minutes
   const seconds = Math.floor(elapsed / 1000).toString().padStart(2, '0')
   elapsed -= 1000 * seconds
   const ms = elapsed.toString().padStart(2, '0')

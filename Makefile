@@ -7,7 +7,7 @@ OUTDIR=build
 ARGON2_SRC=argon2,core,encoding,blake2/blake2b
 LINK=-I argon2/include
 EXPORTED_FUNCTIONS=_malloc,_free,_argon2i_hash_raw
-CFLAGS=$(O) -Wall -g --no-entry -DARGON2_NO_THREADS \
+CFLAGS=$(O) -Wall --no-entry -DARGON2_NO_THREADS \
 	-s EXPORTED_FUNCTIONS=$(EXPORTED_FUNCTIONS) \
 	-s ALLOW_MEMORY_GROWTH=1 \
 	-s MAXIMUM_MEMORY=$(MAXIMUM_MEMORY) \
@@ -31,7 +31,8 @@ build-dir:
 no-simd:
 	$(EMCC) argon2/src/{$(ARGON2_SRC),ref}.c -o $(OUTDIR)/argon2.wasm
 
-# Build webasm with SSE2 instruction set (the created build is much faster but almost useless on most major browsers right now)
+# Build webasm with expertimental SIMD memory implementation (the created build should be faster in theory, but can sometimes be slower)
+# Browser support is also limited, mileage may vary
 simd:
 	$(EMCC) argon2/src/{$(ARGON2_SRC),opt}.c -msimd128 -msse2 -o $(OUTDIR)/argon2-simd.wasm
 
