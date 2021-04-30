@@ -1,8 +1,6 @@
 *
-# Pack source, built files, and build tooling
 !package.json
 !yarn.lock
-!Makefile
 !rollup.config.js
 !tsconfig*.json
 !runtime/*.{js,d.ts}
