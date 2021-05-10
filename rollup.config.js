@@ -21,9 +21,16 @@ export default [
   },
   {
     input: 'src/index.ts',
-    output: {
-      dir: 'runtime'
-    },
+    output: [
+      {
+        dir: 'runtime',
+        format: 'cjs'
+      },
+      {
+        file: 'runtime/index.mjs',
+        format: 'es'
+      }
+    ],
     plugins: [
       typescript({
         tsconfig: 'tsconfig-runtime.json'
