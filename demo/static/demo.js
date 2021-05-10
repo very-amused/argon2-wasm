@@ -1,5 +1,5 @@
-import { Argon2, WorkerConnection } from './argon2.js'
-const conn = new WorkerConnection(new Worker('./worker.min.js'))
+import { Argon2 } from './argon2.js'
+const conn = new Argon2.WorkerConnection(new Worker('./worker.min.js'))
 
 let simdEnabled = document.querySelector('input#simd_enabled').checked
 

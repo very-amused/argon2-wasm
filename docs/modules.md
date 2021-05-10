@@ -7,7 +7,3 @@
 ### Namespaces
 
 - [Argon2](modules/argon2.md)
-
-### Classes
-
-- [WorkerConnection](classes/workerconnection.md)

@@ -2,8 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "declaration": true,
-    "outDir": "runtime",
-    "stripInternal": true
+    "outDir": "runtime"
   },
   "exclude": [
     "src/worker.ts"

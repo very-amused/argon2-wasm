@@ -1,3 +1,5 @@
+import * as connection from './connection'
+
 export namespace Argon2 {
 
 /**
@@ -29,6 +31,8 @@ export type Exports = {
   ): number
   memory: WebAssembly.Memory
 }
+
+export import WorkerConnection = connection.WorkerConnection
 
 export interface Parameters {
   /** The password to be hashed. */

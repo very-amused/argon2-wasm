@@ -9,9 +9,12 @@
 - [ErrorCodes](../enums/argon2.errorcodes.md)
 - [Methods](../enums/argon2.methods.md)
 
+### Classes
+
+- [WorkerConnection](../classes/argon2.workerconnection.md)
+
 ### Interfaces
 
-- [Exports](../interfaces/argon2.exports.md)
 - [LoadParameters](../interfaces/argon2.loadparameters.md)
 - [Parameters](../interfaces/argon2.parameters.md)
 - [Request](../interfaces/argon2.request.md)
