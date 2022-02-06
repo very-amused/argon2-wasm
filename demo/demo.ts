@@ -1,7 +1,6 @@
 import { Argon2 } from '../runtime/index.js'
-const conn = new Argon2.WorkerConnection(new Worker('../build/worker.js'))
+const conn = new Argon2.WorkerConnection(new Worker('/argon2/worker.js'))
 
-let simdEnabled = (document.querySelector('input#simd_enabled') as HTMLInputElement).checked
 
 const els = {
   password: document.querySelector('input#password') as HTMLInputElement,
@@ -15,6 +14,21 @@ const els = {
   timer: document.querySelector('section#timer'),
   timerValue: document.querySelector('span#timer_value'),
   form: document.querySelector('form#demoForm') as HTMLFormElement
+}
+
+const simdCookie = 'useSimd'
+const timerCookie = 'displayTime'
+
+let simdEnabled: boolean = localStorage.getItem(simdCookie) === 'true'
+localStorage.setItem(simdCookie, simdEnabled.toString())
+
+// Set checkboxes from localstorage
+if (simdEnabled) {
+  els.simd.checked = true
+}
+if (localStorage.getItem(timerCookie) === 'true') {
+  els.timer.className = 'show'
+  els.showTimer.checked = true
 }
 
 // Now that the response listener is initialized, we can tell the worker to load the WebAssembly binary and check for errors
@@ -40,6 +54,10 @@ document.onclose = () => {
 // Toggle the timer's visibility when the 'Display execution time' checkbox is clicked
 els.showTimer.addEventListener('click', () => {
   els.timer.className = els.showTimer.checked ? 'show' : ''
+  localStorage.setItem(timerCookie, els.showTimer.checked.toString())
+})
+els.simd.addEventListener('click', () => {
+  localStorage.setItem(simdCookie, els.simd.checked.toString())
 })
 
 function writeResult(text) {

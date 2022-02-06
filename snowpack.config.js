@@ -1,12 +1,11 @@
 /** @type {import('snowpack').SnowpackUserConfig} */
 export default {
   mount: {
-    build: {
-      url: '/build'
-    },
-    runtime: {
-      url: '/runtime'
-    },
+    build: '/argon2',
+    runtime: '/runtime',
     demo: '/'
+  },
+  buildOptions: {
+    out: 'demo/build'
   }
 }
