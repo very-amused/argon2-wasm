@@ -46,8 +46,8 @@ const postMessage = (message: Argon2.Response, transfer: Transferable[] = []) =>
   self.postMessage(message, transfer)
 }
 
-// Zero out a view at least one time
-function overwriteSecure(view: Uint8Array, passes = 1) {
+// Zero out a view at least three times
+function zeroMemory(view: Uint8Array, passes = 3) {
   for (let i = 0; i < passes; i++) {
     for (let j = 0; j < view.length; j++) {
       view[j] = 0x00
@@ -118,7 +118,7 @@ function hash(options: Argon2.Parameters): {
     passwordView[i] = encoded[i]
   }
   // Immediately overwrite the encoded password in js memory with random data now that it's no longer needed
-  overwriteSecure(encoded)
+  zeroMemory(encoded)
 
   // Allocate memory for the final hash
   const hashLen = options.hashLen
@@ -137,15 +137,15 @@ function hash(options: Argon2.Parameters): {
     hashLen
   )
 
-  // Overwrite and free he password and salt from memory (views have to be re-initialized because the webasm buffer growing destroys existing views)
+  // Zero and free he password and salt from memory (views have to be re-initialized because the webasm buffer growing destroys existing views)
   passwordView = new Uint8Array(argon2.memory.buffer, passwordPtr, passwordLen)
-  overwriteSecure(passwordView)
+  zeroMemory(passwordView)
   argon2.free(passwordPtr)
   saltView = new Uint8Array(argon2.memory.buffer, saltPtr, saltLen)
-  overwriteSecure(saltView)
+  zeroMemory(saltView)
   argon2.free(saltPtr)
-  // Overwrite the value-passed copy of the salt from parameters
-  overwriteSecure(options.salt)
+  // Zero the value-passed copy of the salt from parameters
+  zeroMemory(options.salt)
 
   // Copy the hash into JS memory to be transferred to the main thread
   const hash = new Uint8Array(hashLen)
@@ -153,8 +153,8 @@ function hash(options: Argon2.Parameters): {
   for (let i = 0; i < hashLen; i++) {
     hash[i] = hashView[i]
   }
-  // Overwrite and free the hash from the argon2 buffer
-  overwriteSecure(hashView)
+  // Zero and free the hash from the argon2 buffer
+  zeroMemory(hashView)
   argon2.free(hashPtr)
 
   // Respond with the hash and the result code directly from argon2

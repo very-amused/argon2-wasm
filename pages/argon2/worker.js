@@ -104,7 +104,7 @@ function postError(err) {
 const postMessage = (message, transfer = []) => {
     self.postMessage(message, transfer);
 };
-function overwriteSecure(view, passes = 1) {
+function zeroMemory(view, passes = 3) {
     for (let i = 0; i < passes; i++) {
         for (let j = 0; j < view.length; j++) {
             view[j] = 0x00;
@@ -152,23 +152,23 @@ function hash(options) {
     for (let i = 0; i < passwordLen; i++) {
         passwordView[i] = encoded[i];
     }
-    overwriteSecure(encoded);
+    zeroMemory(encoded);
     const hashLen = options.hashLen;
     const hashPtr = argon2.malloc(hashLen);
     const code = argon2.argon2i_hash_raw(options.timeCost, options.memoryCost, 1, passwordPtr, passwordLen, saltPtr, saltLen, hashPtr, hashLen);
     passwordView = new Uint8Array(argon2.memory.buffer, passwordPtr, passwordLen);
-    overwriteSecure(passwordView);
+    zeroMemory(passwordView);
     argon2.free(passwordPtr);
     saltView = new Uint8Array(argon2.memory.buffer, saltPtr, saltLen);
-    overwriteSecure(saltView);
+    zeroMemory(saltView);
     argon2.free(saltPtr);
-    overwriteSecure(options.salt);
+    zeroMemory(options.salt);
     const hash = new Uint8Array(hashLen);
     const hashView = new Uint8Array(argon2.memory.buffer, hashPtr, hashLen);
     for (let i = 0; i < hashLen; i++) {
         hash[i] = hashView[i];
     }
-    overwriteSecure(hashView);
+    zeroMemory(hashView);
     argon2.free(hashPtr);
     return {
         code,

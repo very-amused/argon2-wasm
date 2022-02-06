@@ -12,6 +12,7 @@
     "build:all": "make && yarn run build",
     "clean": "rm -rf demo/static/[!demo]*.{js,wasm} build runtime",
     "demo": "snowpack dev",
+    "prebuild:demo": "yarn build:all",
     "build:demo": "snowpack build",
     "build:docs": "typedoc --plugin typedoc-plugin-markdown --readme docs_readme.md src/index.ts --out docs/",
     "prepack": "yarn run build:all"
