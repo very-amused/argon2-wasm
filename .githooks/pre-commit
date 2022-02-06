@@ -1,5 +1,0 @@
-#! /bin/sh
-
-yarn clean
-yarn build:docs
-yarn build:all
