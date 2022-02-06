@@ -6,6 +6,6 @@ export default {
     demo: '/'
   },
   buildOptions: {
-    out: 'demo/build'
+    out: 'pages'
   }
 }

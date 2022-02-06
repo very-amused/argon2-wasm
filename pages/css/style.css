@@ -1,0 +1,158 @@
+:root {
+  font-family: 'Fira Sans', sans-serif;
+  font-weight: 400;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+body {
+  background-color: #22222F;
+  color: white;
+}
+input,select {
+  background-color: #39393F;
+  color: white;
+  padding: 0.3em;
+}
+
+main {
+  margin: 0.5rem 15%;
+}
+@media screen and (max-width: 800px) {
+  main {
+    margin: 0.5rem 5%;
+  }
+}
+
+hr,span,a,
+main > form > label,
+main > form > input {
+  margin: 0.5rem 0;
+  width: 100%;
+}
+main > form {
+  margin-bottom: 1rem;
+}
+
+hr {
+  color: #aaa;
+}
+
+section#toggles {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: center;
+}
+div.toggle {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+}
+div.toggle *:first-child {
+  margin-left: 0;
+}
+div.toggle > *:last-child {
+  margin-right: 0;
+}
+div.toggle:not(:last-child) {
+  margin-right: 3rem;
+}
+
+form#demoForm input,select {
+  border: 1px solid #aaa;
+  display: block;
+}
+
+input#submit {
+  font-size: 125%;
+}
+input#submit:hover {
+  filter: contrast(115%);
+  cursor: pointer;
+}
+input#submit:active {
+  filter: contrast(125%);
+}
+input#submit:disabled {
+  filter: contrast(50%);
+  cursor: not-allowed;
+}
+
+section#timer {
+  display: none;
+}
+section#timer.show {
+  display: block;
+}
+
+span#result, span#timer_value {
+  display: inline-block;
+  background-color: #39393F;
+  padding: 0.3em 0.5em;
+  /* 2x0.3em vertical padding + 1em font height + potential 2px bottom border */
+  min-height: calc(1.8em + 2px);
+  font-family: 'Fira Mono', monospace;
+  
+  /* Wrap text overflow */
+  white-space: normal;
+  word-break: break-all;
+}
+span#timer_value {
+  min-height: calc(1.8em + 4px);
+}
+
+@keyframes flash {
+  0% {
+    opacity: 100%;
+  }
+  49% {
+    opacity: 100%;
+  }
+  50% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 0%;
+  }
+}
+
+/* Show a blinking cursor when the result field is empty */
+span#result:empty::after {
+  display: inline-block;
+  content: "";
+  width: 1ch;
+  border-bottom: 2px solid white;
+  animation: flash 1s linear infinite;
+}
+
+/* Footer containing doc information */
+a#docs {
+  display: block;
+  background-color: inherit;
+  padding: 0.3rem 0.5rem;
+  width: max-content;
+  border-left: 2px solid #aaa;
+  position: relative;
+}
+
+/* Add a contrast effect and animated underline on hover */
+a#docs:hover {
+  filter: contrast(115%);
+}
+a#docs::before {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  content: "";
+  width: 0%;
+  border-top: 2px solid #aaa;
+  transition: 0.2s linear width;
+}
+a#docs:hover::before {
+  width: 100%;
+}
