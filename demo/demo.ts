@@ -1,5 +1,5 @@
 import { Argon2 } from '../runtime/index.js'
-const conn = new Argon2.WorkerConnection(new Worker('../argon2/worker.js'))
+const conn = new Argon2.WorkerConnection(new Worker('./argon2/worker.js'))
 
 
 const els = {
