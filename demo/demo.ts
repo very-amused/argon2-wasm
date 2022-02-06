@@ -1,19 +1,20 @@
-import { Argon2 } from '../runtime/index.mjs'
-const conn = new Argon2.WorkerConnection(new Worker('/argon2/worker.js'))
+import { Argon2 } from '../runtime/index.js'
+const conn = new Argon2.WorkerConnection(new Worker('../build/worker.js'))
 
 let simdEnabled = (document.querySelector('input#simd_enabled') as HTMLInputElement).checked
 
 const els = {
-  password: document.querySelector('input#password'),
-  salt: document.querySelector('input#salt'),
-  timeCost: document.querySelector('input#t_cost'),
-  memoryCost: document.querySelector('input#m_cost'),
-  simd: document.querySelector('input#simd_enabled'),
+  password: document.querySelector('input#password') as HTMLInputElement,
+  salt: document.querySelector('input#salt') as HTMLInputElement,
+  timeCost: document.querySelector('input#t_cost') as HTMLInputElement,
+  memoryCost: document.querySelector('input#m_cost') as HTMLInputElement,
+  simd: document.querySelector('input#simd_enabled') as HTMLInputElement,
   showTimer: document.querySelector('input#timer_enabled') as HTMLInputElement,
-  run: document.querySelector('input#submit'),
+  run: document.querySelector('input#submit') as HTMLInputElement,
   result: document.querySelector('span#result'),
   timer: document.querySelector('section#timer'),
-  timerValue: document.querySelector('span#timer_value')
+  timerValue: document.querySelector('span#timer_value'),
+  form: document.querySelector('form#demoForm') as HTMLFormElement
 }
 
 // Now that the response listener is initialized, we can tell the worker to load the WebAssembly binary and check for errors
@@ -37,8 +38,8 @@ document.onclose = () => {
 }
 
 // Toggle the timer's visibility when the 'Display execution time' checkbox is clicked
-els.showTimer.addEventListener('click', (evt) => {
-  els.timer.classList = evt.target.checked ? 'show' : ''
+els.showTimer.addEventListener('click', () => {
+  els.timer.className = els.showTimer.checked ? 'show' : ''
 })
 
 function writeResult(text) {
@@ -57,10 +58,9 @@ function displayError(code) {
   writeResult(`Error: ${errorName} (code ${code})`)
 }
 
-document.querySelector('form#demoForm').onsubmit = async (evt) => {
+els.form.onsubmit = async (evt) => {
   evt.preventDefault()
 
-  const start = performance.now()
   // Disable the run button until the demo is done running, this prevents throwing the event loop out of wack with the worker
   els.run.disabled = true
   // Clear any previous resuls and show the flashing cursor
@@ -129,6 +129,7 @@ document.querySelector('form#demoForm').onsubmit = async (evt) => {
     }
   }
 
+  const start = performance.now()
   const result = await conn.postMessage({
     method: Argon2.Methods.Hash2i,
     params: {
@@ -139,6 +140,7 @@ document.querySelector('form#demoForm').onsubmit = async (evt) => {
       hashLen: 32
     }
   })
+  let elapsed = performance.now() - start
 
   if (result.code === 0) {
     const encodedHash = btoa(String.fromCharCode.apply(null, Array.from(result.body)))
@@ -148,12 +150,11 @@ document.querySelector('form#demoForm').onsubmit = async (evt) => {
     displayError(result.code)
   }
 
-  let elapsed = performance.now() - start
-  const minutes = Math.floor(elapsed / 60000).toString().padStart(2, '0')
-  elapsed -= 60000 * minutes
-  const seconds = Math.floor(elapsed / 1000).toString().padStart(2, '0')
-  elapsed -= 1000 * seconds
-  const ms = elapsed.toString().padStart(2, '0')
+  const minutes = Math.floor(elapsed / 60000).toString()
+  elapsed %= 60000
+  const seconds = Math.floor(elapsed / 1000).toString()
+  elapsed %= 1000
+  const ms = elapsed.toString()
 
-  els.timerValue.textContent = `${minutes}:${seconds}:${ms}`
+  els.timerValue.textContent = `${minutes}m ${seconds}s ${ms}ms`
 }
