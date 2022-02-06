@@ -1,7 +1,7 @@
-import { Argon2 } from './argon2.js'
-const conn = new Argon2.WorkerConnection(new Worker('./worker.min.js'))
+import { Argon2 } from '../runtime/index.mjs'
+const conn = new Argon2.WorkerConnection(new Worker('/argon2/worker.js'))
 
-let simdEnabled = document.querySelector('input#simd_enabled').checked
+let simdEnabled = (document.querySelector('input#simd_enabled') as HTMLInputElement).checked
 
 const els = {
   password: document.querySelector('input#password'),
@@ -9,7 +9,7 @@ const els = {
   timeCost: document.querySelector('input#t_cost'),
   memoryCost: document.querySelector('input#m_cost'),
   simd: document.querySelector('input#simd_enabled'),
-  showTimer: document.querySelector('input#timer_enabled'),
+  showTimer: document.querySelector('input#timer_enabled') as HTMLInputElement,
   run: document.querySelector('input#submit'),
   result: document.querySelector('span#result'),
   timer: document.querySelector('section#timer'),
@@ -32,7 +32,7 @@ const els = {
 })()
 
 // Unload this listener before the document unloads
-document.onbeforeunload = () => {
+document.onclose = () => {
   conn.deinit()
 }
 
