@@ -1,8 +1,5 @@
 *
 !package.json
 !yarn.lock
-!rollup.config.js
-!tsconfig.json
 !runtime/*.{js,d.ts}
 !build/*.{js,wasm}
-!src/*
