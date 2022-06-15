@@ -35,7 +35,7 @@ export type Exports = {
 export import WorkerConnection = connection.WorkerConnection
 
 export interface Parameters {
-  /** The password to be hashed. */
+  /** The password to be hashed. Must be normalized beforehand to NFC or NFD. NFK(C/D) normalization is not stable for UTF-8 passwords across different browsers, and should not be used. */
   password: string,
   /** A cryptographically random salt.  */
   salt: Uint8Array,

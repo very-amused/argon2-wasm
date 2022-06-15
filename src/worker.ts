@@ -106,10 +106,8 @@ function hash(options: Argon2.Parameters): {
     saltView[i] = options.salt[i]
   }
 
-  // Normalize and encode the password as bytes
-  const encoded = new TextEncoder().encode(
-    options.password.normalize('NFKC')
-  )
+  // Encode the password as bytes
+  const encoded = new TextEncoder().encode(options.password)
   // Copy the encoded password into the argon2 buffer
   const passwordLen = encoded.byteLength
   const passwordPtr = argon2.malloc(passwordLen)
