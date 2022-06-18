@@ -145,7 +145,7 @@ function hash(options) {
     for (let i = 0; i < saltLen; i++) {
         saltView[i] = options.salt[i];
     }
-    const encoded = new TextEncoder().encode(options.password.normalize('NFKC'));
+    const encoded = new TextEncoder().encode(options.password);
     const passwordLen = encoded.byteLength;
     const passwordPtr = argon2.malloc(passwordLen);
     let passwordView = new Uint8Array(argon2.memory.buffer, passwordPtr, passwordLen);

@@ -123,7 +123,7 @@ els.form.onsubmit = async (evt) => {
   const result = await conn.postMessage({
     method: Argon2.Methods.Hash2i,
     params: {
-      password: els.password.value,
+      password: els.password.value.normalize("NFC"),
       salt,
       timeCost,
       memoryCost,
