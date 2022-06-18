@@ -2,18 +2,32 @@ import { Argon2 } from '../runtime/index.js'
 const conn = new Argon2.WorkerConnection(new Worker('./argon2/worker.js'))
 
 
-const els = {
-  password: document.querySelector('input#password') as HTMLInputElement,
-  salt: document.querySelector('input#salt') as HTMLInputElement,
-  timeCost: document.querySelector('input#t_cost') as HTMLInputElement,
-  memoryCost: document.querySelector('input#m_cost') as HTMLInputElement,
-  simd: document.querySelector('input#simd_enabled') as HTMLInputElement,
-  showTimer: document.querySelector('input#timer_enabled') as HTMLInputElement,
-  run: document.querySelector('input#submit') as HTMLInputElement,
-  result: document.querySelector('span#result'),
-  timer: document.querySelector('section#timer'),
-  timerValue: document.querySelector('span#timer_value'),
-  form: document.querySelector('form#demoForm') as HTMLFormElement
+type Elements = {
+  password: HTMLInputElement
+  salt: HTMLInputElement
+  timeCost: HTMLInputElement
+  memoryCost: HTMLInputElement
+  simd: HTMLInputElement
+  showTimer: HTMLInputElement
+  run: HTMLInputElement
+  result: HTMLSpanElement
+  timer: HTMLElement
+  timerValue: HTMLSpanElement
+  form: HTMLFormElement
+}
+
+const els: Elements = {
+  password: document.querySelector('input#password')!,
+  salt: document.querySelector('input#salt')!,
+  timeCost: document.querySelector('input#t_cost')!,
+  memoryCost: document.querySelector('input#m_cost')!,
+  simd: document.querySelector('input#simd_enabled')!,
+  showTimer: document.querySelector('input#timer_enabled')!,
+  run: document.querySelector('input#submit')!,
+  result: document.querySelector('span#result')!,
+  timer: document.querySelector('section#timer')!,
+  timerValue: document.querySelector('span#timer_value')!,
+  form: document.querySelector('form#demoForm')!
 }
 
 const simdCookie = 'useSimd'
@@ -151,7 +165,7 @@ els.form.onsubmit = async (evt) => {
   const result = await conn.postMessage({
     method: Argon2.Methods.Hash2i,
     params: {
-      password: els.password.value,
+      password: els.password.value.normalize('NFC'),
       salt,
       timeCost,
       memoryCost,
@@ -161,7 +175,7 @@ els.form.onsubmit = async (evt) => {
   let elapsed = performance.now() - start
 
   if (result.code === 0) {
-    const encodedHash = btoa(String.fromCharCode.apply(null, Array.from(result.body)))
+    const encodedHash = btoa(String.fromCharCode.apply(null, Array.from(result.body!)))
     writeResult(encodedHash)  
   } else {
     // Get the argon2 error code's name from the Argon2.ErrorCodes enum

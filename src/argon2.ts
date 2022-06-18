@@ -3,7 +3,7 @@ import * as connection from './connection'
 export namespace Argon2 {
 
 /**
- * @internal
+ * @_internal
  */
 export type Source = WebAssembly.WebAssemblyInstantiatedSource & {
   instance: WebAssembly.WebAssemblyInstantiatedSource['instance'] & {
@@ -12,7 +12,7 @@ export type Source = WebAssembly.WebAssemblyInstantiatedSource & {
 }
 
 /**
- * @internal
+ * @_internal
  * Functions and data exported by the argon2 WASM module
  */
 export type Exports = {
