@@ -1,6 +1,6 @@
 {
   "name": "@very-amused/argon2-wasm",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Implementation of the argon2 key derivation function using WebAssembly and Typescript, to be run clientside in web applications.",
   "main": "runtime/index.js",
   "type": "module",
@@ -23,11 +23,11 @@
     "rollup": "^2.45.2",
     "rollup-plugin-terser": "^7.0.2",
     "snowpack": "^3.8.8",
-    "terser": "^5.5.1",
+    "terser": "^5.15.0",
     "ts-node": "^9.1.1",
     "tslib": "^2.2.0",
-    "typedoc": "^0.20.36",
-    "typedoc-plugin-markdown": "^3.7.2",
-    "typescript": "^4.2.4"
+    "typedoc": "^0.23.13",
+    "typedoc-plugin-markdown": "^3.13.5",
+    "typescript": "^4.8.2"
   }
 }
