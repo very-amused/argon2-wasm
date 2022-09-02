@@ -46,8 +46,13 @@ const postMessage = (message: Argon2.Response, transfer: Transferable[] = []) =>
   self.postMessage(message, transfer)
 }
 
+function memCopy(dest: Uint8Array, src: Uint8Array): void {
+  for (let i = 0; i < src.length; i++) {
+    dest[i] = src[i]
+  }
+}
 // Zero out a view at least three times
-function zeroMemory(view: Uint8Array, passes = 3) {
+function zeroBytes(view: Uint8Array, passes = 3) {
   for (let i = 0; i < passes; i++) {
     for (let j = 0; j < view.length; j++) {
       view[j] = 0x00
@@ -102,9 +107,7 @@ function hash(options: Argon2.Parameters): {
   const saltLen = options.salt.byteLength
   const saltPtr = argon2.malloc(saltLen)
   let saltView = new Uint8Array(argon2.memory.buffer, saltPtr, saltLen)
-  for (let i = 0; i < saltLen; i++) {
-    saltView[i] = options.salt[i]
-  }
+  memCopy(saltView, options.salt)
 
   // Encode the password as bytes
   const encoded = new TextEncoder().encode(options.password)
@@ -112,11 +115,9 @@ function hash(options: Argon2.Parameters): {
   const passwordLen = encoded.byteLength
   const passwordPtr = argon2.malloc(passwordLen)
   let passwordView = new Uint8Array(argon2.memory.buffer, passwordPtr, passwordLen)
-  for (let i = 0; i < passwordLen; i++) {
-    passwordView[i] = encoded[i]
-  }
+  memCopy(passwordView, encoded)
   // Immediately overwrite the encoded password in js memory with random data now that it's no longer needed
-  zeroMemory(encoded)
+  zeroBytes(encoded)
 
   // Allocate memory for the final hash
   const hashLen = options.hashLen
@@ -137,22 +138,20 @@ function hash(options: Argon2.Parameters): {
 
   // Zero and free he password and salt from memory (views have to be re-initialized because the webasm buffer growing destroys existing views)
   passwordView = new Uint8Array(argon2.memory.buffer, passwordPtr, passwordLen)
-  zeroMemory(passwordView)
+  zeroBytes(passwordView)
   argon2.free(passwordPtr)
   saltView = new Uint8Array(argon2.memory.buffer, saltPtr, saltLen)
-  zeroMemory(saltView)
+  zeroBytes(saltView)
   argon2.free(saltPtr)
   // Zero the value-passed copy of the salt from parameters
-  zeroMemory(options.salt)
+  zeroBytes(options.salt)
 
   // Copy the hash into JS memory to be transferred to the main thread
   const hash = new Uint8Array(hashLen)
   const hashView = new Uint8Array(argon2.memory.buffer, hashPtr, hashLen)
-  for (let i = 0; i < hashLen; i++) {
-    hash[i] = hashView[i]
-  }
+  memCopy(hash, hashView)
   // Zero and free the hash from the argon2 buffer
-  zeroMemory(hashView)
+  zeroBytes(hashView)
   argon2.free(hashPtr)
 
   // Respond with the hash and the result code directly from argon2

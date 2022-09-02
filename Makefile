@@ -43,7 +43,7 @@ $(argon2-simd): $(objects) $(objects-simd)
 	emcc -o $(argon2-simd) $(objects) $(objects-simd) $(CFLAGS) $(BUILD_FLAGS)
 
 $(feature-detect): src/feature-tests/simd.wat
-	wat2wasm --enable-simd src/feature-tests/simd.wat -o $(feature-detect)
+	wat2wasm src/feature-tests/simd.wat -o $(feature-detect)
 
 $(objects-simd): $(src-simd)
 	emcc -c -o $@ $< $(CFLAGS) -msimd128 -msse2
