@@ -31,7 +31,8 @@ const conn = new Argon2.WorkerConnection(worker)
     method: Argon2.Methods.LoadArgon2,
     params: {
       wasmRoot: '/argon2',
-      simd: true // The worker will test for SIMD support by validating {wasmRoot}/simd-test.wasm, and load argon2-simd.wasm if possible
+      simd: true /* The worker will test for SIMD support by validating {wasmRoot}/simd-test.wasm,
+      and load argon2-simd.wasm if possible */
     }
   })
   if (message.code !== 0) {
