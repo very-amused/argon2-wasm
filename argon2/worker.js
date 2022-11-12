@@ -104,7 +104,12 @@ function postError(err) {
 const postMessage = (message, transfer = []) => {
     self.postMessage(message, transfer);
 };
-function zeroMemory(view, passes = 3) {
+function memCopy(dest, src) {
+    for (let i = 0; i < src.length; i++) {
+        dest[i] = src[i];
+    }
+}
+function zeroBytes(view, passes = 3) {
     for (let i = 0; i < passes; i++) {
         for (let j = 0; j < view.length; j++) {
             view[j] = 0x00;
@@ -142,33 +147,27 @@ function hash(options) {
     const saltLen = options.salt.byteLength;
     const saltPtr = argon2.malloc(saltLen);
     let saltView = new Uint8Array(argon2.memory.buffer, saltPtr, saltLen);
-    for (let i = 0; i < saltLen; i++) {
-        saltView[i] = options.salt[i];
-    }
+    memCopy(saltView, options.salt);
     const encoded = new TextEncoder().encode(options.password);
     const passwordLen = encoded.byteLength;
     const passwordPtr = argon2.malloc(passwordLen);
     let passwordView = new Uint8Array(argon2.memory.buffer, passwordPtr, passwordLen);
-    for (let i = 0; i < passwordLen; i++) {
-        passwordView[i] = encoded[i];
-    }
-    zeroMemory(encoded);
+    memCopy(passwordView, encoded);
+    zeroBytes(encoded);
     const hashLen = options.hashLen;
     const hashPtr = argon2.malloc(hashLen);
     const code = argon2.argon2i_hash_raw(options.timeCost, options.memoryCost, 1, passwordPtr, passwordLen, saltPtr, saltLen, hashPtr, hashLen);
     passwordView = new Uint8Array(argon2.memory.buffer, passwordPtr, passwordLen);
-    zeroMemory(passwordView);
+    zeroBytes(passwordView);
     argon2.free(passwordPtr);
     saltView = new Uint8Array(argon2.memory.buffer, saltPtr, saltLen);
-    zeroMemory(saltView);
+    zeroBytes(saltView);
     argon2.free(saltPtr);
-    zeroMemory(options.salt);
+    zeroBytes(options.salt);
     const hash = new Uint8Array(hashLen);
     const hashView = new Uint8Array(argon2.memory.buffer, hashPtr, hashLen);
-    for (let i = 0; i < hashLen; i++) {
-        hash[i] = hashView[i];
-    }
-    zeroMemory(hashView);
+    memCopy(hash, hashView);
+    zeroBytes(hashView);
     argon2.free(hashPtr);
     return {
         code,
