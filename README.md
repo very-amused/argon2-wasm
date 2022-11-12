@@ -18,6 +18,7 @@ The web worker will never return an error through anything other than a standard
 ## Usage
 ```ts
 import { Argon2 } from '@very-amused/argon2-wasm'
+import { makeSalt, base64 } from 'cs-crypto'
 
 // 1. Create the worker thread 
 const worker = new Worker('/argon2/worker.js') // Change to worker.min.js in production
@@ -39,4 +40,37 @@ const conn = new Argon2.WorkerConnection(worker)
     throw new Error(`failed to load argon2: code ${message.code}`)
   }
 }
+
+// 4. Collect input
+const password = document.querySelector('input#password').value
+
+// 5. Generate a cryptographically random 16 byte salt
+const salt = makeSalt(16)
+
+/* 6. Determine time and memory costs
+(NOTE: parallelism is automatically set to 1,
+as this library doesn't currently support multiple threads) */
+const timeCost = 3 // a 3 pass minimum is recommended by Dmitry Khovratovich
+const memoryCost = 1024 * 128 // Memory cost is in # of KiB, i.e m = 1024 = 1MiB
+
+// 7. Run argon2i
+const result = await conn.postMessage({
+  method: Argon2.Methods.Hash2i,
+  params: {
+    password,
+    salt,
+    timeCost,
+    memoryCost,
+    hashLen: 32 // Desired output size (in bytes)
+  }
+})
+if (result.code !== 0) {
+  throw new Error(`failed to run argon2i: code ${result.code}`)
+}
+
+// 8. The hash result will be stored in the body property of the result
+console.log(`hash result: ${base64.encode(result.body)}`)
+
+// 9. Terminate the worker thread (this will also free resources associated with the wasm instance)
+worker.terminate()
 ```
