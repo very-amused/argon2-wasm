@@ -8,14 +8,14 @@
   "author": "very-amused <very-amused@pm.me>",
   "license": "MIT",
   "scripts": {
-    "build": "rollup -c",
-    "build:all": "make && yarn run build",
-    "clean": "rm -rf demo/static/[!demo]*.{js,wasm} build runtime",
+    "build": "make && rollup -c",
+    "postbuild": "yarn tsc -b tsconfig-d.json",
+    "clean": "make clean",
     "demo": "snowpack dev",
     "prebuild:demo": "yarn build:all",
     "build:demo": "snowpack build",
     "build:docs": "typedoc --plugin typedoc-plugin-markdown --readme docs_readme.md src/index.ts --out docs/",
-    "prepack": "yarn run build:all"
+    "prepack": "yarn clean && yarn build && yarn build:docs"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.2.1",
@@ -27,7 +27,7 @@
     "ts-node": "^9.1.1",
     "tslib": "^2.2.0",
     "typedoc": "^0.23.13",
-    "typedoc-plugin-markdown": "^3.13.5",
+    "typedoc-plugin-markdown": "^3.13.6",
     "typescript": "^4.8.2"
   }
 }

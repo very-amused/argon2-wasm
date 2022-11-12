@@ -28,7 +28,6 @@ export default [
     plugins: [
       typescript({
         outDir: 'runtime',
-        declaration: true,
         exclude: ['src/worker.ts']
       })
     ]

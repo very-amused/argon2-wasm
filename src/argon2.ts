@@ -65,13 +65,15 @@ export enum Methods {
   /** Load the Argon2 WebAssembly build. */
   LoadArgon2,
   /** Hash in 2i mode. */
-  Hash2i
+  Hash2i,
+  /** Unload the Argon2 WebAssembly build. */
+  UnloadArgon2
 }
 
 /**
  * A request posted to the worker.
- * For {@link Actions.LoadArgon2 | LoadArgon2}, no body is required.
- * For hash actions ({@link Actions.Hash2i | Hash2i}, {@link Actions.Hash2d | Hash2d}, {@link Actions.Hash2id | Hash2id}), the body should be valid {@link Parameters}.
+ * For {@link Methods.LoadArgon2}, no body is required.
+ * For {@link Methods.Hash2i},the body should be valid {@link Parameters}.
  */
 export interface Request {
   method: Methods

@@ -116,7 +116,7 @@ function hash(options: Argon2.Parameters): {
   const passwordPtr = argon2.malloc(passwordLen)
   let passwordView = new Uint8Array(argon2.memory.buffer, passwordPtr, passwordLen)
   memCopy(passwordView, encoded)
-  // Immediately overwrite the encoded password in js memory with random data now that it's no longer needed
+  // Zero the encoded password in js memory
   zeroBytes(encoded)
 
   // Allocate memory for the final hash
@@ -154,7 +154,7 @@ function hash(options: Argon2.Parameters): {
   zeroBytes(hashView)
   argon2.free(hashPtr)
 
-  // Respond with the hash and the result code directly from argon2
+  // Respond with the hash and the result code from argon2
   return {
     code,
     body: hash

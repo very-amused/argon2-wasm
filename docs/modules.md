@@ -6,4 +6,4 @@
 
 ### Namespaces
 
-- [Argon2](modules/argon2.md)
+- [Argon2](modules/Argon2.md)
