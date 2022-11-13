@@ -1,6 +1,6 @@
 {
   "name": "@very-amused/argon2-wasm",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Implementation of the argon2 key derivation function using WebAssembly and Typescript, to be run clientside in web applications.",
   "main": "runtime/index.js",
   "type": "module",

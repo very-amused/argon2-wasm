@@ -37,7 +37,7 @@ Channel based interface for web worker communication
 
 #### Defined in
 
-[connection.ts:10](https://github.com/very-amused/argon2-wasm/blob/68f7017/src/connection.ts#L10)
+[connection.ts:10](https://github.com/very-amused/argon2-wasm/blob/b5d6815/src/connection.ts#L10)
 
 ## Properties
 
@@ -61,7 +61,7 @@ Channel based interface for web worker communication
 
 #### Defined in
 
-[connection.ts:8](https://github.com/very-amused/argon2-wasm/blob/68f7017/src/connection.ts#L8)
+[connection.ts:8](https://github.com/very-amused/argon2-wasm/blob/b5d6815/src/connection.ts#L8)
 
 ___
 
@@ -71,7 +71,7 @@ ___
 
 #### Defined in
 
-[connection.ts:7](https://github.com/very-amused/argon2-wasm/blob/68f7017/src/connection.ts#L7)
+[connection.ts:7](https://github.com/very-amused/argon2-wasm/blob/b5d6815/src/connection.ts#L7)
 
 ## Methods
 
@@ -91,7 +91,7 @@ ___
 
 #### Defined in
 
-[connection.ts:19](https://github.com/very-amused/argon2-wasm/blob/68f7017/src/connection.ts#L19)
+[connection.ts:19](https://github.com/very-amused/argon2-wasm/blob/b5d6815/src/connection.ts#L19)
 
 ___
 
@@ -114,7 +114,7 @@ Post a message to the worker, and await its response
 
 #### Defined in
 
-[connection.ts:32](https://github.com/very-amused/argon2-wasm/blob/68f7017/src/connection.ts#L32)
+[connection.ts:32](https://github.com/very-amused/argon2-wasm/blob/b5d6815/src/connection.ts#L32)
 
 ___
 
@@ -130,4 +130,4 @@ Terminate the worker, releasing associated resources
 
 #### Defined in
 
-[connection.ts:44](https://github.com/very-amused/argon2-wasm/blob/68f7017/src/connection.ts#L44)
+[connection.ts:44](https://github.com/very-amused/argon2-wasm/blob/b5d6815/src/connection.ts#L44)
