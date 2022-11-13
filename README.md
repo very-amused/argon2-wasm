@@ -20,15 +20,14 @@ The web worker will never return an error through anything other than a standard
 import { Argon2 } from '@very-amused/argon2-wasm'
 import { makeSalt, base64 } from 'cs-crypto'
 
-// 1. Create the worker thread 
-const worker = new Worker('/argon2/worker.js') // Change to worker.min.js in production
+// 1. Open a connection to a new argon2 worker thread
+const argon2 = new Argon2.WorkerConnection(
+  new Worker('/argon2/worker.js') // Change to worker.min.js in production
+)
 
-// 2. Create an worker connection
-const conn = new Argon2.WorkerConnection(worker)
-
-// 3. Load the Argon2 WebAssembly
+// 2. Load the Argon2 WebAssembly
 {
-  const message = await conn.postMessage({
+  const message = await argon2.postMessage({
     method: Argon2.Methods.LoadArgon2,
     params: {
       wasmRoot: '/argon2',
@@ -41,20 +40,20 @@ const conn = new Argon2.WorkerConnection(worker)
   }
 }
 
-// 4. Collect input
+// 3. Collect input
 const password = document.querySelector('input#password').value
 
-// 5. Generate a cryptographically random 16 byte salt
+// 4. Generate a cryptographically random 16 byte salt
 const salt = makeSalt(16)
 
-/* 6. Determine time and memory costs
+/* 5. Determine time and memory costs
 (NOTE: parallelism is automatically set to 1,
 as this library doesn't currently support multiple threads) */
 const timeCost = 3 // a 3 pass minimum is recommended by Dmitry Khovratovich
 const memoryCost = 1024 * 128 // Memory cost is in # of KiB, i.e m = 1024 = 1MiB
 
-// 7. Run argon2i
-const result = await conn.postMessage({
+// 6. Run argon2i
+const result = await argon2.postMessage({
   method: Argon2.Methods.Hash2i,
   params: {
     password,
@@ -68,9 +67,9 @@ if (result.code !== 0) {
   throw new Error(`failed to run argon2i: code ${result.code}`)
 }
 
-// 8. The hash result will be stored in the body property of the result
+// 7. The hash result will be stored in the body property of the result
 console.log(`hash result: ${base64.encode(result.body)}`)
 
-// 9. Terminate the worker thread (this will also free resources associated with the wasm instance)
-worker.terminate()
+// 8. Terminate the worker thread (this will also free resources associated with the wasm instance)
+argon2.terminate()
 ```
