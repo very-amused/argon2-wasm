@@ -1,7 +1,7 @@
 import { Argon2 } from './argon2'
 
 /**
- * Wrap communication with a Web Worker in a promise based interface.
+ * Channel based interface for web worker communication
  */
 export class WorkerConnection {
   private worker: Worker
@@ -26,7 +26,10 @@ export class WorkerConnection {
     this.resolve(evt.data)
   }
 
-  public postMessage(message: Argon2.Request, transfer: Transferable[] = []): Promise<Argon2.Response> {
+  /**
+   * Post a message to the worker, and await its response
+   */
+  postMessage(message: Argon2.Request, transfer: Transferable[] = []): Promise<Argon2.Response> {
     const p: Promise<Argon2.Response> = new Promise((resolve) => {
       this.resolve = resolve
     })
@@ -34,7 +37,11 @@ export class WorkerConnection {
     return p
   }
 
-  public deinit() {
+  /**
+   * @override
+   * Terminate the worker, releasing associated resources
+   */
+  terminate() {
     this.worker.removeEventListener('message', (evt: MessageEvent) => {
       this.onMessage(evt)
     }, true)

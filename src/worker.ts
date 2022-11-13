@@ -136,7 +136,8 @@ function hash(options: Argon2.Parameters): {
     hashLen
   )
 
-  // Zero and free he password and salt from memory (views have to be re-initialized because the webasm buffer growing destroys existing views)
+  /* Zero and free the password and salt from memory
+  (views have to be re-initialized because the webasm buffer growing destroys existing views) */
   passwordView = new Uint8Array(argon2.memory.buffer, passwordPtr, passwordLen)
   zeroBytes(passwordView)
   argon2.free(passwordPtr)
