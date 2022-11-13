@@ -2,48 +2,25 @@ import { Argon2 } from '../runtime/index.js'
 const conn = new Argon2.WorkerConnection(new Worker('./argon2/worker.js'))
 
 
-type Elements = {
-  password: HTMLInputElement
-  salt: HTMLInputElement
-  timeCost: HTMLInputElement
-  memoryCost: HTMLInputElement
-  simd: HTMLInputElement
-  showTimer: HTMLInputElement
-  run: HTMLInputElement
-  result: HTMLSpanElement
-  timer: HTMLElement
-  timerValue: HTMLSpanElement
-  form: HTMLFormElement
+/** @override */
+const qs: Document['querySelector'] = document.querySelector.bind(document)
+
+// Document elements
+const els = {
+  password: qs<HTMLInputElement>('input#password')!,
+  salt: qs<HTMLInputElement>('input#salt')!,
+  timeCost: qs<HTMLInputElement>('input#t_cost')!,
+  memoryCost: qs<HTMLInputElement>('input#m_cost')!,
+  simd: qs<HTMLInputElement>('input#simd_enabled')!,
+  run: qs<HTMLInputElement>('input#submit')!,
+  result: qs<HTMLSpanElement>('span#result')!,
+  timer: qs<HTMLElement>('section#timer')!,
+  timerValue: qs<HTMLSpanElement>('span#timer_value')!,
+  form: qs<HTMLFormElement>('form#demoForm')!
 }
 
-const els: Elements = {
-  password: document.querySelector('input#password')!,
-  salt: document.querySelector('input#salt')!,
-  timeCost: document.querySelector('input#t_cost')!,
-  memoryCost: document.querySelector('input#m_cost')!,
-  simd: document.querySelector('input#simd_enabled')!,
-  showTimer: document.querySelector('input#timer_enabled')!,
-  run: document.querySelector('input#submit')!,
-  result: document.querySelector('span#result')!,
-  timer: document.querySelector('section#timer')!,
-  timerValue: document.querySelector('span#timer_value')!,
-  form: document.querySelector('form#demoForm')!
-}
-
-const simdCookie = 'useSimd'
-const timerCookie = 'displayTime'
-
-let simdEnabled: boolean = localStorage.getItem(simdCookie) === 'true'
-localStorage.setItem(simdCookie, simdEnabled.toString())
-
-// Set checkboxes from localstorage
-if (simdEnabled) {
-  els.simd.checked = true
-}
-if (localStorage.getItem(timerCookie) === 'true') {
-  els.timer.className = 'show'
-  els.showTimer.checked = true
-}
+// Store initial value of simdEnabled checkbox
+let simdEnabled = els.simd.checked
 
 // Now that the response listener is initialized, we can tell the worker to load the WebAssembly binary and check for errors
 ;(async function() {
@@ -65,21 +42,12 @@ document.onclose = () => {
   conn.terminate()
 }
 
-// Toggle the timer's visibility when the 'Display execution time' checkbox is clicked
-els.showTimer.addEventListener('click', () => {
-  els.timer.className = els.showTimer.checked ? 'show' : ''
-  localStorage.setItem(timerCookie, els.showTimer.checked.toString())
-})
-els.simd.addEventListener('click', () => {
-  localStorage.setItem(simdCookie, els.simd.checked.toString())
-})
-
-function writeResult(text) {
+function writeResult(text: string) {
   els.run.disabled = false
   els.result.textContent = text
 }
 
-function displayError(code) {
+function displayError(code: unknown) {
   let errorName = ''
   for (const name in Argon2.ErrorCodes) {
     if (Argon2.ErrorCodes[name] === code) {
@@ -116,7 +84,7 @@ els.form.onsubmit = async (evt) => {
   }
 
   // If a salt has been provided, decode and use that one
-  let salt
+  let salt: Uint8Array
   let encodedSalt = els.salt.value
   if (encodedSalt.length) {
     try {
