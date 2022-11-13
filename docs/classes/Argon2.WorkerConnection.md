@@ -4,7 +4,7 @@
 
 [Argon2](../modules/Argon2.md).WorkerConnection
 
-Wrap communication with a Web Worker in a promise based interface.
+Channel based interface for web worker communication
 
 ## Table of contents
 
@@ -19,9 +19,9 @@ Wrap communication with a Web Worker in a promise based interface.
 
 ### Methods
 
-- [deinit](Argon2.WorkerConnection.md#deinit)
 - [onMessage](Argon2.WorkerConnection.md#onmessage)
 - [postMessage](Argon2.WorkerConnection.md#postmessage)
+- [terminate](Argon2.WorkerConnection.md#terminate)
 
 ## Constructors
 
@@ -37,7 +37,7 @@ Wrap communication with a Web Worker in a promise based interface.
 
 #### Defined in
 
-[connection.ts:10](https://github.com/very-amused/argon2-wasm/blob/ca49ae2/src/connection.ts#L10)
+[connection.ts:10](https://github.com/very-amused/argon2-wasm/blob/3e8cc15/src/connection.ts#L10)
 
 ## Properties
 
@@ -61,7 +61,7 @@ Wrap communication with a Web Worker in a promise based interface.
 
 #### Defined in
 
-[connection.ts:8](https://github.com/very-amused/argon2-wasm/blob/ca49ae2/src/connection.ts#L8)
+[connection.ts:8](https://github.com/very-amused/argon2-wasm/blob/3e8cc15/src/connection.ts#L8)
 
 ___
 
@@ -71,23 +71,9 @@ ___
 
 #### Defined in
 
-[connection.ts:7](https://github.com/very-amused/argon2-wasm/blob/ca49ae2/src/connection.ts#L7)
+[connection.ts:7](https://github.com/very-amused/argon2-wasm/blob/3e8cc15/src/connection.ts#L7)
 
 ## Methods
-
-### deinit
-
-▸ **deinit**(): `void`
-
-#### Returns
-
-`void`
-
-#### Defined in
-
-[connection.ts:37](https://github.com/very-amused/argon2-wasm/blob/ca49ae2/src/connection.ts#L37)
-
-___
 
 ### onMessage
 
@@ -105,13 +91,15 @@ ___
 
 #### Defined in
 
-[connection.ts:19](https://github.com/very-amused/argon2-wasm/blob/ca49ae2/src/connection.ts#L19)
+[connection.ts:19](https://github.com/very-amused/argon2-wasm/blob/3e8cc15/src/connection.ts#L19)
 
 ___
 
 ### postMessage
 
 ▸ **postMessage**(`message`, `transfer?`): `Promise`<[`Response`](../interfaces/Argon2.Response.md)\>
+
+Post a message to the worker, and await its response
 
 #### Parameters
 
@@ -126,4 +114,20 @@ ___
 
 #### Defined in
 
-[connection.ts:29](https://github.com/very-amused/argon2-wasm/blob/ca49ae2/src/connection.ts#L29)
+[connection.ts:32](https://github.com/very-amused/argon2-wasm/blob/3e8cc15/src/connection.ts#L32)
+
+___
+
+### terminate
+
+▸ **terminate**(): `void`
+
+Terminate the worker, releasing associated resources
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[connection.ts:44](https://github.com/very-amused/argon2-wasm/blob/3e8cc15/src/connection.ts#L44)

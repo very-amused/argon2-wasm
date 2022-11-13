@@ -62,7 +62,7 @@ if (localStorage.getItem(timerCookie) === 'true') {
 
 // Unload this listener before the document unloads
 document.onclose = () => {
-  conn.deinit()
+  conn.terminate()
 }
 
 // Toggle the timer's visibility when the 'Display execution time' checkbox is clicked

@@ -1,6 +1,7 @@
 :root {
   font-family: 'Fira Sans', sans-serif;
   font-weight: 400;
+  font-size: 110%;
 }
 
 h1 {
@@ -9,13 +10,14 @@ h1 {
 }
 
 body {
-  background-color: #22222F;
+  background-color: #11111F;
   color: white;
 }
 input,select {
-  background-color: #39393F;
+  background-color: #22223F;
   color: white;
-  padding: 0.3em;
+  padding: 0.3em 0.6em;
+  line-height: 1.5;
 }
 
 main {
@@ -47,6 +49,16 @@ section#toggles {
   align-items: left;
   justify-content: center;
 }
+@media (max-width: 800px) {
+  div.toggle {
+    align-items: flex-start !important;
+  }
+  div.toggle>input[type="checkbox"] {
+    margin-top: 0.25rem;
+    margin-right: 0.5rem;
+    transform: scale(125%);
+  }
+}
 div.toggle {
   display: inline-flex;
   flex-direction: row;
@@ -70,6 +82,8 @@ form#demoForm input,select {
 
 input#submit {
   font-size: 125%;
+  border-radius: 3px;
+  border: none !important;
 }
 input#submit:hover {
   filter: contrast(115%);
