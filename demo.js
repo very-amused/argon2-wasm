@@ -1,30 +1,19 @@
 import {Argon2} from "./runtime/index.js";
 const conn = new Argon2.WorkerConnection(new Worker("./argon2/worker.js"));
+const qs = document.querySelector.bind(document);
 const els = {
-  password: document.querySelector("input#password"),
-  salt: document.querySelector("input#salt"),
-  timeCost: document.querySelector("input#t_cost"),
-  memoryCost: document.querySelector("input#m_cost"),
-  simd: document.querySelector("input#simd_enabled"),
-  showTimer: document.querySelector("input#timer_enabled"),
-  run: document.querySelector("input#submit"),
-  result: document.querySelector("span#result"),
-  timer: document.querySelector("section#timer"),
-  timerValue: document.querySelector("span#timer_value"),
-  form: document.querySelector("form#demoForm")
+  password: qs("input#password"),
+  salt: qs("input#salt"),
+  timeCost: qs("input#t_cost"),
+  memoryCost: qs("input#m_cost"),
+  simd: qs("input#simd_enabled"),
+  run: qs("input#submit"),
+  result: qs("span#result"),
+  timer: qs("section#timer"),
+  timerValue: qs("span#timer_value"),
+  form: qs("form#demoForm")
 };
-const simdCookie = "useSimd";
-const timerCookie = "displayTime";
-let simdEnabled = localStorage.getItem(simdCookie) === "true";
-localStorage.setItem(simdCookie, simdEnabled.toString());
-if (simdEnabled) {
-  els.simd.checked = true;
-}
-if (localStorage.getItem(timerCookie) === "true") {
-  els.timer.className = "show";
-  els.showTimer.checked = true;
-}
-;
+let simdEnabled = els.simd.checked;
 (async function() {
   const loadMessage = await conn.postMessage({
     method: Argon2.Methods.LoadArgon2,
@@ -40,13 +29,6 @@ if (localStorage.getItem(timerCookie) === "true") {
 document.onclose = () => {
   conn.terminate();
 };
-els.showTimer.addEventListener("click", () => {
-  els.timer.className = els.showTimer.checked ? "show" : "";
-  localStorage.setItem(timerCookie, els.showTimer.checked.toString());
-});
-els.simd.addEventListener("click", () => {
-  localStorage.setItem(simdCookie, els.simd.checked.toString());
-});
 function writeResult(text) {
   els.run.disabled = false;
   els.result.textContent = text;
