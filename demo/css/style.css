@@ -97,13 +97,6 @@ input#submit:disabled {
   cursor: not-allowed;
 }
 
-section#timer {
-  display: none;
-}
-section#timer.show {
-  display: block;
-}
-
 span#result, span#timer_value {
   display: inline-block;
   background-color: #39393F;
