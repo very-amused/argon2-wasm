@@ -21,7 +21,7 @@ Test for and use binaries with SIMD support, requires simd-test.wasm and argon2-
 
 #### Defined in
 
-[argon2.ts:61](https://github.com/very-amused/argon2-wasm/blob/b5d6815/src/argon2.ts#L61)
+[argon2.ts:61](https://github.com/very-amused/argon2-wasm/blob/bdc7c7a/src/argon2.ts#L61)
 
 ___
 
@@ -33,4 +33,4 @@ The root path of all WASM binaries (at least argon2.wasm, binaries needed for ad
 
 #### Defined in
 
-[argon2.ts:59](https://github.com/very-amused/argon2-wasm/blob/b5d6815/src/argon2.ts#L59)
+[argon2.ts:59](https://github.com/very-amused/argon2-wasm/blob/bdc7c7a/src/argon2.ts#L59)
