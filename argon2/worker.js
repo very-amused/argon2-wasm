@@ -18,7 +18,7 @@ class WorkerConnection {
         this.worker.postMessage(message, transfer);
         return p;
     }
-    deinit() {
+    terminate() {
         this.worker.removeEventListener('message', (evt) => {
             this.onMessage(evt);
         }, true);
@@ -32,6 +32,7 @@ var Argon2;
     (function (Methods) {
         Methods[Methods["LoadArgon2"] = 0] = "LoadArgon2";
         Methods[Methods["Hash2i"] = 1] = "Hash2i";
+        Methods[Methods["UnloadArgon2"] = 2] = "UnloadArgon2";
     })(Argon2.Methods || (Argon2.Methods = {}));
     (function (ErrorCodes) {
         ErrorCodes[ErrorCodes["ARGON2_OK"] = 0] = "ARGON2_OK";

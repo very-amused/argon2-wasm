@@ -38,7 +38,7 @@ if (localStorage.getItem(timerCookie) === "true") {
   }
 })();
 document.onclose = () => {
-  conn.deinit();
+  conn.terminate();
 };
 els.showTimer.addEventListener("click", () => {
   els.timer.className = els.showTimer.checked ? "show" : "";
