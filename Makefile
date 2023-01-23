@@ -19,6 +19,8 @@ BUILD_FLAGS=--no-entry \
 	-s MAXIMUM_MEMORY=$(MAXIMUM_MEMORY) \
 	-s MEMORY_GROWTH_GEOMETRIC_STEP=$(MEMORY_GROWTH_GEOMETRIC_STEP) \
 	-s MEMORY_GROWTH_GEOMETRIC_CAP=$(MEMORY_GROWTH_GEOMETRIC_CAP)
+# Use available # of threads
+BUILD_FLAGS_PTHREAD=-pthread -s PTHREAD_POOL_SIZE=navigator.hardwareConcurrency
 
 src=argon2/src/argon2.c argon2/src/core.c argon2/src/encoding.c argon2/src/blake2/blake2b.c
 src-ref=argon2/src/ref.c
@@ -37,24 +39,31 @@ $(shell if [ ! -d $(outdir) ]; then mkdir $(outdir); fi)
 argon2=$(outdir)/argon2.wasm
 argon2-simd=$(outdir)/argon2-simd.wasm
 argon2-pthread=$(outdir)/argon2-pthread.js
+argon2-simd-pthread=$(outdir)/argon2-simd-pthread.js
 feature-detect=$(outdir)/simd-test.wasm
 
-all: $(argon2) $(argon2-simd) $(argon2-pthread) $(feature-detect)
+all: $(argon2) $(argon2-simd) $(argon2-pthread) $(argon2-simd-pthread) $(feature-detect)
 
 $(argon2): $(objects) $(objects-ref)
 	emcc -o $(argon2) $(objects) $(objects-ref) $(CFLAGS) $(BUILD_FLAGS)
 
-$(argon2-pthread): $(objects-pthread) $(objects-ref-pthread)
-	emcc -o $(argon2-pthread) $(objects-pthread) $(objects-ref-pthread) $(CFLAGS) $(BUILD_FLAGS) -pthread -s PTHREAD_POOL_SIZE=navigator.hardwareConcurrency
-
 $(argon2-simd): $(objects) $(objects-simd)
 	emcc -o $(argon2-simd) $(objects) $(objects-simd) $(CFLAGS) $(BUILD_FLAGS)
+
+$(argon2-pthread): $(objects-pthread) $(objects-ref-pthread)
+	emcc -o $(argon2-pthread) $(objects-pthread) $(objects-ref-pthread) $(CFLAGS) $(BUILD_FLAGS) $(BUILD_FLAGS_PTHREAD)
+
+$(argon2-simd-pthread): $(objects-pthread) $(objects-simd-pthread)
+	emcc -o $(argon2-simd-pthread) $(objects-pthread) $(objects-simd-pthread) $(CFLAGS) $(BUILD_FLAGS) $(BUILD_FLAGS_PTHREAD)
 
 $(feature-detect): src/feature-tests/simd.wat
 	wat2wasm src/feature-tests/simd.wat -o $(feature-detect)
 
 $(objects-simd): $(src-simd)
 	emcc -c -o $@ $< $(CFLAGS) -msimd128 -msse2
+
+$(objects-simd-pthread): $(src-simd)
+	emcc -c -o $@ $< $(CFLAGS) -msimd128 -msse2 -pthread
 
 argon2/src/%.wasm.o: argon2/src/%.c
 	emcc -c -o $@ $< $(CFLAGS) -DARGON2_NO_THREADS
@@ -64,3 +73,4 @@ argon2/src/%.pthread.wasm.o: argon2/src/%.c
 
 clean:
 	rm -rf $(objects) $(objects-pthread) $(objects-ref) $(objects-simd) $(outdir)
+.PHONY: clean
