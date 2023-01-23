@@ -3,7 +3,7 @@
 # which have been very recently re-enabled for most mobile browsers (with the requirement of COOP and COEP security headers). 
 # The major remaining hurdle before this build will support multithreading is the release of iOS 16, which will move a majority of iOS users onto the latest version of Safari, which supports shared array buffers
 O=-O3
-CFLAGS=$(O) -Wall -I argon2/include
+CFLAGS=$(O) -Wall -Wno-pthreads-mem-growth -I argon2/include
 EXPORTED_FUNCTIONS=_malloc,_free,_argon2i_hash_raw
 
 # Maximum size the buffer can grow to
@@ -38,8 +38,8 @@ outdir=build
 $(shell if [ ! -d $(outdir) ]; then mkdir $(outdir); fi)
 argon2=$(outdir)/argon2.wasm
 argon2-simd=$(outdir)/argon2-simd.wasm
-argon2-pthread=$(outdir)/argon2-pthread.js
-argon2-simd-pthread=$(outdir)/argon2-simd-pthread.js
+argon2-pthread=$(outdir)/argon2-pthread.mjs
+argon2-simd-pthread=$(outdir)/argon2-simd-pthread.mjs
 feature-detect=$(outdir)/simd-test.wasm
 
 # Runtime vars
@@ -52,7 +52,7 @@ release: clean .WAIT all .WAIT docs demo
 .PHONY: release
 
 $(outdir):
-	mkdir $(outdir)
+	[ -d $(outdir) ] || mkdir $(outdir)
 
 $(argon2): $(objects) $(objects-ref)
 	emcc -o $(argon2) $(objects) $(objects-ref) $(CFLAGS) $(BUILD_FLAGS)
@@ -82,7 +82,7 @@ argon2/src/%.pthread.wasm.o: argon2/src/%.c
 	emcc -c -o $@ $< $(CFLAGS) -pthread
 
 runtime:
-	mkdir runtime
+	[ -d runtime ] || mkdir runtime
 	$(nodebin)/rollup -c
 	$(nodebin)/tsc -b tsconfig-d.json
 .PHONY: runtime
@@ -96,5 +96,5 @@ demo: runtime
 .PHONY: demo
 
 clean:
-	rm -rf $(objects) $(objects-pthread) $(objects-ref) $(objects-simd) $(outdir) runtime
+	rm -rf $(objects) $(objects-ref) $(objects-simd) $(objects-simd) $(objects-pthread) $(objects-ref-pthread) $(objects-simd-pthread) $(outdir) runtime
 .PHONY: clean
