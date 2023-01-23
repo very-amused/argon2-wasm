@@ -42,7 +42,17 @@ argon2-pthread=$(outdir)/argon2-pthread.js
 argon2-simd-pthread=$(outdir)/argon2-simd-pthread.js
 feature-detect=$(outdir)/simd-test.wasm
 
-all: $(argon2) $(argon2-simd) $(argon2-pthread) $(argon2-simd-pthread) $(feature-detect)
+# Runtime vars
+nodebin=node_modules/.bin
+
+all: $(outdir) .WAIT $(argon2) $(argon2-simd) $(argon2-pthread) $(argon2-simd-pthread) $(feature-detect) runtime
+.PHONY: all
+
+release: clean .WAIT all .WAIT docs demo
+.PHONY: release
+
+$(outdir):
+	mkdir $(outdir)
 
 $(argon2): $(objects) $(objects-ref)
 	emcc -o $(argon2) $(objects) $(objects-ref) $(CFLAGS) $(BUILD_FLAGS)
@@ -71,6 +81,20 @@ argon2/src/%.wasm.o: argon2/src/%.c
 argon2/src/%.pthread.wasm.o: argon2/src/%.c
 	emcc -c -o $@ $< $(CFLAGS) -pthread
 
+runtime:
+	mkdir runtime
+	$(nodebin)/rollup -c
+	$(nodebin)/tsc -b tsconfig-d.json
+.PHONY: runtime
+
+docs:
+	$(nodebin)/typedoc --plugin typedoc-plugin-markdown --readme docs_readme.md src/index.ts --out docs/
+.PHONY: docs
+
+demo: runtime
+	$(nodebin)/snowpack build
+.PHONY: demo
+
 clean:
-	rm -rf $(objects) $(objects-pthread) $(objects-ref) $(objects-simd) $(outdir)
+	rm -rf $(objects) $(objects-pthread) $(objects-ref) $(objects-simd) $(outdir) runtime
 .PHONY: clean

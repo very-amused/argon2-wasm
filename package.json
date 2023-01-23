@@ -8,14 +8,7 @@
   "author": "very-amused <very-amused@pm.me>",
   "license": "MIT",
   "scripts": {
-    "build": "make && rollup -c",
-    "postbuild": "yarn tsc -b tsconfig-d.json",
-    "clean": "make clean",
-    "demo": "snowpack dev",
-    "prebuild:demo": "yarn build",
-    "build:demo": "snowpack build",
-    "build:docs": "typedoc --plugin typedoc-plugin-markdown --readme docs_readme.md src/index.ts --out docs/",
-    "prepack": "yarn clean && yarn build && yarn build:docs"
+    "prepack": "make release"
   },
   "devDependencies": {
     "@rollup/plugin-terser": "^0.1.0",

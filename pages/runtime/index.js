@@ -1,3 +1,10 @@
+/**
+ * @license
+ * @very-amused/argon2-wasm v0.3.4
+ * MIT License
+ * Copyright (c) 2022 Keith Scroggs
+ */
+
 class WorkerConnection {
     constructor(worker) {
         this.worker = worker;

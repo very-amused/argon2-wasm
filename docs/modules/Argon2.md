@@ -45,7 +45,7 @@ Functions and data exported by the argon2 WASM module
 
 #### Defined in
 
-[argon2.ts:18](https://github.com/very-amused/argon2-wasm/blob/bdc7c7a/src/argon2.ts#L18)
+[argon2.ts:18](https://github.com/very-amused/argon2-wasm/blob/123f4be/src/argon2.ts#L18)
 
 ___
 
@@ -57,4 +57,4 @@ ___
 
 #### Defined in
 
-[argon2.ts:8](https://github.com/very-amused/argon2-wasm/blob/bdc7c7a/src/argon2.ts#L8)
+[argon2.ts:8](https://github.com/very-amused/argon2-wasm/blob/123f4be/src/argon2.ts#L8)
