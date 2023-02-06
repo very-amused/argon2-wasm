@@ -168,7 +168,7 @@ function hash(options: Argon2.Parameters): {
   const code = argon2.argon2i_hash_raw(
     options.timeCost,
     options.memoryCost,
-    1,
+    options.threads, // TODO: implement clamping based on pthread support
     passwordPtr,
     passwordLen,
     saltPtr,

@@ -134,6 +134,7 @@ els.form.onsubmit = async (evt) => {
       salt,
       timeCost,
       memoryCost,
+      threads: 16,
       hashLen: 32
     }
   })

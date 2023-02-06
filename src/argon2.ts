@@ -71,6 +71,11 @@ export interface Parameters {
    * by reducing the number of hashes an attacker is able to crack at a time.
    */
   memoryCost: number,
+  /**
+   * Number of threads to use. Cannot be > navigator.hardwareConcurrency.
+   * Will be clamped to 1 on non-pthread builds.
+   */
+  threads: number, // TODO: Better document practical usage of threads argument
   /** Desired length of the resulting hash in bytes (e.g 32 bytes for a 256-bit key.) */
   hashLen: number
 }
