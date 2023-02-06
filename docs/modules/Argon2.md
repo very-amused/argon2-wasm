@@ -23,6 +23,7 @@
 ### Type Aliases
 
 - [Exports](Argon2.md#exports)
+- [PThreadExports](Argon2.md#pthreadexports)
 - [Source](Argon2.md#source)
 
 ## Type Aliases
@@ -45,7 +46,30 @@ Functions and data exported by the argon2 WASM module
 
 #### Defined in
 
-[argon2.ts:18](https://github.com/very-amused/argon2-wasm/blob/123f4be/src/argon2.ts#L18)
+[argon2.ts:18](https://github.com/very-amused/argon2-wasm/blob/9da2389/src/argon2.ts#L18)
+
+___
+
+### PThreadExports
+
+Ƭ **PThreadExports**: `Object`
+
+@_internal
+Functions and data exported by emscripten's wrapper around the argon2 WASM module,
+provided when loading pthread binaries.
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `HEAPU8` | `Uint8Array` |
+| `_argon2i_hash_raw` | (`t_cost`: `number`, `m_cost`: `number`, `parallelism`: `number`, `pwd`: `number`, `pwdlen`: `number`, `salt`: `number`, `saltlen`: `number`, `hash`: `number`, `hashlen`: `number`) => `number` |
+| `_free` | (`ptr`: `number`) => `void` |
+| `_malloc` | (`size`: `number`) => `number` |
+
+#### Defined in
+
+[argon2.ts:41](https://github.com/very-amused/argon2-wasm/blob/9da2389/src/argon2.ts#L41)
 
 ___
 
@@ -57,4 +81,4 @@ ___
 
 #### Defined in
 
-[argon2.ts:8](https://github.com/very-amused/argon2-wasm/blob/123f4be/src/argon2.ts#L8)
+[argon2.ts:8](https://github.com/very-amused/argon2-wasm/blob/9da2389/src/argon2.ts#L8)

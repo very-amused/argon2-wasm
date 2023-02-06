@@ -28,7 +28,8 @@ let simdEnabled = els.simd.checked
     method: Argon2.Methods.LoadArgon2,
     params: {
       wasmRoot: '.',
-      simd: simdEnabled
+      simd: simdEnabled,
+      pthread: true
     }
   })
   
@@ -48,13 +49,8 @@ function writeResult(text: string) {
 }
 
 function displayError(code: unknown) {
+  // TODO: re-implement error code -> name mapping for display
   let errorName = ''
-  for (const name in Argon2.ErrorCodes) {
-    if (Argon2.ErrorCodes[name] === code) {
-      errorName = name
-      break
-    }
-  }
   writeResult(`Error: ${errorName} (code ${code})`)
 }
 
@@ -73,7 +69,8 @@ els.form.onsubmit = async (evt) => {
       method: Argon2.Methods.LoadArgon2,
       params: {
         wasmRoot: '.',
-        simd
+        simd,
+        pthread: false
       }
     })
     if (loadMessage.code !== 0) {
@@ -141,6 +138,7 @@ els.form.onsubmit = async (evt) => {
     }
   })
   let elapsed = performance.now() - start
+  console.log(result)
 
   if (result.code === 0) {
     const encodedHash = btoa(String.fromCharCode.apply(null, Array.from(result.body!)))

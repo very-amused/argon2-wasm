@@ -24,7 +24,7 @@ Desired length of the resulting hash in bytes (e.g 32 bytes for a 256-bit key.)
 
 #### Defined in
 
-[argon2.ts:54](https://github.com/very-amused/argon2-wasm/blob/123f4be/src/argon2.ts#L54)
+[argon2.ts:75](https://github.com/very-amused/argon2-wasm/blob/9da2389/src/argon2.ts#L75)
 
 ___
 
@@ -41,7 +41,7 @@ by reducing the number of hashes an attacker is able to crack at a time.
 
 #### Defined in
 
-[argon2.ts:52](https://github.com/very-amused/argon2-wasm/blob/123f4be/src/argon2.ts#L52)
+[argon2.ts:73](https://github.com/very-amused/argon2-wasm/blob/9da2389/src/argon2.ts#L73)
 
 ___
 
@@ -53,7 +53,7 @@ The password to be hashed. Must be normalized beforehand to NFC or NFD. NFK(C/D)
 
 #### Defined in
 
-[argon2.ts:39](https://github.com/very-amused/argon2-wasm/blob/123f4be/src/argon2.ts#L39)
+[argon2.ts:60](https://github.com/very-amused/argon2-wasm/blob/9da2389/src/argon2.ts#L60)
 
 ___
 
@@ -65,7 +65,7 @@ A cryptographically random salt.
 
 #### Defined in
 
-[argon2.ts:41](https://github.com/very-amused/argon2-wasm/blob/123f4be/src/argon2.ts#L41)
+[argon2.ts:62](https://github.com/very-amused/argon2-wasm/blob/9da2389/src/argon2.ts#L62)
 
 ___
 
@@ -77,4 +77,4 @@ Linear time cost to use, leave at 1 if unsure.
 
 #### Defined in
 
-[argon2.ts:43](https://github.com/very-amused/argon2-wasm/blob/123f4be/src/argon2.ts#L43)
+[argon2.ts:64](https://github.com/very-amused/argon2-wasm/blob/9da2389/src/argon2.ts#L64)

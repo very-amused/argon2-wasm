@@ -6,7 +6,9 @@ O=-O3
 CFLAGS=$(O) -Wall -Wno-pthreads-mem-growth -I argon2/include
 EXPORTED_FUNCTIONS=_malloc,_free,_argon2i_hash_raw
 
-# Maximum size the buffer can grow to
+# Initial memory buffer size, must be matched with created JS buffer
+INITIAL_MEMORY=$(shell echo $$((64 * 1024 * 1024)))
+# Maximum size the buffer can grow to, must be matched with created JS buffer
 MAXIMUM_MEMORY=$(shell echo $$((4 * 1024 * 1024 * 1024)))
 # Geometric ratio used for memory growth
 MEMORY_GROWTH_GEOMETRIC_STEP=1
@@ -16,11 +18,15 @@ MEMORY_GROWTH_GEOMETRIC_CAP=$(shell echo $$((1024 * 1024 * 1024)))
 BUILD_FLAGS=--no-entry \
 	-s EXPORTED_FUNCTIONS=$(EXPORTED_FUNCTIONS) \
 	-s ALLOW_MEMORY_GROWTH=1 \
+	-s INITIAL_MEMORY=$(INITIAL_MEMORY) \
 	-s MAXIMUM_MEMORY=$(MAXIMUM_MEMORY) \
 	-s MEMORY_GROWTH_GEOMETRIC_STEP=$(MEMORY_GROWTH_GEOMETRIC_STEP) \
 	-s MEMORY_GROWTH_GEOMETRIC_CAP=$(MEMORY_GROWTH_GEOMETRIC_CAP)
 # Use available # of threads
-BUILD_FLAGS_PTHREAD=-pthread -s PTHREAD_POOL_SIZE=navigator.hardwareConcurrency
+BUILD_FLAGS_PTHREAD=-pthread \
+	-s PTHREAD_POOL_SIZE=navigator.hardwareConcurrency \
+	-s MODULARIZE \
+	-s EXPORT_NAME=LoadArgon2Wasm
 
 src=argon2/src/argon2.c argon2/src/core.c argon2/src/encoding.c argon2/src/blake2/blake2b.c
 src-ref=argon2/src/ref.c
@@ -38,8 +44,8 @@ outdir=build
 $(shell if [ ! -d $(outdir) ]; then mkdir $(outdir); fi)
 argon2=$(outdir)/argon2.wasm
 argon2-simd=$(outdir)/argon2-simd.wasm
-argon2-pthread=$(outdir)/argon2-pthread.mjs
-argon2-simd-pthread=$(outdir)/argon2-simd-pthread.mjs
+argon2-pthread=$(outdir)/argon2-pthread.js
+argon2-simd-pthread=$(outdir)/argon2-simd-pthread.js
 feature-detect=$(outdir)/simd-test.wasm
 
 # Runtime vars
@@ -91,9 +97,20 @@ docs:
 	$(nodebin)/typedoc --plugin typedoc-plugin-markdown --readme docs_readme.md src/index.ts --out docs/
 .PHONY: docs
 
-demo: runtime
-	$(nodebin)/snowpack build
+demo-runtime: all
+	mkdir -p demo/public/argon2
+	cp -r build/* demo/public/argon2/
+	mkdir -p demo/public/runtime
+	cp -r runtime demo/public/runtime/
+.PHONY: demo-runtime
+
+demo: demo-runtime
+	$(nodebin)/vite build
 .PHONY: demo
+
+run-demo: demo-runtime
+	$(nodebin)/vite serve
+.PHONY: run-demo
 
 clean:
 	rm -rf $(objects) $(objects-ref) $(objects-simd) $(objects-simd) $(objects-pthread) $(objects-ref-pthread) $(objects-simd-pthread) $(outdir) runtime

@@ -7,6 +7,21 @@ import { Argon2 } from './argon2'
 
 let argon2: Argon2.Exports
 
+const wasmPageSize = 64 * 1024
+// These values MUST match the ones in Makefile to avoid introducing undefined behavior
+// TODO: single source of truth for wasm memory params
+const wasmInitialMemory = (64 * 1024 * 1024) / wasmPageSize
+const wasmMaximumMemory = (4 * 1024 * 1024 * 1024) / wasmPageSize
+
+/**
+ * @internal
+ * Used to load argon2 pthread builds, implemented after argon2(-simd)-pthread.js is executed with importScripts
+ */
+declare function LoadArgon2Wasm(opts: {
+  mainScriptUrlOrBlob: string,
+  wasmMemory: WebAssembly.Memory
+}): Promise<Argon2.PThreadExports>
+
 /**
  * @internal
  * Get a detailed message from an error, sent in the message field when code === ARGON2WASM_UNKNOWN
@@ -26,6 +41,7 @@ function getErrorMessage(err: unknown): string {
  * Parse an error object to post to the main thread
  */
 function postError(err: unknown): void {
+  console.error(err)
   // Compare to min/max error codes to check if err is a valid code
   // TODO: generate min/max err code values at compile time
   if (typeof err === 'number'
@@ -79,7 +95,7 @@ async function simdSupported(wasmRoot = '.'): Promise<boolean> {
  * @internal
  */
 function pthreadSupported(): boolean {
-  return crossOriginIsolated || SharedArrayBuffer !== undefined
+  return typeof SharedArrayBuffer !== 'undefined' 
 }
 
 async function loadArgon2(wasmRoot = '.', simd = false, pthread = false): Promise<Argon2.Exports> {
@@ -87,13 +103,28 @@ async function loadArgon2(wasmRoot = '.', simd = false, pthread = false): Promis
     throw Argon2.ErrorCodes.ARGON2WASM_UNSUPPORTED_BROWSER
   }
 
-
   // Validate simd/pthread support, &&= op ensures validation will only be run if params are true
   simd &&= await simdSupported(wasmRoot)
   pthread &&= pthreadSupported()
   if (pthread) {
-    const file = `argon2${simd ? '-simd' : ''}-pthread.mjs`
-    return import(`${wasmRoot}/${file}`)
+    const file = `argon2${simd ? '-simd' : ''}-pthread.js`
+    const url = `${wasmRoot}/${file}`
+    importScripts(url)
+    const wasmMemory = new WebAssembly.Memory({
+      initial: wasmInitialMemory,
+      maximum: wasmMaximumMemory,
+      shared: true
+    })
+    const exports: Argon2.PThreadExports = await LoadArgon2Wasm({
+      mainScriptUrlOrBlob: url,
+      wasmMemory
+    })
+    return {
+      malloc: exports._malloc,
+      free: exports._free,
+      argon2i_hash_raw: exports._argon2i_hash_raw,
+      memory: wasmMemory
+    }
   } else {
     const file = `argon2${simd ? '-simd' : ''}.wasm`
     // Imports passed to the WebAssembly instance
@@ -104,11 +135,8 @@ async function loadArgon2(wasmRoot = '.', simd = false, pthread = false): Promis
         }
       }
     }
-    const source = await WebAssembly.instantiateStreaming(fetch(`${wasmRoot}/${file}`), opts) as Argon2.Source<false>
-    return {
-      ...source.instance.exports,
-      HEAPU8: new Uint8Array(source.instance.exports.memory.buffer)
-    }
+    const source = await WebAssembly.instantiateStreaming(fetch(`${wasmRoot}/${file}`), opts) as Argon2.Source
+    return source.instance.exports
   }
 }
 
@@ -119,7 +147,7 @@ function hash(options: Argon2.Parameters): {
   // Copy the salt into the argon2 buffer
   const saltLen = options.salt.byteLength
   const saltPtr = argon2.malloc(saltLen)
-  let saltView = new Uint8Array(argon2.HEAPU8, saltPtr, saltLen)
+  let saltView = new Uint8Array(argon2.memory.buffer, saltPtr, saltLen)
   memCopy(saltView, options.salt)
 
   // Encode the password as bytes
@@ -127,7 +155,7 @@ function hash(options: Argon2.Parameters): {
   // Copy the encoded password into the argon2 buffer
   const passwordLen = encoded.byteLength
   const passwordPtr = argon2.malloc(passwordLen)
-  let passwordView = new Uint8Array(argon2.HEAPU8, passwordPtr, passwordLen)
+  let passwordView = new Uint8Array(argon2.memory.buffer, passwordPtr, passwordLen)
   memCopy(passwordView, encoded)
   // Zero the encoded password in js memory
   zeroBytes(encoded)
@@ -151,10 +179,10 @@ function hash(options: Argon2.Parameters): {
 
   /* Zero and free the password and salt from memory
   (views have to be re-initialized because the wasm buffer growing destroys existing views) */
-  passwordView = new Uint8Array(argon2.HEAPU8, passwordPtr, passwordLen)
+  passwordView = new Uint8Array(argon2.memory.buffer, passwordPtr, passwordLen)
   zeroBytes(passwordView)
   argon2.free(passwordPtr)
-  saltView = new Uint8Array(argon2.HEAPU8, saltPtr, saltLen)
+  saltView = new Uint8Array(argon2.memory.buffer, saltPtr, saltLen)
   zeroBytes(saltView)
   argon2.free(saltPtr)
   // Zero the value-passed copy of the salt from parameters
@@ -162,7 +190,7 @@ function hash(options: Argon2.Parameters): {
 
   // Copy the hash into JS memory to be transferred to the main thread
   const hash = new Uint8Array(hashLen)
-  const hashView = new Uint8Array(argon2.HEAPU8, hashPtr, hashLen)
+  const hashView = new Uint8Array(argon2.memory.buffer, hashPtr, hashLen)
   memCopy(hash, hashView)
   // Zero and free the hash from the argon2 buffer
   zeroBytes(hashView)
@@ -191,7 +219,7 @@ onmessage = async function(evt: MessageEvent): Promise<void> {
     case Argon2.Methods.LoadArgon2:
       try {
         const params = req.params as Argon2.LoadParameters
-        argon2 = await loadArgon2(params.wasmRoot, params.simd)
+        argon2 = await loadArgon2(params.wasmRoot, params.simd, params.pthread)
       } catch (err) {
         postError(err)
         return

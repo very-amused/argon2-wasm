@@ -8,10 +8,23 @@
 
 ### Properties
 
+- [pthread](Argon2.LoadParameters.md#pthread)
 - [simd](Argon2.LoadParameters.md#simd)
 - [wasmRoot](Argon2.LoadParameters.md#wasmroot)
 
 ## Properties
+
+### pthread
+
+• **pthread**: `boolean`
+
+Test for and use binaries with pthread support. pthread and simd support are not mutually exclusive
+
+#### Defined in
+
+[argon2.ts:84](https://github.com/very-amused/argon2-wasm/blob/9da2389/src/argon2.ts#L84)
+
+___
 
 ### simd
 
@@ -21,7 +34,7 @@ Test for and use binaries with SIMD support, requires simd-test.wasm and argon2-
 
 #### Defined in
 
-[argon2.ts:61](https://github.com/very-amused/argon2-wasm/blob/123f4be/src/argon2.ts#L61)
+[argon2.ts:82](https://github.com/very-amused/argon2-wasm/blob/9da2389/src/argon2.ts#L82)
 
 ___
 
@@ -33,4 +46,4 @@ The root path of all WASM binaries (at least argon2.wasm, binaries needed for ad
 
 #### Defined in
 
-[argon2.ts:59](https://github.com/very-amused/argon2-wasm/blob/123f4be/src/argon2.ts#L59)
+[argon2.ts:80](https://github.com/very-amused/argon2-wasm/blob/9da2389/src/argon2.ts#L80)

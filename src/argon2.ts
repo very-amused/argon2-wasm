@@ -5,11 +5,9 @@ export namespace Argon2 {
 /**
  * @_internal
  */
-export type Source<T = true> = WebAssembly.WebAssemblyInstantiatedSource & {
+export type Source = WebAssembly.WebAssemblyInstantiatedSource & {
   instance: WebAssembly.WebAssemblyInstantiatedSource['instance'] & {
-    exports: T extends true
-      ? Exports
-      : Omit<Exports, 'HEAPU8'> & { memory: WebAssembly.Memory }
+    exports: Exports
   }
 }
 
@@ -31,9 +29,31 @@ export type Exports = {
     hash: number,
     hashlen: number
   ): number
-  HEAPU8: Uint8Array
+  memory: WebAssembly.Memory
 } 
 export import WorkerConnection = connection.WorkerConnection
+
+/**
+ * @_internal
+ * Functions and data exported by emscripten's wrapper around the argon2 WASM module,
+ * provided when loading pthread binaries.
+ */
+export type PThreadExports = {
+  _malloc(size: number): number
+  _free(ptr: number): void
+  _argon2i_hash_raw(
+    t_cost: number,
+    m_cost: number,
+    parallelism: number,
+    pwd: number,
+    pwdlen: number,
+    salt: number,
+    saltlen: number,
+    hash: number,
+    hashlen: number
+  ): number
+  HEAPU8: Uint8Array
+}
 
 export interface Parameters {
   /** The password to be hashed. Must be normalized beforehand to NFC or NFD. NFK(C/D) normalization is not stable for UTF-8 passwords across different browsers, and should not be used. */
