@@ -5,9 +5,11 @@ export namespace Argon2 {
 /**
  * @_internal
  */
-export type Source = WebAssembly.WebAssemblyInstantiatedSource & {
+export type Source<T = true> = WebAssembly.WebAssemblyInstantiatedSource & {
   instance: WebAssembly.WebAssemblyInstantiatedSource['instance'] & {
-    exports: Exports
+    exports: T extends true
+      ? Exports
+      : Omit<Exports, 'HEAPU8'> & { memory: WebAssembly.Memory }
   }
 }
 
@@ -29,9 +31,8 @@ export type Exports = {
     hash: number,
     hashlen: number
   ): number
-  memory: WebAssembly.Memory
-}
-
+  HEAPU8: Uint8Array
+} 
 export import WorkerConnection = connection.WorkerConnection
 
 export interface Parameters {
@@ -58,7 +59,9 @@ export interface LoadParameters {
   /** The root path of all WASM binaries (at least argon2.wasm, binaries needed for additional features are described below). */
   wasmRoot: string,
   /** Test for and use binaries with SIMD support, requires simd-test.wasm and argon2-simd.wasm to be under wasmRoot. */
-  simd: boolean
+  simd: boolean,
+  /** Test for and use binaries with pthread support. pthread and simd support are not mutually exclusive */
+  pthread: boolean
 }
 
 export enum Methods {
@@ -97,7 +100,7 @@ export interface Response {
  * Non-standard codes are prefixed with `ARGON2WASM_` instead of `ARGON2_`, and begin enumeration at 1, increasing positively.
  * This ensures that neither the name nor value of any non-standard code defined here will conflict in the future with argon2 upstream.
  */
-export enum ErrorCodes {
+export const enum ErrorCodes {
   ARGON2_OK = 0,
 
   ARGON2_OUTPUT_PTR_NULL = -1,
