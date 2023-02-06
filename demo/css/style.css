@@ -9,21 +9,28 @@ h1 {
   font-weight: 600;
 }
 
+html {
+  height: 100%;
+}
 body {
-  background-color: #11111F;
+  background-color: hsl(240, 25%, 13%);
   color: white;
+  min-height: 100%;
+  font-size: 1.1em;
 }
 input,select {
-  background-color: #22223F;
+  background-color: hsl(240, 30%, 23%);
   color: white;
   padding: 0.3em 0.6em;
+  font-size: 0.8em;
   line-height: 1.5;
 }
 
 main {
   margin: 0.5rem 15%;
+  margin-top: 0;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 849px) {
   main {
     margin: 0.5rem 5%;
   }
@@ -64,6 +71,7 @@ div.toggle {
   flex-direction: row;
   align-items: center;
   justify-content: left;
+  font-size: 1rem;
 }
 div.toggle *:first-child {
   margin-left: 0;
@@ -71,8 +79,9 @@ div.toggle *:first-child {
 div.toggle > *:last-child {
   margin-right: 0;
 }
-div.toggle:not(:last-child) {
-  margin-right: 3rem;
+div.toggle > input[type="checkbox"] {
+  margin-right: 1rem;
+  transform: scale(120%);
 }
 
 form#demoForm input,select {
@@ -81,8 +90,9 @@ form#demoForm input,select {
 }
 
 input#submit {
-  font-size: 125%;
-  border-radius: 3px;
+  font-size: 1.2em;
+  border-radius: 5px;
+  background-color: rgb(0, 119, 255);
   border: none !important;
 }
 input#submit:hover {

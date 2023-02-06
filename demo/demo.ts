@@ -12,6 +12,7 @@ const els = {
   timeCost: qs<HTMLInputElement>('input#t_cost')!,
   memoryCost: qs<HTMLInputElement>('input#m_cost')!,
   simd: qs<HTMLInputElement>('input#simd_enabled')!,
+  pthread: qs<HTMLInputElement>('input#pthread_enabled')!,
   run: qs<HTMLInputElement>('input#submit')!,
   result: qs<HTMLSpanElement>('span#result')!,
   timer: qs<HTMLElement>('section#timer')!,
@@ -19,8 +20,9 @@ const els = {
   form: qs<HTMLFormElement>('form#demoForm')!
 }
 
-// Store initial value of simdEnabled checkbox
+// Store initial checkbox values
 let simdEnabled = els.simd.checked
+let pthreadEnabled = els.pthread.checked
 
 // Now that the response listener is initialized, we can tell the worker to load the WebAssembly binary and check for errors
 ;(async function() {
@@ -29,7 +31,7 @@ let simdEnabled = els.simd.checked
     params: {
       wasmRoot: '.',
       simd: simdEnabled,
-      pthread: true
+      pthread: pthreadEnabled
     }
   })
   
@@ -49,8 +51,13 @@ function writeResult(text: string) {
 }
 
 function displayError(code: unknown) {
-  // TODO: re-implement error code -> name mapping for display
   let errorName = ''
+  for (const name in Argon2.ErrorCodes) {
+    if (Argon2.ErrorCodes[name] === code) {
+      errorName = name
+      break
+    }
+  }
   writeResult(`Error: ${errorName} (code ${code})`)
 }
 
@@ -62,15 +69,16 @@ els.form.onsubmit = async (evt) => {
   // Clear any previous resuls and show the flashing cursor
   els.result.textContent = ''
 
-  // Reload argon2 if SIMD toggle has changed
+  // Reload argon2 if toggles have changed
   const simd = els.simd.checked
-  if (simd !== simdEnabled) {
+  const pthread = els.pthread.checked
+  if (simd !== simdEnabled || pthread !== pthreadEnabled) {
     const loadMessage = await conn.postMessage({
       method: Argon2.Methods.LoadArgon2,
       params: {
         wasmRoot: '.',
         simd,
-        pthread: false
+        pthread: pthread
       }
     })
     if (loadMessage.code !== 0) {
@@ -78,6 +86,7 @@ els.form.onsubmit = async (evt) => {
       return
     }
     simdEnabled = simd
+    pthreadEnabled = pthread
   }
 
   // If a salt has been provided, decode and use that one
@@ -134,12 +143,11 @@ els.form.onsubmit = async (evt) => {
       salt,
       timeCost,
       memoryCost,
-      threads: 16,
+      threads: pthread ? navigator.hardwareConcurrency : 1,
       hashLen: 32
     }
   })
   let elapsed = performance.now() - start
-  console.log(result)
 
   if (result.code === 0) {
     const encodedHash = btoa(String.fromCharCode.apply(null, Array.from(result.body!)))
@@ -153,7 +161,7 @@ els.form.onsubmit = async (evt) => {
   elapsed %= 60000
   const seconds = Math.floor(elapsed / 1000).toString()
   elapsed %= 1000
-  const ms = elapsed.toString()
+  const ms = elapsed.toFixed(2)
 
   els.timerValue.textContent = `${minutes}m ${seconds}s ${ms}ms`
 }

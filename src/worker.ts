@@ -43,10 +43,7 @@ function getErrorMessage(err: unknown): string {
 function postError(err: unknown): void {
   console.error(err)
   // Compare to min/max error codes to check if err is a valid code
-  // TODO: generate min/max err code values at compile time
-  if (typeof err === 'number'
-    && err >= Argon2.ErrorCodes.ARGON2_VERIFY_MISMATCH
-    && err <= Argon2.ErrorCodes.ARGON2WASM_UNSUPPORTED_BROWSER) {
+  if (typeof err === 'number' && err in Argon2.ErrorCodes) {
     postMessage({
       code: err
     })

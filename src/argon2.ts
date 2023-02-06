@@ -125,7 +125,7 @@ export interface Response {
  * Non-standard codes are prefixed with `ARGON2WASM_` instead of `ARGON2_`, and begin enumeration at 1, increasing positively.
  * This ensures that neither the name nor value of any non-standard code defined here will conflict in the future with argon2 upstream.
  */
-export const enum ErrorCodes {
+export enum ErrorCodes {
   ARGON2_OK = 0,
 
   ARGON2_OUTPUT_PTR_NULL = -1,
