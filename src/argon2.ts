@@ -72,8 +72,12 @@ export interface Parameters {
    */
   memoryCost: number,
   /**
-   * Number of threads to use. Cannot be > navigator.hardwareConcurrency.
-   * Will be clamped to 1 on non-pthread builds.
+   * Number of threads to use. Cannot be greater than navigator.hardwareConcurrency.
+   * Clamped to 1 on non-pthread builds.
+   * 
+   * **WARNING: CPU differences across multiple devices can lead to devastating slowdowns when multithreading is used.**
+   * 
+   * *In the context of user-facing applications, multithreading should only be used for advanced users who explicitly enable it.*
    */
   threads: number, // TODO: Better document practical usage of threads argument
   /** Desired length of the resulting hash in bytes (e.g 32 bytes for a 256-bit key.) */
