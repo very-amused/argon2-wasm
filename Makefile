@@ -6,10 +6,11 @@ O=-O3
 CFLAGS=$(O) -Wall -Wno-pthreads-mem-growth -I argon2/include
 EXPORTED_FUNCTIONS=_malloc,_free,_argon2i_hash_raw
 
-# Initial memory buffer size, must be matched with created JS buffer
-INITIAL_MEMORY=$(shell echo $$((64 * 1024 * 1024)))
+# Initial memory buffer size, matched with created JS buffer
+unjsonc=sed -e '/^\s*\/\//d'
+INITIAL_MEMORY=$(shell cat src/memory-params.jsonc | $(unjsonc) | jq .initialMemory)
 # Maximum size the buffer can grow to, must be matched with created JS buffer
-MAXIMUM_MEMORY=$(shell echo $$((4 * 1024 * 1024 * 1024)))
+MAXIMUM_MEMORY=$(shell cat src/memory-params.jsonc | $(unjsonc) | jq .maximumMemory)
 # Geometric ratio used for memory growth
 MEMORY_GROWTH_GEOMETRIC_STEP=1
 # Maximum size of a single memory growth operation

@@ -11,6 +11,7 @@
     "prepack": "make release"
   },
   "devDependencies": {
+    "@rollup/plugin-replace": "^5.0.2",
     "@rollup/plugin-terser": "^0.1.0",
     "@rollup/plugin-typescript": "^9.0.2",
     "@snowpack/plugin-typescript": "^1.2.1",

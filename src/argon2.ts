@@ -79,7 +79,7 @@ export interface Parameters {
    * 
    * *In the context of user-facing applications, multithreading should only be used for advanced users who explicitly enable it.*
    */
-  threads: number, // TODO: Better document practical usage of threads argument
+  threads: number,
   /** Desired length of the resulting hash in bytes (e.g 32 bytes for a 256-bit key.) */
   hashLen: number
 }

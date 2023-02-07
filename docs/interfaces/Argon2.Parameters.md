@@ -12,6 +12,7 @@
 - [memoryCost](Argon2.Parameters.md#memorycost)
 - [password](Argon2.Parameters.md#password)
 - [salt](Argon2.Parameters.md#salt)
+- [threads](Argon2.Parameters.md#threads)
 - [timeCost](Argon2.Parameters.md#timecost)
 
 ## Properties
@@ -24,7 +25,7 @@ Desired length of the resulting hash in bytes (e.g 32 bytes for a 256-bit key.)
 
 #### Defined in
 
-[argon2.ts:75](https://github.com/very-amused/argon2-wasm/blob/9da2389/src/argon2.ts#L75)
+[argon2.ts:84](https://github.com/very-amused/argon2-wasm/blob/2134600/src/argon2.ts#L84)
 
 ___
 
@@ -41,7 +42,7 @@ by reducing the number of hashes an attacker is able to crack at a time.
 
 #### Defined in
 
-[argon2.ts:73](https://github.com/very-amused/argon2-wasm/blob/9da2389/src/argon2.ts#L73)
+[argon2.ts:73](https://github.com/very-amused/argon2-wasm/blob/2134600/src/argon2.ts#L73)
 
 ___
 
@@ -53,7 +54,7 @@ The password to be hashed. Must be normalized beforehand to NFC or NFD. NFK(C/D)
 
 #### Defined in
 
-[argon2.ts:60](https://github.com/very-amused/argon2-wasm/blob/9da2389/src/argon2.ts#L60)
+[argon2.ts:60](https://github.com/very-amused/argon2-wasm/blob/2134600/src/argon2.ts#L60)
 
 ___
 
@@ -65,7 +66,24 @@ A cryptographically random salt.
 
 #### Defined in
 
-[argon2.ts:62](https://github.com/very-amused/argon2-wasm/blob/9da2389/src/argon2.ts#L62)
+[argon2.ts:62](https://github.com/very-amused/argon2-wasm/blob/2134600/src/argon2.ts#L62)
+
+___
+
+### threads
+
+• **threads**: `number`
+
+Number of threads to use. Cannot be greater than navigator.hardwareConcurrency.
+Clamped to 1 on non-pthread builds.
+
+**WARNING: CPU differences across multiple devices can lead to devastating slowdowns when multithreading is used.**
+
+*In the context of user-facing applications, multithreading should only be used for advanced users who explicitly enable it.*
+
+#### Defined in
+
+[argon2.ts:82](https://github.com/very-amused/argon2-wasm/blob/2134600/src/argon2.ts#L82)
 
 ___
 
@@ -77,4 +95,4 @@ Linear time cost to use, leave at 1 if unsure.
 
 #### Defined in
 
-[argon2.ts:64](https://github.com/very-amused/argon2-wasm/blob/9da2389/src/argon2.ts#L64)
+[argon2.ts:64](https://github.com/very-amused/argon2-wasm/blob/2134600/src/argon2.ts#L64)

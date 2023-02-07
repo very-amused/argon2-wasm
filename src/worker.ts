@@ -7,11 +7,11 @@ import { Argon2 } from './argon2'
 
 let argon2: Argon2.Exports
 
-const wasmPageSize = 64 * 1024
-// These values MUST match the ones in Makefile to avoid introducing undefined behavior
-// TODO: single source of truth for wasm memory params
-const wasmInitialMemory = (64 * 1024 * 1024) / wasmPageSize
-const wasmMaximumMemory = (4 * 1024 * 1024 * 1024) / wasmPageSize
+// Memory params provided *in # of pages* at compile time, calculated from memory-params.jsonc
+/** @internal */
+declare const __INITIAL_MEMORY__: number
+/** @internal */
+declare const __MAXIMUM_MEMORY__: number
 
 /**
  * @internal
@@ -41,7 +41,6 @@ function getErrorMessage(err: unknown): string {
  * Parse an error object to post to the main thread
  */
 function postError(err: unknown): void {
-  console.error(err)
   // Compare to min/max error codes to check if err is a valid code
   if (typeof err === 'number' && err in Argon2.ErrorCodes) {
     postMessage({
@@ -108,8 +107,8 @@ async function loadArgon2(wasmRoot = '.', simd = false, pthread = false): Promis
     const url = `${wasmRoot}/${file}`
     importScripts(url)
     const wasmMemory = new WebAssembly.Memory({
-      initial: wasmInitialMemory,
-      maximum: wasmMaximumMemory,
+      initial: __INITIAL_MEMORY__,
+      maximum: __MAXIMUM_MEMORY__,
       shared: true
     })
     const exports: Argon2.PThreadExports = await LoadArgon2Wasm({

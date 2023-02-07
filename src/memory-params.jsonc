@@ -1,0 +1,6 @@
+{
+  // 64MiB
+  "initialMemory": 67108864,
+  // 4GiB
+  "maximumMemory": 4294967296
+}

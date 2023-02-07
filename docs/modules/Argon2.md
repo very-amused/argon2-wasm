@@ -46,7 +46,7 @@ Functions and data exported by the argon2 WASM module
 
 #### Defined in
 
-[argon2.ts:18](https://github.com/very-amused/argon2-wasm/blob/9da2389/src/argon2.ts#L18)
+[argon2.ts:18](https://github.com/very-amused/argon2-wasm/blob/2134600/src/argon2.ts#L18)
 
 ___
 
@@ -69,7 +69,7 @@ provided when loading pthread binaries.
 
 #### Defined in
 
-[argon2.ts:41](https://github.com/very-amused/argon2-wasm/blob/9da2389/src/argon2.ts#L41)
+[argon2.ts:41](https://github.com/very-amused/argon2-wasm/blob/2134600/src/argon2.ts#L41)
 
 ___
 
@@ -81,4 +81,4 @@ ___
 
 #### Defined in
 
-[argon2.ts:8](https://github.com/very-amused/argon2-wasm/blob/9da2389/src/argon2.ts#L8)
+[argon2.ts:8](https://github.com/very-amused/argon2-wasm/blob/2134600/src/argon2.ts#L8)

@@ -1,13 +1,27 @@
 import typescript from '@rollup/plugin-typescript'
 import terser from '@rollup/plugin-terser'
+import replace from '@rollup/plugin-replace'
 import pkg from './package.json' assert { type: 'json' }
+import { readFileSync } from 'fs'
+
+/**
+ * @typedef MemoryParams
+ * @property {number} initialMemory
+ * @property {number} maximumMemory
+ */
+/** @type {MemoryParams} */
+const memoryParams = JSON.parse(readFileSync('src/memory-params.jsonc')
+  .toString().replace(/\/\/.*$/gm, '')) // Remove comments for parsing as valid JSON
 
 const banner = `/**
  * @license
  * @very-amused/argon2-wasm v${pkg.version}
  * MIT License
- * Copyright (c) 2022 Keith Scroggs
+ * Copyright (c) 2023 Keith Scroggs
  */\n`
+
+// Webassembly pages are 64KiB
+const wasmPageSize = 64 * 1024
 
 export default [
   {
@@ -26,6 +40,11 @@ export default [
       }
     ],
     plugins: [
+      replace({
+        preventAssignment: true,
+        __INITIAL_MEMORY__: memoryParams.initialMemory / wasmPageSize,
+        __MAXIMUM_MEMORY__: memoryParams.maximumMemory / wasmPageSize
+      }),
       typescript()
     ]
   },
