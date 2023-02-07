@@ -119,7 +119,8 @@ async function loadArgon2(wasmRoot = '.', simd = false, pthread = false): Promis
       malloc: exports._malloc,
       free: exports._free,
       argon2i_hash_raw: exports._argon2i_hash_raw,
-      memory: wasmMemory
+      memory: wasmMemory,
+      pthread
     }
   } else {
     const file = `argon2${simd ? '-simd' : ''}.wasm`
@@ -131,8 +132,11 @@ async function loadArgon2(wasmRoot = '.', simd = false, pthread = false): Promis
         }
       }
     }
-    const source = await WebAssembly.instantiateStreaming(fetch(`${wasmRoot}/${file}`), opts) as Argon2.Source
-    return source.instance.exports
+    const source = await WebAssembly.instantiateStreaming(fetch(`${wasmRoot}/${file}`), opts)
+    return {
+      ...source.instance.exports,
+      pthread
+    } as Argon2.Exports
   }
 }
 
@@ -164,7 +168,7 @@ function hash(options: Argon2.Parameters): {
   const code = argon2.argon2i_hash_raw(
     options.timeCost,
     options.memoryCost,
-    options.threads, // TODO: implement clamping based on pthread support
+    argon2.pthread ? options.threads : 1, // Clamp threads to 1 on non-pthread builds
     passwordPtr,
     passwordLen,
     saltPtr,

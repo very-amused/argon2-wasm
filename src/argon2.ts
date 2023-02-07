@@ -30,6 +30,8 @@ export type Exports = {
     hashlen: number
   ): number
   memory: WebAssembly.Memory
+  // Whether the loaded WASM was built with pthread support
+  readonly pthread: boolean
 } 
 export import WorkerConnection = connection.WorkerConnection
 
