@@ -99,7 +99,7 @@ demo-runtime: all
 .PHONY: demo-runtime
 
 demo: demo-runtime
-	$(nodebin)/vite build
+	$(nodebin)/vite build --emptyOurDir
 .PHONY: demo
 
 run-demo: demo-runtime

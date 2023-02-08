@@ -2,7 +2,7 @@
  * @license
  * @very-amused/argon2-wasm v0.3.4
  * MIT License
- * Copyright (c) 2022 Keith Scroggs
+ * Copyright (c) 2023 Keith Scroggs
  */
 
 class WorkerConnection {
@@ -85,9 +85,6 @@ var Argon2;
 })(Argon2 || (Argon2 = {}));
 
 let argon2;
-const wasmPageSize = 64 * 1024;
-const wasmInitialMemory = (64 * 1024 * 1024) / wasmPageSize;
-const wasmMaximumMemory = (4 * 1024 * 1024 * 1024) / wasmPageSize;
 function getErrorMessage(err) {
     if (err instanceof Error) {
         return err.message;
@@ -100,7 +97,6 @@ function getErrorMessage(err) {
     }
 }
 function postError(err) {
-    console.error(err);
     if (typeof err === 'number' && err in Argon2.ErrorCodes) {
         postMessage({
             code: err
@@ -147,8 +143,8 @@ async function loadArgon2(wasmRoot = '.', simd = false, pthread = false) {
         const url = `${wasmRoot}/${file}`;
         importScripts(url);
         const wasmMemory = new WebAssembly.Memory({
-            initial: wasmInitialMemory,
-            maximum: wasmMaximumMemory,
+            initial: 1024,
+            maximum: 65536,
             shared: true
         });
         const exports = await LoadArgon2Wasm({
@@ -159,7 +155,8 @@ async function loadArgon2(wasmRoot = '.', simd = false, pthread = false) {
             malloc: exports._malloc,
             free: exports._free,
             argon2i_hash_raw: exports._argon2i_hash_raw,
-            memory: wasmMemory
+            memory: wasmMemory,
+            pthread
         };
     }
     else {
@@ -171,7 +168,10 @@ async function loadArgon2(wasmRoot = '.', simd = false, pthread = false) {
             }
         };
         const source = await WebAssembly.instantiateStreaming(fetch(`${wasmRoot}/${file}`), opts);
-        return source.instance.exports;
+        return {
+            ...source.instance.exports,
+            pthread
+        };
     }
 }
 function hash(options) {
@@ -187,7 +187,7 @@ function hash(options) {
     zeroBytes(encoded);
     const hashLen = options.hashLen;
     const hashPtr = argon2.malloc(hashLen);
-    const code = argon2.argon2i_hash_raw(options.timeCost, options.memoryCost, options.threads, passwordPtr, passwordLen, saltPtr, saltLen, hashPtr, hashLen);
+    const code = argon2.argon2i_hash_raw(options.timeCost, options.memoryCost, argon2.pthread ? options.threads : 1, passwordPtr, passwordLen, saltPtr, saltLen, hashPtr, hashLen);
     passwordView = new Uint8Array(argon2.memory.buffer, passwordPtr, passwordLen);
     zeroBytes(passwordView);
     argon2.free(passwordPtr);

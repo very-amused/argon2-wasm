@@ -2,7 +2,8 @@
 export default {
   root: 'demo',
   build: {
-    outDir: '../pages'
+    outDir: '../pages',
+    emptyOutDir: true
   },
   plugins: [
     // Set required isolation headers for SharedArrayBuffer use
