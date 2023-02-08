@@ -23,7 +23,7 @@ For [Hash2i](../enums/Argon2.Methods.md#hash2i),the body should be valid [Parame
 
 #### Defined in
 
-[argon2.ts:111](https://github.com/very-amused/argon2-wasm/blob/2134600/src/argon2.ts#L111)
+[argon2.ts:113](https://github.com/very-amused/argon2-wasm/blob/baab309/src/argon2.ts#L113)
 
 ___
 
@@ -33,4 +33,4 @@ ___
 
 #### Defined in
 
-[argon2.ts:112](https://github.com/very-amused/argon2-wasm/blob/2134600/src/argon2.ts#L112)
+[argon2.ts:114](https://github.com/very-amused/argon2-wasm/blob/baab309/src/argon2.ts#L114)

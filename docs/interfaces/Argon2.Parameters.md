@@ -25,7 +25,7 @@ Desired length of the resulting hash in bytes (e.g 32 bytes for a 256-bit key.)
 
 #### Defined in
 
-[argon2.ts:84](https://github.com/very-amused/argon2-wasm/blob/2134600/src/argon2.ts#L84)
+[argon2.ts:86](https://github.com/very-amused/argon2-wasm/blob/baab309/src/argon2.ts#L86)
 
 ___
 
@@ -42,7 +42,7 @@ by reducing the number of hashes an attacker is able to crack at a time.
 
 #### Defined in
 
-[argon2.ts:73](https://github.com/very-amused/argon2-wasm/blob/2134600/src/argon2.ts#L73)
+[argon2.ts:75](https://github.com/very-amused/argon2-wasm/blob/baab309/src/argon2.ts#L75)
 
 ___
 
@@ -54,7 +54,7 @@ The password to be hashed. Must be normalized beforehand to NFC or NFD. NFK(C/D)
 
 #### Defined in
 
-[argon2.ts:60](https://github.com/very-amused/argon2-wasm/blob/2134600/src/argon2.ts#L60)
+[argon2.ts:62](https://github.com/very-amused/argon2-wasm/blob/baab309/src/argon2.ts#L62)
 
 ___
 
@@ -66,7 +66,7 @@ A cryptographically random salt.
 
 #### Defined in
 
-[argon2.ts:62](https://github.com/very-amused/argon2-wasm/blob/2134600/src/argon2.ts#L62)
+[argon2.ts:64](https://github.com/very-amused/argon2-wasm/blob/baab309/src/argon2.ts#L64)
 
 ___
 
@@ -83,7 +83,7 @@ Clamped to 1 on non-pthread builds.
 
 #### Defined in
 
-[argon2.ts:82](https://github.com/very-amused/argon2-wasm/blob/2134600/src/argon2.ts#L82)
+[argon2.ts:84](https://github.com/very-amused/argon2-wasm/blob/baab309/src/argon2.ts#L84)
 
 ___
 
@@ -95,4 +95,4 @@ Linear time cost to use, leave at 1 if unsure.
 
 #### Defined in
 
-[argon2.ts:64](https://github.com/very-amused/argon2-wasm/blob/2134600/src/argon2.ts#L64)
+[argon2.ts:66](https://github.com/very-amused/argon2-wasm/blob/baab309/src/argon2.ts#L66)
