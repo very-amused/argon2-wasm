@@ -1,7 +1,3 @@
-# Build argon2 without thread.c, and disable threading support
-# Enabling threading would require clientside code written for shared array buffers between web workers,
-# which have been very recently re-enabled for most mobile browsers (with the requirement of COOP and COEP security headers). 
-# The major remaining hurdle before this build will support multithreading is the release of iOS 16, which will move a majority of iOS users onto the latest version of Safari, which supports shared array buffers
 O=-O3
 CFLAGS=$(O) -Wall -Wno-pthreads-mem-growth -I argon2/include
 EXPORTED_FUNCTIONS=_malloc,_free,_argon2i_hash_raw
