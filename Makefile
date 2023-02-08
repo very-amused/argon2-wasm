@@ -52,14 +52,11 @@ feature-detect=$(outdir)/simd-test.wasm
 # Runtime vars
 nodebin=node_modules/.bin
 
-all: $(outdir) .WAIT $(argon2) $(argon2-simd) $(argon2-pthread) $(argon2-simd-pthread) $(feature-detect) runtime
+all: $(argon2) $(argon2-simd) $(argon2-pthread) $(argon2-simd-pthread) $(feature-detect) runtime
 .PHONY: all
 
 release: clean .WAIT all .WAIT docs demo
 .PHONY: release
-
-$(outdir):
-	[ -d $(outdir) ] || mkdir $(outdir)
 
 $(argon2): $(objects) $(objects-ref)
 	emcc -o $(argon2) $(objects) $(objects-ref) $(CFLAGS) $(BUILD_FLAGS)
