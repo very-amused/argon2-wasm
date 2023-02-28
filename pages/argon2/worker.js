@@ -39,7 +39,9 @@ var Argon2;
     (function (Methods) {
         Methods[Methods["LoadArgon2"] = 0] = "LoadArgon2";
         Methods[Methods["Hash2i"] = 1] = "Hash2i";
-        Methods[Methods["UnloadArgon2"] = 2] = "UnloadArgon2";
+        Methods[Methods["Hash2d"] = 2] = "Hash2d";
+        Methods[Methods["Hash2id"] = 3] = "Hash2id";
+        Methods[Methods["UnloadArgon2"] = 4] = "UnloadArgon2";
     })(Argon2.Methods || (Argon2.Methods = {}));
     (function (ErrorCodes) {
         ErrorCodes[ErrorCodes["ARGON2_OK"] = 0] = "ARGON2_OK";
@@ -155,6 +157,8 @@ async function loadArgon2(wasmRoot = '.', simd = false, pthread = false) {
             malloc: exports._malloc,
             free: exports._free,
             argon2i_hash_raw: exports._argon2i_hash_raw,
+            argon2d_hash_raw: exports._argon2d_hash_raw,
+            argon2id_hash_raw: exports._argon2id_hash_raw,
             memory: wasmMemory,
             pthread
         };
@@ -174,7 +178,7 @@ async function loadArgon2(wasmRoot = '.', simd = false, pthread = false) {
         };
     }
 }
-function hash(options) {
+function hash(options, mode) {
     const saltLen = options.salt.byteLength;
     const saltPtr = argon2.malloc(saltLen);
     let saltView = new Uint8Array(argon2.memory.buffer, saltPtr, saltLen);
@@ -187,7 +191,18 @@ function hash(options) {
     zeroBytes(encoded);
     const hashLen = options.hashLen;
     const hashPtr = argon2.malloc(hashLen);
-    const code = argon2.argon2i_hash_raw(options.timeCost, options.memoryCost, argon2.pthread ? options.threads : 1, passwordPtr, passwordLen, saltPtr, saltLen, hashPtr, hashLen);
+    let hashfn;
+    switch (mode) {
+        case '2i':
+            hashfn = argon2.argon2i_hash_raw;
+            break;
+        case '2d':
+            hashfn = argon2.argon2d_hash_raw;
+            break;
+        case '2id':
+            hashfn = argon2.argon2id_hash_raw;
+    }
+    const code = hashfn(options.timeCost, options.memoryCost, argon2.pthread ? options.threads : 1, passwordPtr, passwordLen, saltPtr, saltLen, hashPtr, hashLen);
     passwordView = new Uint8Array(argon2.memory.buffer, passwordPtr, passwordLen);
     zeroBytes(passwordView);
     argon2.free(passwordPtr);
@@ -227,11 +242,31 @@ onmessage = async function (evt) {
             });
             break;
         case Argon2.Methods.Hash2i:
-            const result = hash(req.params);
-            postMessage({
-                code: result.code,
-                body: result.body
-            }, [result.body.buffer]);
+            {
+                const result = hash(req.params, '2i');
+                postMessage({
+                    code: result.code,
+                    body: result.body
+                }, [result.body.buffer]);
+            }
+            break;
+        case Argon2.Methods.Hash2d:
+            {
+                const result = hash(req.params, '2d');
+                postMessage({
+                    code: result.code,
+                    body: result.body
+                }, [result.body.buffer]);
+            }
+            break;
+        case Argon2.Methods.Hash2id:
+            {
+                const result = hash(req.params, '2id');
+                postMessage({
+                    code: result.code,
+                    body: result.body
+                }, [result.body.buffer]);
+            }
             break;
         default:
             postMessage({
