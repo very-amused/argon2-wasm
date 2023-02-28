@@ -1,6 +1,6 @@
 /**
  * @license
- * @very-amused/argon2-wasm v0.3.4
+ * @very-amused/argon2-wasm v0.3.5
  * MIT License
  * Copyright (c) 2023 Keith Scroggs
  */
