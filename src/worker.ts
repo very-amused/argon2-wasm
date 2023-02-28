@@ -119,6 +119,8 @@ async function loadArgon2(wasmRoot = '.', simd = false, pthread = false): Promis
       malloc: exports._malloc,
       free: exports._free,
       argon2i_hash_raw: exports._argon2i_hash_raw,
+      argon2d_hash_raw: exports._argon2d_hash_raw,
+      argon2id_hash_raw: exports._argon2id_hash_raw,
       memory: wasmMemory,
       pthread
     }
@@ -140,7 +142,7 @@ async function loadArgon2(wasmRoot = '.', simd = false, pthread = false): Promis
   }
 }
 
-function hash(options: Argon2.Parameters): {
+function hash(options: Argon2.Parameters, mode: '2i'|'2d'|'2id'): {
   code: Argon2.ErrorCodes,
   body: Argon2.Response['body']
 } {
@@ -165,7 +167,18 @@ function hash(options: Argon2.Parameters): {
   const hashPtr = argon2.malloc(hashLen)
 
   // Run the hash function
-  const code = argon2.argon2i_hash_raw(
+  let hashfn: Argon2.HighLevelAPI
+  switch (mode) {
+  case '2i':
+    hashfn = argon2.argon2i_hash_raw
+    break
+  case '2d':
+    hashfn = argon2.argon2d_hash_raw
+    break
+  case '2id':
+    hashfn = argon2.argon2id_hash_raw
+  }
+  const code = hashfn(
     options.timeCost,
     options.memoryCost,
     argon2.pthread ? options.threads : 1, // Clamp threads to 1 on non-pthread builds
@@ -230,7 +243,7 @@ onmessage = async function(evt: MessageEvent): Promise<void> {
       break
     
     case Argon2.Methods.Hash2i:
-      const result = hash(req.params as Argon2.Parameters)
+      const result = hash(req.params as Argon2.Parameters, '2i')
       postMessage({
         code: result.code,
         body: result.body

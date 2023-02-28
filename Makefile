@@ -1,6 +1,6 @@
 O=-O3
 CFLAGS=$(O) -Wall -Wno-pthreads-mem-growth -I argon2/include
-EXPORTED_FUNCTIONS=_malloc,_free,_argon2i_hash_raw
+EXPORTED_FUNCTIONS=_malloc,_free,_argon2i_hash_raw,_argon2d_hash_raw,_argon2id_hash_raw
 
 # Initial memory buffer size, matched with created JS buffer
 unjsonc=sed -e '/^\s*\/\//d'
@@ -14,7 +14,7 @@ MEMORY_GROWTH_GEOMETRIC_CAP=$(shell echo $$((1024 * 1024 * 1024)))
 
 BUILD_FLAGS=--no-entry \
 	-s EXPORTED_FUNCTIONS=$(EXPORTED_FUNCTIONS) \
-	-s ALLOW_MEMORY_GROWTH=1 \
+	-s ALLOW_MEMORY_GROWTH \
 	-s INITIAL_MEMORY=$(INITIAL_MEMORY) \
 	-s MAXIMUM_MEMORY=$(MAXIMUM_MEMORY) \
 	-s MEMORY_GROWTH_GEOMETRIC_STEP=$(MEMORY_GROWTH_GEOMETRIC_STEP) \
@@ -55,16 +55,16 @@ release: clean .WAIT all .WAIT docs demo
 .PHONY: release
 
 $(argon2): $(objects) $(objects-ref)
-	emcc -o $(argon2) $(objects) $(objects-ref) $(CFLAGS) $(BUILD_FLAGS)
+	emcc -o $@ $^ $(CFLAGS) $(BUILD_FLAGS)
 
 $(argon2-simd): $(objects) $(objects-simd)
-	emcc -o $(argon2-simd) $(objects) $(objects-simd) $(CFLAGS) $(BUILD_FLAGS)
+	emcc -o $@ $^ $(CFLAGS) $(BUILD_FLAGS)
 
 $(argon2-pthread): $(objects-pthread) $(objects-ref-pthread)
-	emcc -o $(argon2-pthread) $(objects-pthread) $(objects-ref-pthread) $(CFLAGS) $(BUILD_FLAGS) $(BUILD_FLAGS_PTHREAD)
+	emcc -o $@ $^ $(CFLAGS) $(BUILD_FLAGS) $(BUILD_FLAGS_PTHREAD)
 
 $(argon2-simd-pthread): $(objects-pthread) $(objects-simd-pthread)
-	emcc -o $(argon2-simd-pthread) $(objects-pthread) $(objects-simd-pthread) $(CFLAGS) $(BUILD_FLAGS) $(BUILD_FLAGS_PTHREAD)
+	emcc -o $@ $^ $(CFLAGS) $(BUILD_FLAGS) $(BUILD_FLAGS_PTHREAD)
 
 $(feature-detect): src/feature-tests/simd.wat
 	wat2wasm src/feature-tests/simd.wat -o $(feature-detect)

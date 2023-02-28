@@ -13,26 +13,34 @@ export type Source = WebAssembly.WebAssemblyInstantiatedSource & {
 
 /**
  * @_internal
+ * The high level function API for all argon2 modes
+ */
+export type HighLevelAPI = (
+  t_cost: number,
+  m_cost: number,
+  parallelism: number,
+  pwd: number,
+  pwdlen: number,
+  salt: number,
+  saltlen: number,
+  hash: number,
+  hashlen: number
+) => number
+
+/**
+ * @_internal
  * Functions and data exported by the argon2 WASM module
  */
 export type Exports = {
   malloc(size: number): number
   free(ptr: number): void
-  argon2i_hash_raw(
-    t_cost: number,
-    m_cost: number,
-    parallelism: number,
-    pwd: number,
-    pwdlen: number,
-    salt: number,
-    saltlen: number,
-    hash: number,
-    hashlen: number
-  ): number
+  argon2i_hash_raw: HighLevelAPI
+  argon2d_hash_raw: HighLevelAPI 
+  argon2id_hash_raw: HighLevelAPI
   memory: WebAssembly.Memory
   // Whether the loaded WASM was built with pthread support
   readonly pthread: boolean
-} 
+}
 export import WorkerConnection = connection.WorkerConnection
 
 /**
@@ -43,17 +51,9 @@ export import WorkerConnection = connection.WorkerConnection
 export type PThreadExports = {
   _malloc(size: number): number
   _free(ptr: number): void
-  _argon2i_hash_raw(
-    t_cost: number,
-    m_cost: number,
-    parallelism: number,
-    pwd: number,
-    pwdlen: number,
-    salt: number,
-    saltlen: number,
-    hash: number,
-    hashlen: number
-  ): number
+  _argon2i_hash_raw: HighLevelAPI
+  _argon2d_hash_raw: HighLevelAPI
+  _argon2id_hash_raw: HighLevelAPI 
   HEAPU8: Uint8Array
 }
 
