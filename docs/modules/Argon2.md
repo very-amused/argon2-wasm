@@ -23,6 +23,7 @@
 ### Type Aliases
 
 - [Exports](Argon2.md#exports)
+- [HighLevelAPI](Argon2.md#highlevelapi)
 - [PThreadExports](Argon2.md#pthreadexports)
 - [Source](Argon2.md#source)
 
@@ -39,15 +40,52 @@ Functions and data exported by the argon2 WASM module
 
 | Name | Type |
 | :------ | :------ |
+| `argon2d_hash_raw` | [`HighLevelAPI`](Argon2.md#highlevelapi) |
+| `argon2i_hash_raw` | [`HighLevelAPI`](Argon2.md#highlevelapi) |
+| `argon2id_hash_raw` | [`HighLevelAPI`](Argon2.md#highlevelapi) |
 | `memory` | `WebAssembly.Memory` |
 | `pthread` | `boolean` |
-| `argon2i_hash_raw` | (`t_cost`: `number`, `m_cost`: `number`, `parallelism`: `number`, `pwd`: `number`, `pwdlen`: `number`, `salt`: `number`, `saltlen`: `number`, `hash`: `number`, `hashlen`: `number`) => `number` |
 | `free` | (`ptr`: `number`) => `void` |
 | `malloc` | (`size`: `number`) => `number` |
 
 #### Defined in
 
-[argon2.ts:18](https://github.com/very-amused/argon2-wasm/blob/baab309/src/argon2.ts#L18)
+[argon2.ts:34](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L34)
+
+___
+
+### HighLevelAPI
+
+Ƭ **HighLevelAPI**: (`t_cost`: `number`, `m_cost`: `number`, `parallelism`: `number`, `pwd`: `number`, `pwdlen`: `number`, `salt`: `number`, `saltlen`: `number`, `hash`: `number`, `hashlen`: `number`) => `number`
+
+#### Type declaration
+
+▸ (`t_cost`, `m_cost`, `parallelism`, `pwd`, `pwdlen`, `salt`, `saltlen`, `hash`, `hashlen`): `number`
+
+@_internal
+The high level function API for all argon2 modes
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `t_cost` | `number` |
+| `m_cost` | `number` |
+| `parallelism` | `number` |
+| `pwd` | `number` |
+| `pwdlen` | `number` |
+| `salt` | `number` |
+| `saltlen` | `number` |
+| `hash` | `number` |
+| `hashlen` | `number` |
+
+##### Returns
+
+`number`
+
+#### Defined in
+
+[argon2.ts:18](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L18)
 
 ___
 
@@ -64,13 +102,15 @@ provided when loading pthread binaries.
 | Name | Type |
 | :------ | :------ |
 | `HEAPU8` | `Uint8Array` |
-| `_argon2i_hash_raw` | (`t_cost`: `number`, `m_cost`: `number`, `parallelism`: `number`, `pwd`: `number`, `pwdlen`: `number`, `salt`: `number`, `saltlen`: `number`, `hash`: `number`, `hashlen`: `number`) => `number` |
+| `_argon2d_hash_raw` | [`HighLevelAPI`](Argon2.md#highlevelapi) |
+| `_argon2i_hash_raw` | [`HighLevelAPI`](Argon2.md#highlevelapi) |
+| `_argon2id_hash_raw` | [`HighLevelAPI`](Argon2.md#highlevelapi) |
 | `_free` | (`ptr`: `number`) => `void` |
 | `_malloc` | (`size`: `number`) => `number` |
 
 #### Defined in
 
-[argon2.ts:43](https://github.com/very-amused/argon2-wasm/blob/baab309/src/argon2.ts#L43)
+[argon2.ts:51](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L51)
 
 ___
 
@@ -82,4 +122,4 @@ ___
 
 #### Defined in
 
-[argon2.ts:8](https://github.com/very-amused/argon2-wasm/blob/baab309/src/argon2.ts#L8)
+[argon2.ts:8](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L8)

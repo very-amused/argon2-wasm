@@ -243,11 +243,31 @@ onmessage = async function(evt: MessageEvent): Promise<void> {
       break
     
     case Argon2.Methods.Hash2i:
-      const result = hash(req.params as Argon2.Parameters, '2i')
-      postMessage({
-        code: result.code,
-        body: result.body
-      }, [result.body!.buffer])
+      {
+        const result = hash(req.params as Argon2.Parameters, '2i')
+        postMessage({
+          code: result.code,
+          body: result.body
+        }, [result.body!.buffer])
+      }
+      break 
+    case Argon2.Methods.Hash2d:
+      {
+        const result = hash(req.params as Argon2.Parameters, '2d')
+        postMessage({
+          code: result.code,
+          body: result.body
+        }, [result.body!.buffer])
+      }
+      break
+    case Argon2.Methods.Hash2id:
+      {
+        const result = hash(req.params as Argon2.Parameters, '2id')
+        postMessage({
+          code: result.code,
+          body: result.body
+        }, [result.body!.buffer])
+      }
       break
 
     default:

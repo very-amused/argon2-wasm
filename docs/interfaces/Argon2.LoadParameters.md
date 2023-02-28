@@ -22,7 +22,7 @@ Test for and use binaries with pthread support. pthread and simd support are not
 
 #### Defined in
 
-[argon2.ts:95](https://github.com/very-amused/argon2-wasm/blob/baab309/src/argon2.ts#L95)
+[argon2.ts:95](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L95)
 
 ___
 
@@ -34,7 +34,7 @@ Test for and use binaries with SIMD support, requires simd-test.wasm and argon2-
 
 #### Defined in
 
-[argon2.ts:93](https://github.com/very-amused/argon2-wasm/blob/baab309/src/argon2.ts#L93)
+[argon2.ts:93](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L93)
 
 ___
 
@@ -46,4 +46,4 @@ The root path of all WASM binaries (at least argon2.wasm, binaries needed for ad
 
 #### Defined in
 
-[argon2.ts:91](https://github.com/very-amused/argon2-wasm/blob/baab309/src/argon2.ts#L91)
+[argon2.ts:91](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L91)

@@ -100,6 +100,10 @@ export enum Methods {
   LoadArgon2,
   /** Hash in 2i mode. */
   Hash2i,
+  /** Hash in 2d mode. */
+  Hash2d,
+  /** Hash in 2id mode. */
+  Hash2id,
   /** Unload the Argon2 WebAssembly build. */
   UnloadArgon2
 }

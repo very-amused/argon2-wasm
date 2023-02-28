@@ -28,6 +28,13 @@
       <label for="m_cost">Memory cost (KB, MB, GB)</label>
       <input id="m_cost" type="text" value="10MB" autocomplete="off">
 
+      <label for="argon2_mode">Argon2 mode</label>
+      <select id="argon2_mode">
+        <option value="2i">Argon2i</option>
+        <option value="2d">Argon2d</option>
+        <option value="2id">Argon2id</option>
+      </select>
+
       <section id="toggles" class="no-expand">
         <div class="toggle">
           <input id="simd_enabled" type="checkbox" autocomplete="off" checked>

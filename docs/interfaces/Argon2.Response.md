@@ -25,7 +25,7 @@ in which case it will contain detail extracted from the error as a fallback to u
 
 #### Defined in
 
-[argon2.ts:126](https://github.com/very-amused/argon2-wasm/blob/baab309/src/argon2.ts#L126)
+[argon2.ts:130](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L130)
 
 ___
 
@@ -35,7 +35,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:124](https://github.com/very-amused/argon2-wasm/blob/baab309/src/argon2.ts#L124)
+[argon2.ts:128](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L128)
 
 ___
 
@@ -45,4 +45,4 @@ ___
 
 #### Defined in
 
-[argon2.ts:125](https://github.com/very-amused/argon2-wasm/blob/baab309/src/argon2.ts#L125)
+[argon2.ts:129](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L129)

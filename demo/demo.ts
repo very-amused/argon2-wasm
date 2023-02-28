@@ -11,6 +11,7 @@ const els = {
   salt: qs<HTMLInputElement>('input#salt')!,
   timeCost: qs<HTMLInputElement>('input#t_cost')!,
   memoryCost: qs<HTMLInputElement>('input#m_cost')!,
+  mode: qs<HTMLSelectElement>('select#argon2_mode')!,
   simd: qs<HTMLInputElement>('input#simd_enabled')!,
   pthread: qs<HTMLInputElement>('input#pthread_enabled')!,
   run: qs<HTMLInputElement>('input#submit')!,
@@ -135,9 +136,22 @@ els.form.onsubmit = async (evt) => {
     }
   }
 
+  // Determine hash method
+  let method: Argon2.Methods
+  switch (els.mode.value as '2i'|'2d'|'2id') {
+  case '2i':
+    method = Argon2.Methods.Hash2i
+    break
+  case '2d':
+    method = Argon2.Methods.Hash2d
+    break
+  case '2id':
+    method = Argon2.Methods.Hash2id
+  }
+
   const start = performance.now()
   const result = await conn.postMessage({
-    method: Argon2.Methods.Hash2i,
+    method: method,
     params: {
       password: els.password.value.normalize('NFC'),
       salt,

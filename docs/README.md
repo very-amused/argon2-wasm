@@ -1,7 +1,7 @@
 @very-amused/argon2-wasm / [Exports](modules.md)
 
 # @very-amused/argon2-wasm
-WebAssembly/Typescript Bindings for [Biryujob, Dinu, and Khovratovich's Argon2 key derivation function](https://github.com/P-H-C/phc-winner-argon2) for clientside use in web applications. For documentation see [docs](docs).
+WebAssembly/Typescript Bindings for [Biryukov, Dinu, and Khovratovich's Argon2 key derivation function](https://github.com/P-H-C/phc-winner-argon2) for clientside use in web applications. For documentation see [docs](docs).
 
 [![NPM](https://img.shields.io/npm/v/@very-amused/argon2-wasm?color=darkred&style=flat-square)](https://npmjs.com/package/@very-amused/argon2-wasm)
 
@@ -33,8 +33,10 @@ const argon2 = new Argon2.WorkerConnection(
     method: Argon2.Methods.LoadArgon2,
     params: {
       wasmRoot: '/argon2',
-      simd: true /* The worker will test for SIMD support by validating {wasmRoot}/simd-test.wasm,
-      and load argon2-simd.wasm if possible */
+      simd: true, /* The worker will test SIMD support by validating {wasmRoot}/simd-test.wasm,
+      and load a build with SIMD instructions if possible */
+      pthread: false /* The worker will test shared memory support,
+      and load a build with pthread/multithreading instructions if possible */
     }
   })
   if (message.code !== 0) {
@@ -48,9 +50,7 @@ const password = document.querySelector('input#password').value
 // 4. Generate a cryptographically random 16 byte salt
 const salt = makeSalt(16)
 
-/* 5. Determine time and memory costs
-(NOTE: parallelism is automatically set to 1,
-as this library doesn't currently support multiple threads) */
+// 5. Determine time and memory costs
 const timeCost = 3 // a 3 pass minimum is recommended by Dmitry Khovratovich
 const memoryCost = 1024 * 128 // Memory cost is in # of KiB, i.e m = 1024 = 1MiB
 
@@ -62,6 +62,7 @@ const result = await argon2.postMessage({
     salt,
     timeCost,
     memoryCost,
+    threads: 1, // Number of threads to utilize, clamped to 1 on non-pthread builds
     hashLen: 32 // Desired output size (in bytes)
   }
 })
