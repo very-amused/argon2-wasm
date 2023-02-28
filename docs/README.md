@@ -6,7 +6,7 @@ WebAssembly/Typescript Bindings for [Biryukov, Dinu, and Khovratovich's Argon2 k
 [![NPM](https://img.shields.io/npm/v/@very-amused/argon2-wasm?color=darkred&style=flat-square)](https://npmjs.com/package/@very-amused/argon2-wasm)
 
 ## Argon2 Modes
-Only the argon2i mode is supported, I will add builds supporting argon2d/argon2id if requested; email me at [very-amused@pm.me](mailto:very-amused@pm.me).
+Argon2i, Argon2d, and Argon2id are all supported. If unsure, Argon2i is recommended because of its security against side-channel attacks due to data-independent memory access.
 
 ## Security
 This library zeroes all memory used by default, but it is still required that users of this library understand and implement secure memory handling for returned data. Hash output should be zeroed a minimum of 3 times after use.
@@ -56,7 +56,7 @@ const memoryCost = 1024 * 128 // Memory cost is in # of KiB, i.e m = 1024 = 1MiB
 
 // 6. Run argon2i
 const result = await argon2.postMessage({
-  method: Argon2.Methods.Hash2i,
+  method: Argon2.Methods.Hash2i, // Use Hash2d for argon2d, Hash2id for argon2id
   params: {
     password,
     salt,

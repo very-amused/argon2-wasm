@@ -60,7 +60,7 @@ This ensures that neither the name nor value of any non-standard code defined he
 
 #### Defined in
 
-[argon2.ts:199](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L199)
+[argon2.ts:199](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L199)
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:198](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L198)
+[argon2.ts:198](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L198)
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:200](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L200)
+[argon2.ts:200](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L200)
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:170](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L170)
+[argon2.ts:170](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L170)
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:153](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L153)
+[argon2.ts:153](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L153)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:152](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L152)
+[argon2.ts:152](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L152)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:175](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L175)
+[argon2.ts:175](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L175)
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:189](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L189)
+[argon2.ts:189](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L189)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:193](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L193)
+[argon2.ts:193](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L193)
 
 ___
 
@@ -150,7 +150,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:187](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L187)
+[argon2.ts:187](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L187)
 
 ___
 
@@ -160,7 +160,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:174](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L174)
+[argon2.ts:174](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L174)
 
 ___
 
@@ -170,7 +170,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:177](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L177)
+[argon2.ts:177](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L177)
 
 ___
 
@@ -180,7 +180,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:178](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L178)
+[argon2.ts:178](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L178)
 
 ___
 
@@ -190,7 +190,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:164](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L164)
+[argon2.ts:164](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L164)
 
 ___
 
@@ -200,7 +200,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:165](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L165)
+[argon2.ts:165](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L165)
 
 ___
 
@@ -210,7 +210,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:172](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L172)
+[argon2.ts:172](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L172)
 
 ___
 
@@ -220,7 +220,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:161](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L161)
+[argon2.ts:161](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L161)
 
 ___
 
@@ -230,7 +230,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:162](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L162)
+[argon2.ts:162](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L162)
 
 ___
 
@@ -240,7 +240,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:185](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L185)
+[argon2.ts:185](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L185)
 
 ___
 
@@ -250,7 +250,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:139](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L139)
+[argon2.ts:139](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L139)
 
 ___
 
@@ -260,7 +260,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:141](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L141)
+[argon2.ts:141](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L141)
 
 ___
 
@@ -270,7 +270,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:144](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L144)
+[argon2.ts:144](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L144)
 
 ___
 
@@ -280,7 +280,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:143](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L143)
+[argon2.ts:143](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L143)
 
 ___
 
@@ -290,7 +290,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:180](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L180)
+[argon2.ts:180](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L180)
 
 ___
 
@@ -300,7 +300,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:167](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L167)
+[argon2.ts:167](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L167)
 
 ___
 
@@ -310,7 +310,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:147](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L147)
+[argon2.ts:147](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L147)
 
 ___
 
@@ -320,7 +320,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:146](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L146)
+[argon2.ts:146](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L146)
 
 ___
 
@@ -330,7 +330,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:168](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L168)
+[argon2.ts:168](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L168)
 
 ___
 
@@ -340,7 +340,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:150](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L150)
+[argon2.ts:150](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L150)
 
 ___
 
@@ -350,7 +350,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:149](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L149)
+[argon2.ts:149](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L149)
 
 ___
 
@@ -360,7 +360,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:169](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L169)
+[argon2.ts:169](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L169)
 
 ___
 
@@ -370,7 +370,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:156](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L156)
+[argon2.ts:156](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L156)
 
 ___
 
@@ -380,7 +380,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:155](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L155)
+[argon2.ts:155](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L155)
 
 ___
 
@@ -390,7 +390,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:182](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L182)
+[argon2.ts:182](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L182)
 
 ___
 
@@ -400,7 +400,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:183](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L183)
+[argon2.ts:183](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L183)
 
 ___
 
@@ -410,7 +410,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:191](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L191)
+[argon2.ts:191](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L191)
 
 ___
 
@@ -420,7 +420,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:159](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L159)
+[argon2.ts:159](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L159)
 
 ___
 
@@ -430,7 +430,7 @@ ___
 
 #### Defined in
 
-[argon2.ts:158](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L158)
+[argon2.ts:158](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L158)
 
 ___
 
@@ -440,4 +440,4 @@ ___
 
 #### Defined in
 
-[argon2.ts:195](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L195)
+[argon2.ts:195](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L195)

@@ -51,8 +51,11 @@ nodebin=node_modules/.bin
 all: $(argon2) $(argon2-simd) $(argon2-pthread) $(argon2-simd-pthread) $(feature-detect) runtime
 .PHONY: all
 
-release: clean .WAIT all .WAIT docs demo
+release: clean .WAIT $(outdir) .WAIT all .WAIT docs demo
 .PHONY: release
+
+$(outdir):
+	if [ ! -d $(outdir) ]; then mkdir $(outdir); fi
 
 $(argon2): $(objects) $(objects-ref)
 	emcc -o $@ $^ $(CFLAGS) $(BUILD_FLAGS)

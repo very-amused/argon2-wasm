@@ -24,7 +24,7 @@ Hash in 2d mode.
 
 #### Defined in
 
-[argon2.ts:104](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L104)
+[argon2.ts:104](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L104)
 
 ___
 
@@ -36,7 +36,7 @@ Hash in 2i mode.
 
 #### Defined in
 
-[argon2.ts:102](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L102)
+[argon2.ts:102](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L102)
 
 ___
 
@@ -48,7 +48,7 @@ Hash in 2id mode.
 
 #### Defined in
 
-[argon2.ts:106](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L106)
+[argon2.ts:106](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L106)
 
 ___
 
@@ -60,7 +60,7 @@ Load the Argon2 WebAssembly build.
 
 #### Defined in
 
-[argon2.ts:100](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L100)
+[argon2.ts:100](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L100)
 
 ___
 
@@ -72,4 +72,4 @@ Unload the Argon2 WebAssembly build.
 
 #### Defined in
 
-[argon2.ts:108](https://github.com/very-amused/argon2-wasm/blob/dd054fa/src/argon2.ts#L108)
+[argon2.ts:108](https://github.com/very-amused/argon2-wasm/blob/8f74821/src/argon2.ts#L108)
