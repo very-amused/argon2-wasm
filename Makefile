@@ -17,13 +17,13 @@ BUILD_FLAGS=--no-entry \
 	-s ALLOW_MEMORY_GROWTH \
 	-s INITIAL_MEMORY=$(INITIAL_MEMORY) \
 	-s MAXIMUM_MEMORY=$(MAXIMUM_MEMORY) \
-	-s MEMORY_GROWTH_GEOMETRIC_STEP=$(MEMORY_GROWTH_GEOMETRIC_STEP) \
-	-s MEMORY_GROWTH_GEOMETRIC_CAP=$(MEMORY_GROWTH_GEOMETRIC_CAP)
+	-s MEMORY_GROWTH_GEOMETRIC_STEP=$(MEMORY_GROWTH_GEOMETRIC_STEP)
 # Use available # of threads
 BUILD_FLAGS_PTHREAD=-pthread \
 	-s PTHREAD_POOL_SIZE=navigator.hardwareConcurrency \
 	-s MODULARIZE \
-	-s EXPORT_NAME=LoadArgon2Wasm
+	-s EXPORT_NAME=LoadArgon2Wasm \
+	-s MEMORY_GROWTH_GEOMETRIC_CAP=$(MEMORY_GROWTH_GEOMETRIC_CAP)
 
 src=argon2/src/argon2.c argon2/src/core.c argon2/src/encoding.c argon2/src/blake2/blake2b.c
 src-ref=argon2/src/ref.c
