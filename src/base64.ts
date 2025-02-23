@@ -2,7 +2,7 @@
  * @license
  * Base64 implementation from cs-crypto and nc-crypto
  * MIT License
- * Copyright (c) 2023 Keith Scroggs
+ * Copyright (c) 2023, 2025 Keith Scroggs
  */
 
 // Only standard encoding is supported as of now
@@ -88,12 +88,14 @@ function atoi(encoded: Uint8Array): Uint8Array {
 			} else if (encoded[i] === 47) {
 				indexes[i] = 63
 			} else {
-				throw new Error('invalid input, only standard base64 encoding is supported')
+				throw new Error('invalid base64 input (StdEncoding)')
 			}
 		}
 	}
 	return indexes
 }
+
+export namespace Base64 {
 
 /**
  * Encode a Uint8Array using Base64 standard encoding
@@ -183,4 +185,6 @@ export function decode(encoded: string): Uint8Array {
 	}
 
 	return result
+}
+
 }

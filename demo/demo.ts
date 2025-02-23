@@ -1,4 +1,4 @@
-import { Argon2 } from '../runtime/index.js'
+import { Argon2, Base64 as b64 } from '../runtime/index.js'
 const conn = new Argon2.WorkerConnection(new Worker('./argon2/worker.js'))
 
 
@@ -97,23 +97,27 @@ els.form.onsubmit = async (evt) => {
   let salt: Uint8Array
   let updateEncodedSalt = false
   let encodedSalt = els.salt.value
-  const textSalt = els.textSalt.value
+  let textSalt = els.textSalt.value
   if (textSalt.length >= 8) {
-    // Use text salt (for reproducibility against argon2 CLI tools)
+    // Use text salt (for compatibility w/ argon2 CLI tools)
     const enc = new TextEncoder()
     salt = enc.encode(textSalt)
     updateEncodedSalt = true
   } else if (encodedSalt.length > 0) {
     try {
-      const raw = atob(encodedSalt)
-      salt = new Uint8Array(raw.length)
-      for (let i = 0; i < raw.length; i++) {
-        salt[i] = raw.charCodeAt(i)
-      }
+      salt = b64.decode(encodedSalt)
     } catch (err) {
-      const errorMsg = `Failed to decode salt (${err})`
-      writeResult(`Error: ${errorMsg}`)
+      writeResult(`Failed to decode salt: ${err}`)
       return
+    }
+    // Our salt might also have a useful text form, so we try to decode into that
+    // and ignore any errors
+    try {
+      const dec = new TextDecoder('utf-8', {fatal: true})
+      textSalt = dec.decode(salt)
+      els.textSalt.value = textSalt
+    } catch {
+      // pass
     }
   } else {
     // Otherwise generate a random salt
@@ -122,7 +126,7 @@ els.form.onsubmit = async (evt) => {
     updateEncodedSalt = true
   }
   if (updateEncodedSalt) {
-    encodedSalt = btoa(String.fromCharCode.apply(null, Array.from(salt)))
+    encodedSalt = b64.encode(salt)
     els.salt.value = encodedSalt
   }
 
@@ -167,8 +171,7 @@ els.form.onsubmit = async (evt) => {
   let elapsed = performance.now() - start
 
   if (result.code === 0) {
-    const encodedHash = btoa(String.fromCharCode.apply(null, Array.from(result.body!)))
-    writeResult(encodedHash)
+    writeResult(b64.encode(result.body!))
   } else {
     // Get the argon2 error code's name from the Argon2.ErrorCodes enum
     displayError(result.code)
