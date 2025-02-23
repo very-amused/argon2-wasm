@@ -3,6 +3,9 @@ export default {
   root: 'demo',
   base: './',
   publicDir: 'public',
+  server: {
+    open: true
+  },
   build: {
     outDir: '../pages',
     emptyOutDir: true
