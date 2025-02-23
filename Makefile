@@ -25,10 +25,12 @@ BUILD_FLAGS_PTHREAD=-pthread \
 	-s EXPORT_NAME=LoadArgon2Wasm \
 	-s MEMORY_GROWTH_GEOMETRIC_CAP=$(MEMORY_GROWTH_GEOMETRIC_CAP)
 
+# Source files
 src=argon2/src/argon2.c argon2/src/core.c argon2/src/encoding.c argon2/src/blake2/blake2b.c
 src-ref=argon2/src/ref.c
 src-simd=argon2/src/opt.c
 src-pthread=argon2/src/thread.c
+# Object files
 objects=$(src:.c=.wasm.o)
 objects-ref=$(src-ref:.c=.wasm.o)
 objects-simd=$(src-simd:.c=.wasm.o)
@@ -36,9 +38,13 @@ objects-pthread=$(src:.c=.pthread.wasm.o) $(src-pthread:.c=.pthread.wasm.o)
 objects-ref-pthread=$(src-ref:.c=.pthread.wasm.o)
 objects-simd-pthread=$(src-simd:.c=.pthread.wasm.o)
 
+# Build dirs
 outdir=build
-# Create build dir
-$(shell if [ ! -d $(outdir) ]; then mkdir $(outdir); fi)
+$(shell mkdir -p $(outdir))
+runtimedir=runtime
+$(shell mkdir -p $(runtimedir))
+
+# Build targets
 argon2=$(outdir)/argon2.wasm
 argon2-simd=$(outdir)/argon2-simd.wasm
 argon2-pthread=$(outdir)/argon2-pthread.js
@@ -51,11 +57,11 @@ nodebin=node_modules/.bin
 all: $(argon2) $(argon2-simd) $(argon2-pthread) $(argon2-simd-pthread) $(feature-detect) runtime
 .PHONY: all
 
-release: clean .WAIT $(outdir) .WAIT all .WAIT docs demo
+release: clean .WAIT all .WAIT docs demo
 .PHONY: release
 
-$(outdir):
-	if [ ! -d $(outdir) ]; then mkdir $(outdir); fi
+prepack: clean .WAIT all
+.PHONY: prepack 
 
 $(argon2): $(objects) $(objects-ref)
 	emcc -o $@ $^ $(CFLAGS) $(BUILD_FLAGS)
@@ -85,7 +91,6 @@ argon2/src/%.pthread.wasm.o: argon2/src/%.c
 	emcc -c -o $@ $< $(CFLAGS) -pthread
 
 runtime:
-	mkdir -p runtime
 	$(nodebin)/rollup -c
 	$(nodebin)/tsc -b tsconfig-d.json
 .PHONY: runtime
@@ -110,5 +115,5 @@ run-demo: demo-runtime
 .PHONY: run-demo
 
 clean:
-	rm -rf $(objects) $(objects-ref) $(objects-simd) $(objects-simd) $(objects-pthread) $(objects-ref-pthread) $(objects-simd-pthread) $(outdir) runtime
+	rm -f $(objects) $(objects-ref) $(objects-simd) $(objects-simd) $(objects-pthread) $(objects-ref-pthread) $(objects-simd-pthread) $(outdir)/* runtime/*
 .PHONY: clean

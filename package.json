@@ -6,7 +6,7 @@
   "main": "runtime/index.js",
   "repository": "git+https://github.com/very-amused/argon2-wasm",
   "scripts": {
-    "prepack": "make release"
+    "prepack": "make prepack"
   },
   "keywords": [],
   "author": "Keith Scroggs<very-amused@pm.me>",
