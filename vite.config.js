@@ -2,6 +2,7 @@
 export default {
   root: 'demo',
   base: './',
+  publicDir: 'public',
   build: {
     outDir: '../pages',
     emptyOutDir: true

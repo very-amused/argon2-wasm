@@ -101,9 +101,9 @@ docs:
 
 demo-runtime: all
 	mkdir -p demo/public/argon2
-	cp -r build/* demo/public/argon2/
+	cp build/* demo/public/argon2/
 	mkdir -p demo/public/runtime
-	cp -r runtime demo/public/runtime/
+	cp runtime/* demo/public/runtime/
 .PHONY: demo-runtime
 
 demo: demo-runtime
@@ -116,4 +116,5 @@ run-demo: demo-runtime
 
 clean:
 	rm -f $(objects) $(objects-ref) $(objects-simd) $(objects-simd) $(objects-pthread) $(objects-ref-pthread) $(objects-simd-pthread) $(outdir)/* runtime/*
+	rm -rf 
 .PHONY: clean
