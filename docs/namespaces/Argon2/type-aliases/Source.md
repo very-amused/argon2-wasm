@@ -8,7 +8,7 @@
 
 > **Source**: `WebAssembly.WebAssemblyInstantiatedSource` & `object`
 
-Defined in: [argon2.ts:8](https://github.com/very-amused/argon2-wasm/blob/47b257a3b6005a78b5ab5522815ee0b1322dd8a6/src/argon2.ts#L8)
+Defined in: [argon2.ts:8](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L8)
 
 @_internal
 

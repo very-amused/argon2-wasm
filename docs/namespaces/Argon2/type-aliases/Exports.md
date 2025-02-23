@@ -8,7 +8,7 @@
 
 > **Exports**: `object`
 
-Defined in: [argon2.ts:34](https://github.com/very-amused/argon2-wasm/blob/47b257a3b6005a78b5ab5522815ee0b1322dd8a6/src/argon2.ts#L34)
+Defined in: [argon2.ts:34](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L34)
 
 @_internal
 Functions and data exported by the argon2 WASM module

@@ -6,7 +6,7 @@
 
 # Enumeration: Methods
 
-Defined in: [argon2.ts:98](https://github.com/very-amused/argon2-wasm/blob/47b257a3b6005a78b5ab5522815ee0b1322dd8a6/src/argon2.ts#L98)
+Defined in: [argon2.ts:98](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L98)
 
 ## Enumeration Members
 
@@ -14,7 +14,7 @@ Defined in: [argon2.ts:98](https://github.com/very-amused/argon2-wasm/blob/47b25
 
 > **Hash2d**: `2`
 
-Defined in: [argon2.ts:104](https://github.com/very-amused/argon2-wasm/blob/47b257a3b6005a78b5ab5522815ee0b1322dd8a6/src/argon2.ts#L104)
+Defined in: [argon2.ts:104](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L104)
 
 Hash in 2d mode.
 
@@ -24,7 +24,7 @@ Hash in 2d mode.
 
 > **Hash2i**: `1`
 
-Defined in: [argon2.ts:102](https://github.com/very-amused/argon2-wasm/blob/47b257a3b6005a78b5ab5522815ee0b1322dd8a6/src/argon2.ts#L102)
+Defined in: [argon2.ts:102](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L102)
 
 Hash in 2i mode.
 
@@ -34,7 +34,7 @@ Hash in 2i mode.
 
 > **Hash2id**: `3`
 
-Defined in: [argon2.ts:106](https://github.com/very-amused/argon2-wasm/blob/47b257a3b6005a78b5ab5522815ee0b1322dd8a6/src/argon2.ts#L106)
+Defined in: [argon2.ts:106](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L106)
 
 Hash in 2id mode.
 
@@ -44,7 +44,7 @@ Hash in 2id mode.
 
 > **LoadArgon2**: `0`
 
-Defined in: [argon2.ts:100](https://github.com/very-amused/argon2-wasm/blob/47b257a3b6005a78b5ab5522815ee0b1322dd8a6/src/argon2.ts#L100)
+Defined in: [argon2.ts:100](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L100)
 
 Load the Argon2 WebAssembly build.
 
@@ -54,6 +54,6 @@ Load the Argon2 WebAssembly build.
 
 > **UnloadArgon2**: `4`
 
-Defined in: [argon2.ts:108](https://github.com/very-amused/argon2-wasm/blob/47b257a3b6005a78b5ab5522815ee0b1322dd8a6/src/argon2.ts#L108)
+Defined in: [argon2.ts:108](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L108)
 
 Unload the Argon2 WebAssembly build.

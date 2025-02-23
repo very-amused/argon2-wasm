@@ -6,7 +6,7 @@
 
 # Class: WorkerConnection
 
-Defined in: [connection.ts:6](https://github.com/very-amused/argon2-wasm/blob/47b257a3b6005a78b5ab5522815ee0b1322dd8a6/src/connection.ts#L6)
+Defined in: [connection.ts:6](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/connection.ts#L6)
 
 Channel based interface for web worker communication
 
@@ -16,7 +16,7 @@ Channel based interface for web worker communication
 
 > **new WorkerConnection**(`worker`): [`WorkerConnection`](WorkerConnection.md)
 
-Defined in: [connection.ts:10](https://github.com/very-amused/argon2-wasm/blob/47b257a3b6005a78b5ab5522815ee0b1322dd8a6/src/connection.ts#L10)
+Defined in: [connection.ts:10](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/connection.ts#L10)
 
 #### Parameters
 
@@ -34,7 +34,7 @@ Defined in: [connection.ts:10](https://github.com/very-amused/argon2-wasm/blob/4
 
 > **postMessage**(`message`, `transfer`): `Promise`\<[`Response`](../interfaces/Response.md)\>
 
-Defined in: [connection.ts:32](https://github.com/very-amused/argon2-wasm/blob/47b257a3b6005a78b5ab5522815ee0b1322dd8a6/src/connection.ts#L32)
+Defined in: [connection.ts:32](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/connection.ts#L32)
 
 Post a message to the worker, and await its response
 
@@ -58,7 +58,7 @@ Post a message to the worker, and await its response
 
 > **terminate**(): `void`
 
-Defined in: [connection.ts:44](https://github.com/very-amused/argon2-wasm/blob/47b257a3b6005a78b5ab5522815ee0b1322dd8a6/src/connection.ts#L44)
+Defined in: [connection.ts:44](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/connection.ts#L44)
 
 Terminate the worker, releasing associated resources
 
