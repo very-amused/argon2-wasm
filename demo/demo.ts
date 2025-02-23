@@ -163,8 +163,15 @@ els.form.onsubmit = async (evt) => {
     method = Argon2.Methods.Hash2id
   }
 
+  const params: Argon2.Parameters = {
+    password: els.password.value.normalize('NFC'),
+    salt,
+    timeCost,
+    memoryCost,
+    threads,
+    hashLen: 32
+  }
   const start = performance.now()
-  console.log(salt.byteLength)
   const result = await conn.postMessage({
     method: method,
     params: {

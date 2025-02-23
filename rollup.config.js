@@ -17,7 +17,7 @@ const banner = `/**
  * @license
  * @very-amused/argon2-wasm v${pkg.version}
  * MIT License
- * Copyright (c) 2023 Keith Scroggs
+ * Copyright (c) 2025 Keith Scroggs
  */\n`
 
 // Webassembly pages are 64KiB

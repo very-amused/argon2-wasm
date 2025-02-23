@@ -200,4 +200,10 @@ export enum ErrorCodes {
   ARGON2WASM_UNSUPPORTED_BROWSER = 3
 }
 
+/** Encode an Argon2 hash result using Argon2's canonical encoding. */
+export function encode(params: Parameters, hash: Uint8Array): string {
+  // TODO
+  return ''
+}
+
 }
