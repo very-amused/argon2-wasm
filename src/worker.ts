@@ -142,18 +142,18 @@ async function loadArgon2(wasmRoot = '.', simd = false, pthread = false): Promis
   }
 }
 
-function hash(options: Argon2.Parameters, mode: '2i'|'2d'|'2id'): {
+function hash(params: Argon2.Parameters): {
   code: Argon2.ErrorCodes,
   body: Argon2.Response['body']
 } {
   // Copy the salt into the argon2 buffer
-  const saltLen = options.salt.byteLength
+  const saltLen = params.salt.byteLength
   const saltPtr = argon2.malloc(saltLen)
   let saltView = new Uint8Array(argon2.memory.buffer, saltPtr, saltLen)
-  memCopy(saltView, options.salt)
+  memCopy(saltView, params.salt)
 
   // Encode the password as bytes
-  const encoded = new TextEncoder().encode(options.password)
+  const encoded = new TextEncoder().encode(params.password)
   // Copy the encoded password into the argon2 buffer
   const passwordLen = encoded.byteLength
   const passwordPtr = argon2.malloc(passwordLen)
@@ -163,25 +163,25 @@ function hash(options: Argon2.Parameters, mode: '2i'|'2d'|'2id'): {
   zeroBytes(encoded)
 
   // Allocate memory for the final hash
-  const hashLen = options.hashLen
+  const hashLen = params.hashLen
   const hashPtr = argon2.malloc(hashLen)
 
   // Run the hash function
   let hashfn: Argon2.HighLevelAPI
-  switch (mode) {
-  case '2i':
+  switch (params.mode) {
+  case Argon2.Modes.Argon2i:
     hashfn = argon2.argon2i_hash_raw
     break
-  case '2d':
+  case Argon2.Modes.Argon2d:
     hashfn = argon2.argon2d_hash_raw
     break
-  case '2id':
+  case Argon2.Modes.Argon2id:
     hashfn = argon2.argon2id_hash_raw
   }
   const code = hashfn(
-    options.timeCost,
-    options.memoryCost,
-    argon2.pthread ? options.threads : 1, // Clamp threads to 1 on non-pthread builds
+    params.timeCost,
+    params.memoryCost,
+    params.threads,
     passwordPtr,
     passwordLen,
     saltPtr,
@@ -199,7 +199,7 @@ function hash(options: Argon2.Parameters, mode: '2i'|'2d'|'2id'): {
   zeroBytes(saltView)
   argon2.free(saltPtr)
   // Zero the value-passed copy of the salt from parameters
-  zeroBytes(options.salt)
+  zeroBytes(params.salt)
 
   // Copy the hash into JS memory to be transferred to the main thread
   const hash = new Uint8Array(hashLen)
@@ -241,10 +241,22 @@ onmessage = async function(evt: MessageEvent): Promise<void> {
         code: Argon2.ErrorCodes.ARGON2_OK
       })
       break
+
+    case Argon2.Methods.Hash:
+      {
+      const params = req.params as Argon2.Parameters
+      const result = hash(params)
+      postMessage({
+        code: result.code,
+        body: result.body
+      }, [result.body!.buffer])
+    }
     
     case Argon2.Methods.Hash2i:
       {
-        const result = hash(req.params as Argon2.Parameters, '2i')
+        const params = req.params as Argon2.Parameters
+        params.mode = Argon2.Modes.Argon2i
+        const result = hash(params)
         postMessage({
           code: result.code,
           body: result.body
@@ -253,7 +265,9 @@ onmessage = async function(evt: MessageEvent): Promise<void> {
       break 
     case Argon2.Methods.Hash2d:
       {
-        const result = hash(req.params as Argon2.Parameters, '2d')
+        const params = req.params as Argon2.Parameters
+        params.mode = Argon2.Modes.Argon2d
+        const result = hash(params)
         postMessage({
           code: result.code,
           body: result.body
@@ -262,7 +276,9 @@ onmessage = async function(evt: MessageEvent): Promise<void> {
       break
     case Argon2.Methods.Hash2id:
       {
-        const result = hash(req.params as Argon2.Parameters, '2id')
+        const params = req.params as Argon2.Parameters
+        params.mode = Argon2.Modes.Argon2id
+        const result = hash(params)
         postMessage({
           code: result.code,
           body: result.body

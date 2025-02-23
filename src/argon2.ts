@@ -57,7 +57,15 @@ export type PThreadExports = {
   HEAPU8: Uint8Array
 }
 
+export enum Modes {
+  Argon2i = '2i',
+  Argon2d = '2d',
+  Argon2id = '2id'
+}
+
 export interface Parameters {
+  /** The Argon2 mode to be used. */
+  mode: Modes,
   /** The password to be hashed. Must be normalized beforehand to NFC or NFD. NFK(C/D) normalization is not stable for UTF-8 passwords across different browsers, and should not be used. */
   password: string,
   /** A cryptographically random salt.  */
@@ -74,12 +82,11 @@ export interface Parameters {
    */
   memoryCost: number,
   /**
-   * Number of threads to use. Cannot be greater than navigator.hardwareConcurrency.
-   * Clamped to 1 on non-pthread builds.
+   * Number of threads to use.
    * 
-   * **WARNING: CPU differences across multiple devices can lead to devastating slowdowns when multithreading is used.**
+   * **WARNING: CPU differences across multiple devices can lead to severe slowdowns when high parallelism is used.**
    * 
-   * *In the context of user-facing applications, multithreading should only be used for advanced users who explicitly enable it.*
+   * *In general, parallelism should not be set higher than 4 unless explicitly configured by the user. This default is inspired by LUKS' usage of Argon2.*
    */
   threads: number,
   /** Desired length of the resulting hash in bytes (e.g 32 bytes for a 256-bit key.) */
@@ -97,15 +104,17 @@ export interface LoadParameters {
 
 export enum Methods {
   /** Load the Argon2 WebAssembly build. */
-  LoadArgon2,
-  /** Hash in 2i mode. */
+  LoadArgon2 = 0,
+  /** @deprecated Hash in 2i mode. */
   Hash2i,
-  /** Hash in 2d mode. */
+  /** @deprecated Hash in 2d mode. */
   Hash2d,
-  /** Hash in 2id mode. */
+  /** @deprecated Hash in 2id mode. */
   Hash2id,
   /** Unload the Argon2 WebAssembly build. */
-  UnloadArgon2
+  UnloadArgon2 = 4,
+  /** Hash in 2i, 2d, or 2id mode. */
+  Hash
 }
 
 /**

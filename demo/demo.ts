@@ -150,20 +150,8 @@ els.form.onsubmit = async (evt) => {
     }
   }
 
-  // Determine hash method
-  let method: Argon2.Methods
-  switch (els.mode.value as '2i'|'2d'|'2id') {
-  case '2i':
-    method = Argon2.Methods.Hash2i
-    break
-  case '2d':
-    method = Argon2.Methods.Hash2d
-    break
-  case '2id':
-    method = Argon2.Methods.Hash2id
-  }
-
   const params: Argon2.Parameters = {
+    mode: els.mode.value as Argon2.Modes,
     password: els.password.value.normalize('NFC'),
     salt,
     timeCost,
@@ -173,15 +161,8 @@ els.form.onsubmit = async (evt) => {
   }
   const start = performance.now()
   const result = await conn.postMessage({
-    method: method,
-    params: {
-      password: els.password.value.normalize('NFC'),
-      salt,
-      timeCost,
-      memoryCost,
-      threads,
-      hashLen: 32
-    }
+    method: Argon2.Methods.Hash,
+    params
   })
   let elapsed = performance.now() - start
 
