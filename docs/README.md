@@ -37,7 +37,7 @@ const argon2 = new Argon2.WorkerConnection(
       wasmRoot: '/argon2',
       simd: true, /* The worker will test SIMD support by validating {wasmRoot}/simd-test.wasm,
       and load a build with SIMD instructions if possible */
-      pthread: false /* The worker will test shared memory support,
+      pthread: true /* The worker will test shared memory support,
       and load a build with pthread/multithreading instructions if possible */
     }
   })

@@ -3,7 +3,7 @@
   <head>
     <title>argon2-wasm</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <script type="module" crossorigin src="./assets/index-CT81WucE.js"></script>
+    <script type="module" crossorigin src="./assets/index-BA-n5_tg.js"></script>
     <link rel="stylesheet" crossorigin href="./assets/index-DdctT2xM.css">
   </head>
 
@@ -20,14 +20,20 @@
       <label for="salt">Base64 encoded salt (leave empty to generate randomly)</label>
       <input id="salt" type="text">
 
+			<label for="text_salt">Text salt (at least 8 characters, leave empty to use random Base64 salt)</label>
+			<input id="text_salt" type="text" minlength="8">
+
       <label for="t_cost">Time cost</label>
       <input id="t_cost" type="number" value="3" autocomplete="off">
 
       <label for="m_cost">Memory cost (KB, MB, GB)</label>
       <input id="m_cost" type="text" value="100MB" autocomplete="off">
 
+			<label for="threads">Parallelization</label>
+			<input id="threads" type="number" value="1" autocomplete="off">
+
       <label for="argon2_mode">Argon2 mode</label>
-      <select id="argon2_mode" selected="2id">
+      <select id="argon2_mode">
         <option value="2i">Argon2i</option>
         <option value="2d">Argon2d</option>
         <option value="2id">Argon2id</option>

@@ -8,7 +8,7 @@
 
 > **HighLevelAPI**: (`t_cost`, `m_cost`, `parallelism`, `pwd`, `pwdlen`, `salt`, `saltlen`, `hash`, `hashlen`) => `number`
 
-Defined in: [argon2.ts:18](https://github.com/very-amused/argon2-wasm/blob/792f97086610a5a10e9f6d02226e527610bd31ec/src/argon2.ts#L18)
+Defined in: [argon2.ts:18](https://github.com/very-amused/argon2-wasm/blob/47b257a3b6005a78b5ab5522815ee0b1322dd8a6/src/argon2.ts#L18)
 
 @_internal
 The high level function API for all argon2 modes

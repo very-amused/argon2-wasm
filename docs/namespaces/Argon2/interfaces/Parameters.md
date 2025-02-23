@@ -6,7 +6,7 @@
 
 # Interface: Parameters
 
-Defined in: [argon2.ts:60](https://github.com/very-amused/argon2-wasm/blob/792f97086610a5a10e9f6d02226e527610bd31ec/src/argon2.ts#L60)
+Defined in: [argon2.ts:60](https://github.com/very-amused/argon2-wasm/blob/47b257a3b6005a78b5ab5522815ee0b1322dd8a6/src/argon2.ts#L60)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [argon2.ts:60](https://github.com/very-amused/argon2-wasm/blob/792f9
 
 > **hashLen**: `number`
 
-Defined in: [argon2.ts:86](https://github.com/very-amused/argon2-wasm/blob/792f97086610a5a10e9f6d02226e527610bd31ec/src/argon2.ts#L86)
+Defined in: [argon2.ts:86](https://github.com/very-amused/argon2-wasm/blob/47b257a3b6005a78b5ab5522815ee0b1322dd8a6/src/argon2.ts#L86)
 
 Desired length of the resulting hash in bytes (e.g 32 bytes for a 256-bit key.)
 
@@ -24,7 +24,7 @@ Desired length of the resulting hash in bytes (e.g 32 bytes for a 256-bit key.)
 
 > **memoryCost**: `number`
 
-Defined in: [argon2.ts:75](https://github.com/very-amused/argon2-wasm/blob/792f97086610a5a10e9f6d02226e527610bd31ec/src/argon2.ts#L75)
+Defined in: [argon2.ts:75](https://github.com/very-amused/argon2-wasm/blob/47b257a3b6005a78b5ab5522815ee0b1322dd8a6/src/argon2.ts#L75)
 
 Memory cost in KiB to use,
 this should be as much memory as a client is able to sacrifice without making the hash function intolerably slow
@@ -39,7 +39,7 @@ by reducing the number of hashes an attacker is able to crack at a time.
 
 > **password**: `string`
 
-Defined in: [argon2.ts:62](https://github.com/very-amused/argon2-wasm/blob/792f97086610a5a10e9f6d02226e527610bd31ec/src/argon2.ts#L62)
+Defined in: [argon2.ts:62](https://github.com/very-amused/argon2-wasm/blob/47b257a3b6005a78b5ab5522815ee0b1322dd8a6/src/argon2.ts#L62)
 
 The password to be hashed. Must be normalized beforehand to NFC or NFD. NFK(C/D) normalization is not stable for UTF-8 passwords across different browsers, and should not be used.
 
@@ -49,7 +49,7 @@ The password to be hashed. Must be normalized beforehand to NFC or NFD. NFK(C/D)
 
 > **salt**: `Uint8Array`
 
-Defined in: [argon2.ts:64](https://github.com/very-amused/argon2-wasm/blob/792f97086610a5a10e9f6d02226e527610bd31ec/src/argon2.ts#L64)
+Defined in: [argon2.ts:64](https://github.com/very-amused/argon2-wasm/blob/47b257a3b6005a78b5ab5522815ee0b1322dd8a6/src/argon2.ts#L64)
 
 A cryptographically random salt.
 
@@ -59,7 +59,7 @@ A cryptographically random salt.
 
 > **threads**: `number`
 
-Defined in: [argon2.ts:84](https://github.com/very-amused/argon2-wasm/blob/792f97086610a5a10e9f6d02226e527610bd31ec/src/argon2.ts#L84)
+Defined in: [argon2.ts:84](https://github.com/very-amused/argon2-wasm/blob/47b257a3b6005a78b5ab5522815ee0b1322dd8a6/src/argon2.ts#L84)
 
 Number of threads to use. Cannot be greater than navigator.hardwareConcurrency.
 Clamped to 1 on non-pthread builds.
@@ -74,6 +74,6 @@ Clamped to 1 on non-pthread builds.
 
 > **timeCost**: `number`
 
-Defined in: [argon2.ts:66](https://github.com/very-amused/argon2-wasm/blob/792f97086610a5a10e9f6d02226e527610bd31ec/src/argon2.ts#L66)
+Defined in: [argon2.ts:66](https://github.com/very-amused/argon2-wasm/blob/47b257a3b6005a78b5ab5522815ee0b1322dd8a6/src/argon2.ts#L66)
 
 Linear time cost to use, leave at 1 if unsure.
