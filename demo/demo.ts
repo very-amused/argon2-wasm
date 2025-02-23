@@ -9,8 +9,10 @@ const qs: Document['querySelector'] = document.querySelector.bind(document)
 const els = {
   password: qs<HTMLInputElement>('input#password')!,
   salt: qs<HTMLInputElement>('input#salt')!,
+  textSalt: qs<HTMLInputElement>('input#text_salt')!,
   timeCost: qs<HTMLInputElement>('input#t_cost')!,
   memoryCost: qs<HTMLInputElement>('input#m_cost')!,
+  threads: qs<HTMLInputElement>('input#threads')!,
   mode: qs<HTMLSelectElement>('select#argon2_mode')!,
   simd: qs<HTMLInputElement>('input#simd_enabled')!,
   pthread: qs<HTMLInputElement>('input#pthread_enabled')!,
@@ -90,10 +92,18 @@ els.form.onsubmit = async (evt) => {
     pthreadEnabled = pthread
   }
 
+
   // If a salt has been provided, decode and use that one
   let salt: Uint8Array
+  let updateEncodedSalt = false
   let encodedSalt = els.salt.value
-  if (encodedSalt.length) {
+  const textSalt = els.textSalt.value
+  if (textSalt.length >= 8) {
+    // Use text salt (for reproducibility against argon2 CLI tools)
+    const enc = new TextEncoder()
+    salt = enc.encode(textSalt)
+    updateEncodedSalt = true
+  } else if (encodedSalt.length > 0) {
     try {
       const raw = atob(encodedSalt)
       salt = new Uint8Array(raw.length)
@@ -109,12 +119,16 @@ els.form.onsubmit = async (evt) => {
     // Otherwise generate a random salt
     salt = new Uint8Array(16)
     crypto.getRandomValues(salt)
+    updateEncodedSalt = true
+  }
+  if (updateEncodedSalt) {
     encodedSalt = btoa(String.fromCharCode.apply(null, Array.from(salt)))
     els.salt.value = encodedSalt
   }
 
-  // Parse the time and memory cost
+  // Parse time, memory, and thread cost
   const timeCost = parseInt(els.timeCost.value)
+  const threads = parseInt(els.threads.value)
   // Argon2 expects memory cost in the form of KiB, so we have to parse this value as such
   const memoryCostValue = els.memoryCost.value.toUpperCase()
   let memoryCost = 0
@@ -150,6 +164,7 @@ els.form.onsubmit = async (evt) => {
   }
 
   const start = performance.now()
+  console.log(salt.byteLength)
   const result = await conn.postMessage({
     method: method,
     params: {
@@ -157,7 +172,7 @@ els.form.onsubmit = async (evt) => {
       salt,
       timeCost,
       memoryCost,
-      threads: pthread ? navigator.hardwareConcurrency : 1,
+      threads,
       hashLen: 32
     }
   })
@@ -165,7 +180,7 @@ els.form.onsubmit = async (evt) => {
 
   if (result.code === 0) {
     const encodedHash = btoa(String.fromCharCode.apply(null, Array.from(result.body!)))
-    writeResult(encodedHash)  
+    writeResult(encodedHash)
   } else {
     // Get the argon2 error code's name from the Argon2.ErrorCodes enum
     displayError(result.code)
