@@ -85,13 +85,13 @@ argon2/src/%.pthread.wasm.o: argon2/src/%.c
 	emcc -c -o $@ $< $(CFLAGS) -pthread
 
 runtime:
-	[ -d runtime ] || mkdir runtime
+	mkdir -p runtime
 	$(nodebin)/rollup -c
 	$(nodebin)/tsc -b tsconfig-d.json
 .PHONY: runtime
 
 docs:
-	$(nodebin)/typedoc --plugin typedoc-plugin-markdown --readme docs_readme.md src/index.ts --out docs/
+	$(nodebin)/typedoc --plugin typedoc-plugin-markdown src/index.ts --out docs/
 .PHONY: docs
 
 demo-runtime: all

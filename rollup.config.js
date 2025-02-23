@@ -1,7 +1,7 @@
 import typescript from '@rollup/plugin-typescript'
 import terser from '@rollup/plugin-terser'
 import replace from '@rollup/plugin-replace'
-import pkg from './package.json' assert { type: 'json' }
+import pkg from './package.json' with {type: 'json'}
 import { readFileSync } from 'fs'
 
 /**

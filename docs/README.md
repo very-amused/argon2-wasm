@@ -1,7 +1,9 @@
-@very-amused/argon2-wasm / [Exports](modules.md)
+**@very-amused/argon2-wasm**
+
+***
 
 # @very-amused/argon2-wasm
-WebAssembly/Typescript Bindings for [Biryukov, Dinu, and Khovratovich's Argon2 key derivation function](https://github.com/P-H-C/phc-winner-argon2) for clientside use in web applications. For documentation see [docs](docs).
+WebAssembly/Typescript bindings for [Biryukov, Dinu, and Khovratovich's Argon2 key derivation function](https://github.com/P-H-C/phc-winner-argon2) intended for clientside use in web applications. For documentation see [docs](docs).
 
 [![NPM](https://img.shields.io/npm/v/@very-amused/argon2-wasm?color=darkred&style=flat-square)](https://npmjs.com/package/@very-amused/argon2-wasm)
 

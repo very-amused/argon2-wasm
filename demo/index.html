@@ -26,10 +26,10 @@
       <input id="t_cost" type="number" value="3" autocomplete="off">
 
       <label for="m_cost">Memory cost (KB, MB, GB)</label>
-      <input id="m_cost" type="text" value="10MB" autocomplete="off">
+      <input id="m_cost" type="text" value="100MB" autocomplete="off">
 
       <label for="argon2_mode">Argon2 mode</label>
-      <select id="argon2_mode">
+      <select id="argon2_mode" selected="2id">
         <option value="2i">Argon2i</option>
         <option value="2d">Argon2d</option>
         <option value="2id">Argon2id</option>
@@ -41,7 +41,7 @@
           <label for="simd_enabled">Use SIMD instructions if available</label>
         </div>
         <div class="toggle"> 
-          <input id="pthread_enabled" type="checkbox" autocomplete="off">
+          <input id="pthread_enabled" type="checkbox" autocomplete="off" checked>
           <label for="pthread_enabled">Use multithreading if available</label>
         </div>
       </section>

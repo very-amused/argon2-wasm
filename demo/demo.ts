@@ -171,10 +171,14 @@ els.form.onsubmit = async (evt) => {
     displayError(result.code)
   }
 
-  const minutes = Math.floor(elapsed / 60000).toString()
-  elapsed %= 60000
-  const seconds = Math.floor(elapsed / 1000).toString()
-  elapsed %= 1000
+  // Second and minute values in terms of milliseconds
+  const msSec = 1000
+  const msMin = 60 * msSec
+
+  const minutes = Math.floor(elapsed / msMin)
+  elapsed -= minutes * msMin
+  const seconds = Math.floor(elapsed / msSec)
+  elapsed -= seconds * msSec
   const ms = elapsed.toFixed(2)
 
   els.timerValue.textContent = `${minutes}m ${seconds}s ${ms}ms`
