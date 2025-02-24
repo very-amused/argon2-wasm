@@ -40,7 +40,19 @@ export declare namespace Argon2 {
         _argon2id_hash_raw: HighLevelAPI;
         HEAPU8: Uint8Array;
     };
+    enum Modes {
+        Argon2i = "2i",
+        Argon2d = "2d",
+        Argon2id = "2id"
+    }
+    enum Versions {
+        ARGON2_VERSION_10 = 16,
+        ARGON2_VERSION_13 = 19,
+        ARGON2_VERSION_NUMBER = 19
+    }
     interface Parameters {
+        /** The Argon2 mode to be used. */
+        mode: Modes;
         /** The password to be hashed. Must be normalized beforehand to NFC or NFD. NFK(C/D) normalization is not stable for UTF-8 passwords across different browsers, and should not be used. */
         password: string;
         /** A cryptographically random salt.  */
@@ -57,12 +69,11 @@ export declare namespace Argon2 {
          */
         memoryCost: number;
         /**
-         * Number of threads to use. Cannot be greater than navigator.hardwareConcurrency.
-         * Clamped to 1 on non-pthread builds.
+         * Number of threads to use.
          *
-         * **WARNING: CPU differences across multiple devices can lead to devastating slowdowns when multithreading is used.**
+         * **WARNING: CPU differences across multiple devices can lead to severe slowdowns when high parallelism is used.**
          *
-         * *In the context of user-facing applications, multithreading should only be used for advanced users who explicitly enable it.*
+         * *In general, parallelism should not be set higher than 4 unless explicitly configured by the user. This default is inspired by LUKS' usage of Argon2.*
          */
         threads: number;
         /** Desired length of the resulting hash in bytes (e.g 32 bytes for a 256-bit key.) */
@@ -79,14 +90,16 @@ export declare namespace Argon2 {
     enum Methods {
         /** Load the Argon2 WebAssembly build. */
         LoadArgon2 = 0,
-        /** Hash in 2i mode. */
+        /** @deprecated Hash in 2i mode. */
         Hash2i = 1,
-        /** Hash in 2d mode. */
+        /** @deprecated Hash in 2d mode. */
         Hash2d = 2,
-        /** Hash in 2id mode. */
+        /** @deprecated Hash in 2id mode. */
         Hash2id = 3,
         /** Unload the Argon2 WebAssembly build. */
-        UnloadArgon2 = 4
+        UnloadArgon2 = 4,
+        /** Hash in 2i, 2d, or 2id mode. */
+        Hash = 5
     }
     /**
      * A request posted to the worker.
@@ -154,4 +167,6 @@ export declare namespace Argon2 {
         ARGON2WASM_BAD_REQUEST = 2,
         ARGON2WASM_UNSUPPORTED_BROWSER = 3
     }
+    /** Encode an Argon2 hash result using Argon2's canonical encoding. */
+    function encode(params: Parameters, hash: Uint8Array): string;
 }
