@@ -128,6 +128,9 @@ span#result {
   /* 2x0.3em vertical padding + 1em font height + potential 2px bottom border */
   min-height: calc(1.8em + 2px);
 }
+span#encoded {
+	font-size: 0.8rem;
+}
 
 @keyframes flash {
   0% {

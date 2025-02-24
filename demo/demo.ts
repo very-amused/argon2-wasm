@@ -18,6 +18,7 @@ const els = {
   pthread: qs<HTMLInputElement>('input#pthread_enabled')!,
   run: qs<HTMLInputElement>('input#submit')!,
   result: qs<HTMLSpanElement>('span#result')!,
+  encodedResult: qs<HTMLSpanElement>('span#encoded')!,
   timer: qs<HTMLElement>('section#timer')!,
   timerValue: qs<HTMLSpanElement>('span#timer_value')!,
   form: qs<HTMLFormElement>('form#demoForm')!
@@ -171,7 +172,9 @@ els.form.onsubmit = async (evt) => {
   let elapsed = performance.now() - start
 
   if (result.code === 0) {
-    writeResult(b64.encode(result.body!))
+    const hash = result.body!
+    writeResult(b64.encode(hash))
+    els.encodedResult.textContent = Argon2.encode(params, hash)
   } else {
     // Get the argon2 error code's name from the Argon2.ErrorCodes enum
     displayError(result.code)
