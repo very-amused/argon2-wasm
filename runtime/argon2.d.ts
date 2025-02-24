@@ -24,7 +24,6 @@ export declare namespace Argon2 {
         argon2d_hash_raw: HighLevelAPI;
         argon2id_hash_raw: HighLevelAPI;
         memory: WebAssembly.Memory;
-        readonly pthread: boolean;
     };
     export import WorkerConnection = connection.WorkerConnection;
     /**
@@ -38,7 +37,6 @@ export declare namespace Argon2 {
         _argon2i_hash_raw: HighLevelAPI;
         _argon2d_hash_raw: HighLevelAPI;
         _argon2id_hash_raw: HighLevelAPI;
-        HEAPU8: Uint8Array;
     };
     enum Modes {
         Argon2i = "2i",
@@ -167,6 +165,10 @@ export declare namespace Argon2 {
         ARGON2WASM_BAD_REQUEST = 2,
         ARGON2WASM_UNSUPPORTED_BROWSER = 3
     }
-    /** Encode an Argon2 hash result using Argon2's canonical encoding. */
+    /** @experimental
+      * Encode an Argon2 hash result using Argon2's canonical encoding.
+      * WARNING: Currently incompatible with encoding spec due to using base64 StdEncoding instead of RawStdEncoding.
+      * Do not depend on this encoding until the base64 issue is fixed.
+      */
     function encode(params: Parameters, hash: Uint8Array): string;
 }

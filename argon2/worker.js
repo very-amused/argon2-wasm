@@ -1,6 +1,6 @@
 /**
  * @license
- * @very-amused/argon2-wasm v0.4.0
+ * @very-amused/argon2-wasm v0.4.1
  * MIT License
  * Copyright (c) 2025 Keith Scroggs
  */
@@ -284,8 +284,7 @@ async function loadArgon2(wasmRoot = '.', simd = false, pthread = false) {
             argon2i_hash_raw: exports._argon2i_hash_raw,
             argon2d_hash_raw: exports._argon2d_hash_raw,
             argon2id_hash_raw: exports._argon2id_hash_raw,
-            memory: wasmMemory,
-            pthread
+            memory: wasmMemory
         };
     }
     else {
@@ -299,7 +298,6 @@ async function loadArgon2(wasmRoot = '.', simd = false, pthread = false) {
         const source = await WebAssembly.instantiateStreaming(fetch(`${wasmRoot}/${file}`), opts);
         return {
             ...source.instance.exports,
-            pthread
         };
     }
 }
@@ -314,11 +312,6 @@ function hash(params) {
             break;
         case Argon2.Modes.Argon2id:
             hashfn = argon2.argon2id_hash_raw;
-        default:
-            return {
-                code: Argon2.ErrorCodes.ARGON2_INCORRECT_PARAMETER,
-                body: undefined
-            };
     }
     const saltLen = params.salt.byteLength;
     const saltPtr = argon2.malloc(saltLen);
@@ -380,6 +373,7 @@ onmessage = async function (evt) {
                     body: result.body
                 }, [result.body.buffer]);
             }
+            break;
         case Argon2.Methods.Hash2i:
             {
                 const params = req.params;
