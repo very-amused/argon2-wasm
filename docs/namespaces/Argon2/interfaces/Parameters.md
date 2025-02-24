@@ -6,7 +6,7 @@
 
 # Interface: Parameters
 
-Defined in: [argon2.ts:60](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L60)
+Defined in: [argon2.ts:70](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L70)
 
 ## Properties
 
@@ -14,7 +14,7 @@ Defined in: [argon2.ts:60](https://github.com/very-amused/argon2-wasm/blob/27df5
 
 > **hashLen**: `number`
 
-Defined in: [argon2.ts:86](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L86)
+Defined in: [argon2.ts:97](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L97)
 
 Desired length of the resulting hash in bytes (e.g 32 bytes for a 256-bit key.)
 
@@ -24,7 +24,7 @@ Desired length of the resulting hash in bytes (e.g 32 bytes for a 256-bit key.)
 
 > **memoryCost**: `number`
 
-Defined in: [argon2.ts:75](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L75)
+Defined in: [argon2.ts:87](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L87)
 
 Memory cost in KiB to use,
 this should be as much memory as a client is able to sacrifice without making the hash function intolerably slow
@@ -35,11 +35,21 @@ by reducing the number of hashes an attacker is able to crack at a time.
 
 ***
 
+### mode
+
+> **mode**: [`Modes`](../enumerations/Modes.md)
+
+Defined in: [argon2.ts:72](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L72)
+
+The Argon2 mode to be used.
+
+***
+
 ### password
 
 > **password**: `string`
 
-Defined in: [argon2.ts:62](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L62)
+Defined in: [argon2.ts:74](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L74)
 
 The password to be hashed. Must be normalized beforehand to NFC or NFD. NFK(C/D) normalization is not stable for UTF-8 passwords across different browsers, and should not be used.
 
@@ -49,7 +59,7 @@ The password to be hashed. Must be normalized beforehand to NFC or NFD. NFK(C/D)
 
 > **salt**: `Uint8Array`
 
-Defined in: [argon2.ts:64](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L64)
+Defined in: [argon2.ts:76](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L76)
 
 A cryptographically random salt.
 
@@ -59,14 +69,13 @@ A cryptographically random salt.
 
 > **threads**: `number`
 
-Defined in: [argon2.ts:84](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L84)
+Defined in: [argon2.ts:95](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L95)
 
-Number of threads to use. Cannot be greater than navigator.hardwareConcurrency.
-Clamped to 1 on non-pthread builds.
+Number of threads to use.
 
-**WARNING: CPU differences across multiple devices can lead to devastating slowdowns when multithreading is used.**
+**WARNING: CPU differences across multiple devices can lead to severe slowdowns when high parallelism is used.**
 
-*In the context of user-facing applications, multithreading should only be used for advanced users who explicitly enable it.*
+*In general, parallelism should not be set higher than 4 unless explicitly configured by the user. This default is inspired by LUKS' usage of Argon2.*
 
 ***
 
@@ -74,6 +83,6 @@ Clamped to 1 on non-pthread builds.
 
 > **timeCost**: `number`
 
-Defined in: [argon2.ts:66](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L66)
+Defined in: [argon2.ts:78](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L78)
 
 Linear time cost to use, leave at 1 if unsure.

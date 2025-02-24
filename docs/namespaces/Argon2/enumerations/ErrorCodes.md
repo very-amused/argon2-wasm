@@ -6,7 +6,7 @@
 
 # Enumeration: ErrorCodes
 
-Defined in: [argon2.ts:138](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L138)
+Defined in: [argon2.ts:151](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L151)
 
 Copied error codes from `argon2.h`. Additional non-standard codes are defined after standard codes.
 Non-standard codes are prefixed with `ARGON2WASM_` instead of `ARGON2_`, and begin enumeration at 1, increasing positively.
@@ -18,7 +18,7 @@ This ensures that neither the name nor value of any non-standard code defined he
 
 > **ARGON2\_AD\_PTR\_MISMATCH**: `-21`
 
-Defined in: [argon2.ts:170](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L170)
+Defined in: [argon2.ts:183](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L183)
 
 ***
 
@@ -26,7 +26,7 @@ Defined in: [argon2.ts:170](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_AD\_TOO\_LONG**: `-9`
 
-Defined in: [argon2.ts:153](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L153)
+Defined in: [argon2.ts:166](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L166)
 
 ***
 
@@ -34,7 +34,7 @@ Defined in: [argon2.ts:153](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_AD\_TOO\_SHORT**: `-8`
 
-Defined in: [argon2.ts:152](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L152)
+Defined in: [argon2.ts:165](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L165)
 
 ***
 
@@ -42,7 +42,7 @@ Defined in: [argon2.ts:152](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_ALLOCATE\_MEMORY\_CBK\_NULL**: `-24`
 
-Defined in: [argon2.ts:175](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L175)
+Defined in: [argon2.ts:188](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L188)
 
 ***
 
@@ -50,7 +50,7 @@ Defined in: [argon2.ts:175](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_DECODING\_FAIL**: `-32`
 
-Defined in: [argon2.ts:189](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L189)
+Defined in: [argon2.ts:202](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L202)
 
 ***
 
@@ -58,7 +58,7 @@ Defined in: [argon2.ts:189](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_DECODING\_LENGTH\_FAIL**: `-34`
 
-Defined in: [argon2.ts:193](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L193)
+Defined in: [argon2.ts:206](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L206)
 
 ***
 
@@ -66,7 +66,7 @@ Defined in: [argon2.ts:193](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_ENCODING\_FAIL**: `-31`
 
-Defined in: [argon2.ts:187](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L187)
+Defined in: [argon2.ts:200](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L200)
 
 ***
 
@@ -74,7 +74,7 @@ Defined in: [argon2.ts:187](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_FREE\_MEMORY\_CBK\_NULL**: `-23`
 
-Defined in: [argon2.ts:174](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L174)
+Defined in: [argon2.ts:187](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L187)
 
 ***
 
@@ -82,7 +82,7 @@ Defined in: [argon2.ts:174](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_INCORRECT\_PARAMETER**: `-25`
 
-Defined in: [argon2.ts:177](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L177)
+Defined in: [argon2.ts:190](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L190)
 
 ***
 
@@ -90,7 +90,7 @@ Defined in: [argon2.ts:177](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_INCORRECT\_TYPE**: `-26`
 
-Defined in: [argon2.ts:178](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L178)
+Defined in: [argon2.ts:191](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L191)
 
 ***
 
@@ -98,7 +98,7 @@ Defined in: [argon2.ts:178](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_LANES\_TOO\_FEW**: `-16`
 
-Defined in: [argon2.ts:164](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L164)
+Defined in: [argon2.ts:177](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L177)
 
 ***
 
@@ -106,7 +106,7 @@ Defined in: [argon2.ts:164](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_LANES\_TOO\_MANY**: `-17`
 
-Defined in: [argon2.ts:165](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L165)
+Defined in: [argon2.ts:178](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L178)
 
 ***
 
@@ -114,7 +114,7 @@ Defined in: [argon2.ts:165](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_MEMORY\_ALLOCATION\_ERROR**: `-22`
 
-Defined in: [argon2.ts:172](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L172)
+Defined in: [argon2.ts:185](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L185)
 
 ***
 
@@ -122,7 +122,7 @@ Defined in: [argon2.ts:172](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_MEMORY\_TOO\_LITTLE**: `-14`
 
-Defined in: [argon2.ts:161](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L161)
+Defined in: [argon2.ts:174](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L174)
 
 ***
 
@@ -130,7 +130,7 @@ Defined in: [argon2.ts:161](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_MEMORY\_TOO\_MUCH**: `-15`
 
-Defined in: [argon2.ts:162](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L162)
+Defined in: [argon2.ts:175](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L175)
 
 ***
 
@@ -138,7 +138,7 @@ Defined in: [argon2.ts:162](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_MISSING\_ARGS**: `-30`
 
-Defined in: [argon2.ts:185](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L185)
+Defined in: [argon2.ts:198](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L198)
 
 ***
 
@@ -146,7 +146,7 @@ Defined in: [argon2.ts:185](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_OK**: `0`
 
-Defined in: [argon2.ts:139](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L139)
+Defined in: [argon2.ts:152](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L152)
 
 ***
 
@@ -154,7 +154,7 @@ Defined in: [argon2.ts:139](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_OUT\_PTR\_MISMATCH**: `-27`
 
-Defined in: [argon2.ts:180](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L180)
+Defined in: [argon2.ts:193](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L193)
 
 ***
 
@@ -162,7 +162,7 @@ Defined in: [argon2.ts:180](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_OUTPUT\_PTR\_NULL**: `-1`
 
-Defined in: [argon2.ts:141](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L141)
+Defined in: [argon2.ts:154](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L154)
 
 ***
 
@@ -170,7 +170,7 @@ Defined in: [argon2.ts:141](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_OUTPUT\_TOO\_LONG**: `-3`
 
-Defined in: [argon2.ts:144](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L144)
+Defined in: [argon2.ts:157](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L157)
 
 ***
 
@@ -178,7 +178,7 @@ Defined in: [argon2.ts:144](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_OUTPUT\_TOO\_SHORT**: `-2`
 
-Defined in: [argon2.ts:143](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L143)
+Defined in: [argon2.ts:156](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L156)
 
 ***
 
@@ -186,7 +186,7 @@ Defined in: [argon2.ts:143](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_PWD\_PTR\_MISMATCH**: `-18`
 
-Defined in: [argon2.ts:167](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L167)
+Defined in: [argon2.ts:180](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L180)
 
 ***
 
@@ -194,7 +194,7 @@ Defined in: [argon2.ts:167](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_PWD\_TOO\_LONG**: `-5`
 
-Defined in: [argon2.ts:147](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L147)
+Defined in: [argon2.ts:160](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L160)
 
 ***
 
@@ -202,7 +202,7 @@ Defined in: [argon2.ts:147](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_PWD\_TOO\_SHORT**: `-4`
 
-Defined in: [argon2.ts:146](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L146)
+Defined in: [argon2.ts:159](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L159)
 
 ***
 
@@ -210,7 +210,7 @@ Defined in: [argon2.ts:146](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_SALT\_PTR\_MISMATCH**: `-19`
 
-Defined in: [argon2.ts:168](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L168)
+Defined in: [argon2.ts:181](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L181)
 
 ***
 
@@ -218,7 +218,7 @@ Defined in: [argon2.ts:168](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_SALT\_TOO\_LONG**: `-7`
 
-Defined in: [argon2.ts:150](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L150)
+Defined in: [argon2.ts:163](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L163)
 
 ***
 
@@ -226,7 +226,7 @@ Defined in: [argon2.ts:150](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_SALT\_TOO\_SHORT**: `-6`
 
-Defined in: [argon2.ts:149](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L149)
+Defined in: [argon2.ts:162](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L162)
 
 ***
 
@@ -234,7 +234,7 @@ Defined in: [argon2.ts:149](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_SECRET\_PTR\_MISMATCH**: `-20`
 
-Defined in: [argon2.ts:169](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L169)
+Defined in: [argon2.ts:182](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L182)
 
 ***
 
@@ -242,7 +242,7 @@ Defined in: [argon2.ts:169](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_SECRET\_TOO\_LONG**: `-11`
 
-Defined in: [argon2.ts:156](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L156)
+Defined in: [argon2.ts:169](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L169)
 
 ***
 
@@ -250,7 +250,7 @@ Defined in: [argon2.ts:156](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_SECRET\_TOO\_SHORT**: `-10`
 
-Defined in: [argon2.ts:155](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L155)
+Defined in: [argon2.ts:168](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L168)
 
 ***
 
@@ -258,7 +258,7 @@ Defined in: [argon2.ts:155](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_THREAD\_FAIL**: `-33`
 
-Defined in: [argon2.ts:191](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L191)
+Defined in: [argon2.ts:204](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L204)
 
 ***
 
@@ -266,7 +266,7 @@ Defined in: [argon2.ts:191](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_THREADS\_TOO\_FEW**: `-28`
 
-Defined in: [argon2.ts:182](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L182)
+Defined in: [argon2.ts:195](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L195)
 
 ***
 
@@ -274,7 +274,7 @@ Defined in: [argon2.ts:182](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_THREADS\_TOO\_MANY**: `-29`
 
-Defined in: [argon2.ts:183](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L183)
+Defined in: [argon2.ts:196](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L196)
 
 ***
 
@@ -282,7 +282,7 @@ Defined in: [argon2.ts:183](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_TIME\_TOO\_LARGE**: `-13`
 
-Defined in: [argon2.ts:159](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L159)
+Defined in: [argon2.ts:172](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L172)
 
 ***
 
@@ -290,7 +290,7 @@ Defined in: [argon2.ts:159](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_TIME\_TOO\_SMALL**: `-12`
 
-Defined in: [argon2.ts:158](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L158)
+Defined in: [argon2.ts:171](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L171)
 
 ***
 
@@ -298,7 +298,7 @@ Defined in: [argon2.ts:158](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2\_VERIFY\_MISMATCH**: `-35`
 
-Defined in: [argon2.ts:195](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L195)
+Defined in: [argon2.ts:208](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L208)
 
 ***
 
@@ -306,7 +306,7 @@ Defined in: [argon2.ts:195](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2WASM\_BAD\_REQUEST**: `2`
 
-Defined in: [argon2.ts:199](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L199)
+Defined in: [argon2.ts:212](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L212)
 
 ***
 
@@ -314,7 +314,7 @@ Defined in: [argon2.ts:199](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2WASM\_UNKNOWN**: `1`
 
-Defined in: [argon2.ts:198](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L198)
+Defined in: [argon2.ts:211](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L211)
 
 ***
 
@@ -322,4 +322,4 @@ Defined in: [argon2.ts:198](https://github.com/very-amused/argon2-wasm/blob/27df
 
 > **ARGON2WASM\_UNSUPPORTED\_BROWSER**: `3`
 
-Defined in: [argon2.ts:200](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L200)
+Defined in: [argon2.ts:213](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L213)

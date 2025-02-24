@@ -10,6 +10,8 @@
 
 - [ErrorCodes](enumerations/ErrorCodes.md)
 - [Methods](enumerations/Methods.md)
+- [Modes](enumerations/Modes.md)
+- [Versions](enumerations/Versions.md)
 
 ## Classes
 
@@ -28,3 +30,7 @@
 - [HighLevelAPI](type-aliases/HighLevelAPI.md)
 - [PThreadExports](type-aliases/PThreadExports.md)
 - [Source](type-aliases/Source.md)
+
+## Functions
+
+- [encode](functions/encode.md)

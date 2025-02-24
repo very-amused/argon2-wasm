@@ -8,7 +8,7 @@
 
 > **Exports**: `object`
 
-Defined in: [argon2.ts:34](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L34)
+Defined in: [argon2.ts:35](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L35)
 
 @_internal
 Functions and data exported by the argon2 WASM module
@@ -30,10 +30,6 @@ Functions and data exported by the argon2 WASM module
 ### memory
 
 > **memory**: `WebAssembly.Memory`
-
-### pthread
-
-> `readonly` **pthread**: `boolean`
 
 ### free()
 

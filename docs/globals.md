@@ -7,3 +7,4 @@
 ## Namespaces
 
 - [Argon2](namespaces/Argon2/README.md)
+- [Base64](namespaces/Base64/README.md)

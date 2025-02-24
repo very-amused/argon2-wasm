@@ -8,7 +8,7 @@
 
 > **PThreadExports**: `object`
 
-Defined in: [argon2.ts:51](https://github.com/very-amused/argon2-wasm/blob/27df58e869148e67ae9d4576722b78f07bf8af9e/src/argon2.ts#L51)
+Defined in: [argon2.ts:50](https://github.com/very-amused/argon2-wasm/blob/d2c98b3f3c11a34c56f3a6037963e996a19288c8/src/argon2.ts#L50)
 
 @_internal
 Functions and data exported by emscripten's wrapper around the argon2 WASM module,
@@ -27,10 +27,6 @@ provided when loading pthread binaries.
 ### \_argon2id\_hash\_raw
 
 > **\_argon2id\_hash\_raw**: [`HighLevelAPI`](HighLevelAPI.md)
-
-### HEAPU8
-
-> **HEAPU8**: `Uint8Array`
 
 ### \_free()
 
