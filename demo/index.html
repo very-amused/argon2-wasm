@@ -17,7 +17,7 @@
     <form id="demoForm">
 
       <label for="text">Text passed to argon2, don't use real passwords</label>
-      <input id="password" type="text">
+      <input id="password" type="text" value="correcthorsebatterystaple">
 
       <label for="salt">Base64 encoded salt (leave empty to generate randomly)</label>
       <input id="salt" type="text">
@@ -29,7 +29,7 @@
       <input id="t_cost" type="number" value="3" autocomplete="off">
 
       <label for="m_cost">Memory cost (KB, MB, GB)</label>
-      <input id="m_cost" type="text" value="100MB" autocomplete="off">
+      <input id="m_cost" type="text" value="128MB" autocomplete="off">
 
 			<label for="threads">Parallelization</label>
 			<input id="threads" type="number" value="4" autocomplete="off">

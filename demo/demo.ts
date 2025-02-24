@@ -160,10 +160,9 @@ els.form.onsubmit = async (evt) => {
     salt,
     timeCost,
     memoryCost,
-    threads: 1,
+    threads,
     hashLen: 32
   }
-  console.table(params)
   const start = performance.now()
   const result = await conn.postMessage({
     method: Argon2.Methods.Hash,

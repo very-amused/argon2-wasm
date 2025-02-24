@@ -21,6 +21,7 @@ BUILD_FLAGS=--no-entry \
 # Use available # of threads
 BUILD_FLAGS_PTHREAD=-pthread \
 	-s PTHREAD_POOL_SIZE=navigator.hardwareConcurrency \
+	-s MALLOC=mimalloc \
 	-s MODULARIZE \
 	-s EXPORT_NAME=LoadArgon2Wasm \
 	-s MEMORY_GROWTH_GEOMETRIC_CAP=$(MEMORY_GROWTH_GEOMETRIC_CAP)

@@ -121,8 +121,7 @@ async function loadArgon2(wasmRoot = '.', simd = false, pthread = false): Promis
       argon2i_hash_raw: exports._argon2i_hash_raw,
       argon2d_hash_raw: exports._argon2d_hash_raw,
       argon2id_hash_raw: exports._argon2id_hash_raw,
-      memory: wasmMemory,
-      pthread
+      memory: wasmMemory
     }
   } else {
     const file = `argon2${simd ? '-simd' : ''}.wasm`
@@ -137,7 +136,6 @@ async function loadArgon2(wasmRoot = '.', simd = false, pthread = false): Promis
     const source = await WebAssembly.instantiateStreaming(fetch(`${wasmRoot}/${file}`), opts)
     return {
       ...source.instance.exports,
-      pthread
     } as Argon2.Exports
   }
 }
@@ -157,11 +155,6 @@ function hash(params: Argon2.Parameters): {
     break
   case Argon2.Modes.Argon2id:
     hashfn = argon2.argon2id_hash_raw
-  default:
-    return {
-      code: Argon2.ErrorCodes.ARGON2_INCORRECT_PARAMETER,
-      body: undefined
-    }
   }
 
   // Copy the salt into the argon2 buffer
@@ -258,6 +251,7 @@ onmessage = async function(evt: MessageEvent): Promise<void> {
         body: result.body
       }, [result.body!.buffer])
     }
+    break
     
     case Argon2.Methods.Hash2i:
       {

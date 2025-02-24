@@ -39,8 +39,6 @@ export type Exports = {
   argon2d_hash_raw: HighLevelAPI 
   argon2id_hash_raw: HighLevelAPI
   memory: WebAssembly.Memory
-  // Whether the loaded WASM was built with pthread support
-  readonly pthread: boolean
 }
 export import WorkerConnection = connection.WorkerConnection
 
@@ -55,7 +53,6 @@ export type PThreadExports = {
   _argon2i_hash_raw: HighLevelAPI
   _argon2d_hash_raw: HighLevelAPI
   _argon2id_hash_raw: HighLevelAPI 
-  HEAPU8: Uint8Array
 }
 
 export enum Modes {
