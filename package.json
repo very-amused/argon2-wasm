@@ -1,6 +1,6 @@
 {
   "name": "@very-amused/argon2-wasm",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Implementation of the Argon2 PBKDF using WASM and TypeScript, intended to be run in clientside web applications.",
   "type": "module",
   "main": "runtime/index.js",

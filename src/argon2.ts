@@ -213,7 +213,11 @@ export enum ErrorCodes {
   ARGON2WASM_UNSUPPORTED_BROWSER = 3
 }
 
-/** Encode an Argon2 hash result using Argon2's canonical encoding. */
+/** @experimental
+  * Encode an Argon2 hash result using Argon2's canonical encoding.
+  * WARNING: Currently incompatible with encoding spec due to using base64 StdEncoding instead of RawStdEncoding.
+  * Do not depend on this encoding until the base64 issue is fixed.
+  */
 export function encode(params: Parameters, hash: Uint8Array): string {
   // FIXME: support base64 RawEncoding for full compatibility
   return `$argon${params.mode}`

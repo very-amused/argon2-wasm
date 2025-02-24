@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] - 2025-02-23
+### Deprecated
+- `Hash2i`, `Hash2d`, and `Hash2id` methods in favor of the new `Hash` method used with `params.mode`. Version 0.4.2 will have these methods removed.
+
+### Added
+- `Hash` method with `params.mode` for mode selection
+- `Argon2.encode` for (almost) canonical Argon2 encoding. This method does not currently produce Argon2-compatible output and should not be used until v0.4.2
+
+### Changed
+- Moved from `btoa` to cs-crypto's base64 implementation
+- WASM is built with the non-locking `mimalloc` allocator in pthread builds
+
 ## [0.4.0] - 2025-02-22
 ### Changed
 - Moved from yarn to pnpm for package management, and updated all deps by reinstalling from scratch
