@@ -1,5 +1,5 @@
 import { Argon2, Base64 as b64 } from '../runtime/index.js'
-const conn = new Argon2.WorkerConnection(new Worker('./argon2/worker.js'))
+const conn = new Argon2.WorkerConnection(new Worker('/argon2/worker.js'))
 
 
 /** @override */
@@ -160,9 +160,10 @@ els.form.onsubmit = async (evt) => {
     salt,
     timeCost,
     memoryCost,
-    threads,
+    threads: 1,
     hashLen: 32
   }
+  console.table(params)
   const start = performance.now()
   const result = await conn.postMessage({
     method: Argon2.Methods.Hash,

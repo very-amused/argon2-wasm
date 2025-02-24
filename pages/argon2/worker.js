@@ -2,7 +2,7 @@
  * @license
  * @very-amused/argon2-wasm v0.4.0
  * MIT License
- * Copyright (c) 2023 Keith Scroggs
+ * Copyright (c) 2025 Keith Scroggs
  */
 
 class WorkerConnection {
@@ -33,15 +33,132 @@ class WorkerConnection {
     }
 }
 
+const StdEncoding = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+function encodeGroup(data, result) {
+    result[0] = StdEncoding.charCodeAt(data[0] >> 2);
+    if (data.byteLength === 1) {
+        result[1] = StdEncoding.charCodeAt(data[0] << 4 & 0x30);
+        return;
+    }
+    result[1] = StdEncoding.charCodeAt(data[0] << 4 & 0x30 | data[1] >> 4);
+    if (data.byteLength === 2) {
+        result[2] = StdEncoding.charCodeAt(data[1] << 2 & 0x3C);
+        return;
+    }
+    result[2] = StdEncoding.charCodeAt(data[1] << 2 & 0x3C | data[2] >> 6);
+    result[3] = StdEncoding.charCodeAt(data[2] & 0x3F);
+}
+function decodeGroup(data, result) {
+    result[0] = data[0] << 2 | data[1] >> 4;
+    if (result.byteLength === 1) {
+        return;
+    }
+    result[1] = data[1] << 4 | data[2] >> 2;
+    if (result.byteLength === 2) {
+        return;
+    }
+    result[2] = data[2] << 6 | data[3];
+}
+function atoi(encoded) {
+    let unpaddedLength = encoded.byteLength;
+    for (let i = encoded.byteLength - 2; i < encoded.byteLength; i++) {
+        if (encoded[i] === '='.charCodeAt(0)) {
+            unpaddedLength--;
+        }
+    }
+    const indexes = new Uint8Array(unpaddedLength);
+    for (let i = 0; i < unpaddedLength; i++) {
+        if (encoded[i] >= 48 && encoded[i] <= 57) {
+            indexes[i] = encoded[i] + 4;
+        }
+        else if (encoded[i] >= 65 && encoded[i] <= 90) {
+            indexes[i] = encoded[i] - 65;
+        }
+        else if (encoded[i] >= 97 && encoded[i] <= 122) {
+            indexes[i] = encoded[i] - 71;
+        }
+        else {
+            if (encoded[i] === 43) {
+                indexes[i] = 62;
+            }
+            else if (encoded[i] === 47) {
+                indexes[i] = 63;
+            }
+            else {
+                throw new Error('invalid base64 input (StdEncoding)');
+            }
+        }
+    }
+    return indexes;
+}
+var Base64;
+(function (Base64) {
+    function encode(data) {
+        const resultSize = (Math.floor(data.byteLength / 3) * 4) + (data.byteLength % 3 !== 0 ? 4 : 0);
+        const result = new Uint8Array(resultSize);
+        let i = 0;
+        let j = 0;
+        for (; i < data.byteLength - 2; i += 3, j += 4) {
+            encodeGroup(new Uint8Array(data.buffer, i, 3), new Uint8Array(result.buffer, j, 4));
+        }
+        switch (data.byteLength % 3) {
+            case 1:
+                encodeGroup(new Uint8Array(data.buffer, data.byteLength - 1, 1), new Uint8Array(result.buffer, resultSize - 4, 2));
+                result[result.byteLength - 2] = '='.charCodeAt(0);
+                result[result.byteLength - 1] = '='.charCodeAt(0);
+                break;
+            case 2:
+                encodeGroup(new Uint8Array(data.buffer, data.byteLength - 2, 2), new Uint8Array(result.buffer, resultSize - 4, 3));
+                result[result.byteLength - 1] = '='.charCodeAt(0);
+                break;
+        }
+        return new TextDecoder().decode(result);
+    }
+    Base64.encode = encode;
+    function decode(encoded) {
+        const indexes = atoi(new TextEncoder().encode(encoded.replaceAll(/[\r\n]/g, '')));
+        const resultSize = (Math.floor(indexes.byteLength / 4) * 3) +
+            (indexes.byteLength % 4) -
+            (indexes.byteLength % 4 > 0 ? 1 : 0);
+        const result = new Uint8Array(resultSize);
+        let i = 0;
+        let j = 0;
+        for (; i < indexes.byteLength - 3; i += 4, j += 3) {
+            decodeGroup(new Uint8Array(indexes.buffer, i, 4), new Uint8Array(result.buffer, j, 3));
+        }
+        switch (indexes.byteLength % 4) {
+            case 2:
+                decodeGroup(new Uint8Array(indexes.buffer, indexes.byteLength - 2, 2), new Uint8Array(result.buffer, result.byteLength - 1, 1));
+                break;
+            case 3:
+                decodeGroup(new Uint8Array(indexes.buffer, indexes.byteLength - 3, 3), new Uint8Array(result.buffer, result.byteLength - 2, 2));
+                break;
+        }
+        return result;
+    }
+    Base64.decode = decode;
+})(Base64 || (Base64 = {}));
+
 var Argon2;
 (function (Argon2) {
     Argon2.WorkerConnection = WorkerConnection;
+    (function (Modes) {
+        Modes["Argon2i"] = "2i";
+        Modes["Argon2d"] = "2d";
+        Modes["Argon2id"] = "2id";
+    })(Argon2.Modes || (Argon2.Modes = {}));
+    (function (Versions) {
+        Versions[Versions["ARGON2_VERSION_10"] = 16] = "ARGON2_VERSION_10";
+        Versions[Versions["ARGON2_VERSION_13"] = 19] = "ARGON2_VERSION_13";
+        Versions[Versions["ARGON2_VERSION_NUMBER"] = 19] = "ARGON2_VERSION_NUMBER";
+    })(Argon2.Versions || (Argon2.Versions = {}));
     (function (Methods) {
         Methods[Methods["LoadArgon2"] = 0] = "LoadArgon2";
         Methods[Methods["Hash2i"] = 1] = "Hash2i";
         Methods[Methods["Hash2d"] = 2] = "Hash2d";
         Methods[Methods["Hash2id"] = 3] = "Hash2id";
         Methods[Methods["UnloadArgon2"] = 4] = "UnloadArgon2";
+        Methods[Methods["Hash"] = 5] = "Hash";
     })(Argon2.Methods || (Argon2.Methods = {}));
     (function (ErrorCodes) {
         ErrorCodes[ErrorCodes["ARGON2_OK"] = 0] = "ARGON2_OK";
@@ -84,6 +201,14 @@ var Argon2;
         ErrorCodes[ErrorCodes["ARGON2WASM_BAD_REQUEST"] = 2] = "ARGON2WASM_BAD_REQUEST";
         ErrorCodes[ErrorCodes["ARGON2WASM_UNSUPPORTED_BROWSER"] = 3] = "ARGON2WASM_UNSUPPORTED_BROWSER";
     })(Argon2.ErrorCodes || (Argon2.ErrorCodes = {}));
+    function encode(params, hash) {
+        return `$argon${params.mode}`
+            + `$v=${Argon2.Versions.ARGON2_VERSION_NUMBER}`
+            + `$m=${params.memoryCost},t=${params.timeCost},p=${params.threads}`
+            + `$${Base64.encode(params.salt)}`
+            + `$${Base64.encode(hash)}`;
+    }
+    Argon2.encode = encode;
 })(Argon2 || (Argon2 = {}));
 
 let argon2;
@@ -178,38 +303,43 @@ async function loadArgon2(wasmRoot = '.', simd = false, pthread = false) {
         };
     }
 }
-function hash(options, mode) {
-    const saltLen = options.salt.byteLength;
+function hash(params) {
+    let hashfn;
+    switch (params.mode) {
+        case Argon2.Modes.Argon2i:
+            hashfn = argon2.argon2i_hash_raw;
+            break;
+        case Argon2.Modes.Argon2d:
+            hashfn = argon2.argon2d_hash_raw;
+            break;
+        case Argon2.Modes.Argon2id:
+            hashfn = argon2.argon2id_hash_raw;
+        default:
+            return {
+                code: Argon2.ErrorCodes.ARGON2_INCORRECT_PARAMETER,
+                body: undefined
+            };
+    }
+    const saltLen = params.salt.byteLength;
     const saltPtr = argon2.malloc(saltLen);
     let saltView = new Uint8Array(argon2.memory.buffer, saltPtr, saltLen);
-    memCopy(saltView, options.salt);
-    const encoded = new TextEncoder().encode(options.password);
+    memCopy(saltView, params.salt);
+    const encoded = new TextEncoder().encode(params.password);
     const passwordLen = encoded.byteLength;
     const passwordPtr = argon2.malloc(passwordLen);
     let passwordView = new Uint8Array(argon2.memory.buffer, passwordPtr, passwordLen);
     memCopy(passwordView, encoded);
     zeroBytes(encoded);
-    const hashLen = options.hashLen;
+    const hashLen = params.hashLen;
     const hashPtr = argon2.malloc(hashLen);
-    let hashfn;
-    switch (mode) {
-        case '2i':
-            hashfn = argon2.argon2i_hash_raw;
-            break;
-        case '2d':
-            hashfn = argon2.argon2d_hash_raw;
-            break;
-        case '2id':
-            hashfn = argon2.argon2id_hash_raw;
-    }
-    const code = hashfn(options.timeCost, options.memoryCost, argon2.pthread ? options.threads : 1, passwordPtr, passwordLen, saltPtr, saltLen, hashPtr, hashLen);
+    const code = hashfn(params.timeCost, params.memoryCost, params.threads, passwordPtr, passwordLen, saltPtr, saltLen, hashPtr, hashLen);
     passwordView = new Uint8Array(argon2.memory.buffer, passwordPtr, passwordLen);
     zeroBytes(passwordView);
     argon2.free(passwordPtr);
     saltView = new Uint8Array(argon2.memory.buffer, saltPtr, saltLen);
     zeroBytes(saltView);
     argon2.free(saltPtr);
-    zeroBytes(options.salt);
+    zeroBytes(params.salt);
     const hash = new Uint8Array(hashLen);
     const hashView = new Uint8Array(argon2.memory.buffer, hashPtr, hashLen);
     memCopy(hash, hashView);
@@ -241,9 +371,20 @@ onmessage = async function (evt) {
                 code: Argon2.ErrorCodes.ARGON2_OK
             });
             break;
+        case Argon2.Methods.Hash:
+            {
+                const params = req.params;
+                const result = hash(params);
+                postMessage({
+                    code: result.code,
+                    body: result.body
+                }, [result.body.buffer]);
+            }
         case Argon2.Methods.Hash2i:
             {
-                const result = hash(req.params, '2i');
+                const params = req.params;
+                params.mode = Argon2.Modes.Argon2i;
+                const result = hash(params);
                 postMessage({
                     code: result.code,
                     body: result.body
@@ -252,7 +393,9 @@ onmessage = async function (evt) {
             break;
         case Argon2.Methods.Hash2d:
             {
-                const result = hash(req.params, '2d');
+                const params = req.params;
+                params.mode = Argon2.Modes.Argon2d;
+                const result = hash(params);
                 postMessage({
                     code: result.code,
                     body: result.body
@@ -261,7 +404,9 @@ onmessage = async function (evt) {
             break;
         case Argon2.Methods.Hash2id:
             {
-                const result = hash(req.params, '2id');
+                const params = req.params;
+                params.mode = Argon2.Modes.Argon2id;
+                const result = hash(params);
                 postMessage({
                     code: result.code,
                     body: result.body

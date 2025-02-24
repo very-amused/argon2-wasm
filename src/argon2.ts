@@ -1,4 +1,5 @@
 import * as connection from './connection'
+import { Base64 as b64 } from './base64'
 
 export namespace Argon2 {
 
@@ -61,6 +62,12 @@ export enum Modes {
   Argon2i = '2i',
   Argon2d = '2d',
   Argon2id = '2id'
+}
+
+export enum Versions {
+  ARGON2_VERSION_10 = 0x10,
+  ARGON2_VERSION_13 = 0x13,
+  ARGON2_VERSION_NUMBER = ARGON2_VERSION_13
 }
 
 export interface Parameters {
@@ -211,8 +218,12 @@ export enum ErrorCodes {
 
 /** Encode an Argon2 hash result using Argon2's canonical encoding. */
 export function encode(params: Parameters, hash: Uint8Array): string {
-  // TODO
-  return ''
+  // FIXME: support base64 RawEncoding for full compatibility
+  return `$argon${params.mode}`
+  + `$v=${Argon2.Versions.ARGON2_VERSION_NUMBER}`
+  + `$m=${params.memoryCost},t=${params.timeCost},p=${params.threads}`
+  + `$${b64.encode(params.salt)}`
+  + `$${b64.encode(hash)}`
 }
 
 }

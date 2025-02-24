@@ -29,6 +29,7 @@ input,select {
 main {
   margin: 0.5rem 15%;
   margin-top: 0;
+	padding-bottom: 3rem;
 }
 @media screen and (max-width: 849px) {
   main {
@@ -36,7 +37,11 @@ main {
   }
 }
 
-hr,span,a,
+header {
+	display: inline;
+}
+
+hr,span,a,header,
 main > form > label,
 main > form > input {
   margin: 0.5rem 0;
@@ -108,11 +113,10 @@ input#submit:disabled {
   cursor: not-allowed;
 }
 
-span#result, span#timer_value {
+span#result, span#timer_value, span#encoded {
   display: inline-block;
   background-color: #39393F;
   padding: 0.3em 0.5em;
-  /* 2x0.3em vertical padding + 1em font height + potential 2px bottom border */
   min-height: calc(1.8em + 2px);
   font-family: 'Fira Mono', monospace;
   
@@ -120,8 +124,9 @@ span#result, span#timer_value {
   white-space: normal;
   word-break: break-all;
 }
-span#timer_value {
-  min-height: calc(1.8em + 4px);
+span#result {
+  /* 2x0.3em vertical padding + 1em font height + potential 2px bottom border */
+  min-height: calc(1.8em + 2px);
 }
 
 @keyframes flash {
@@ -152,15 +157,18 @@ span#result:empty::after {
 a#docs {
   display: block;
   background-color: inherit;
-  padding: 0.3rem 0.5rem;
-  width: max-content;
-  border-left: 2px solid #aaa;
+  padding: 0.3em 0.8em;
+	border: 2px dotted #aaa;
+	--transition: linear 0.2s;
+	transition: border-color var(--transition);
+	width: max-content;
   position: relative;
 }
 
 /* Add a contrast effect and animated underline on hover */
 a#docs:hover {
   filter: contrast(115%);
+	border-color: transparent;
 }
 a#docs::before {
   position: absolute;
@@ -168,9 +176,29 @@ a#docs::before {
   left: 0;
   content: "";
   width: 0%;
+	height: 0%;
+	border-left: 2px solid #aaa;
+  border-bottom: 2px solid #aaa;
+  transition: var(--transition);
+	transition-property: width, height;
+}
+a#docs::after {
+  position: absolute;
+  top: 0;
+  right: 0;
+  content: "";
+  width: 0%;
+	height: 0%;
+	border-right: 2px solid #aaa;
   border-top: 2px solid #aaa;
-  transition: 0.2s linear width;
+  transition: var(--transition);
+	transition-property: width, height;
 }
 a#docs:hover::before {
-  width: 100%;
+  width: calc(100% - 2px);
+	height: calc(100% - 2px);
+}
+a#docs:hover::after {
+	width: calc(100% - 2px);
+	height: calc(100% - 2px);
 }

@@ -146,6 +146,24 @@ function hash(params: Argon2.Parameters): {
   code: Argon2.ErrorCodes,
   body: Argon2.Response['body']
 } {
+  // Validate argon2 mode and select underlying API to call
+  let hashfn: Argon2.HighLevelAPI
+  switch (params.mode) {
+  case Argon2.Modes.Argon2i:
+    hashfn = argon2.argon2i_hash_raw
+    break
+  case Argon2.Modes.Argon2d:
+    hashfn = argon2.argon2d_hash_raw
+    break
+  case Argon2.Modes.Argon2id:
+    hashfn = argon2.argon2id_hash_raw
+  default:
+    return {
+      code: Argon2.ErrorCodes.ARGON2_INCORRECT_PARAMETER,
+      body: undefined
+    }
+  }
+
   // Copy the salt into the argon2 buffer
   const saltLen = params.salt.byteLength
   const saltPtr = argon2.malloc(saltLen)
@@ -167,17 +185,6 @@ function hash(params: Argon2.Parameters): {
   const hashPtr = argon2.malloc(hashLen)
 
   // Run the hash function
-  let hashfn: Argon2.HighLevelAPI
-  switch (params.mode) {
-  case Argon2.Modes.Argon2i:
-    hashfn = argon2.argon2i_hash_raw
-    break
-  case Argon2.Modes.Argon2d:
-    hashfn = argon2.argon2d_hash_raw
-    break
-  case Argon2.Modes.Argon2id:
-    hashfn = argon2.argon2id_hash_raw
-  }
   const code = hashfn(
     params.timeCost,
     params.memoryCost,
