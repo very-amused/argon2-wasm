@@ -219,12 +219,11 @@ export enum ErrorCodes {
   * Do not depend on this encoding until the base64 issue is fixed.
   */
 export function encode(params: Parameters, hash: Uint8Array): string {
-  // FIXME: support base64 RawEncoding for full compatibility
   return `$argon${params.mode}`
   + `$v=${Argon2.Versions.ARGON2_VERSION_NUMBER}`
   + `$m=${params.memoryCost},t=${params.timeCost},p=${params.threads}`
-  + `$${b64.encode(params.salt)}`
-  + `$${b64.encode(hash)}`
+  + `$${b64.encode(params.salt, false)}`
+  + `$${b64.encode(hash, false)}`
 }
 
 }
