@@ -98,93 +98,87 @@ function atoi(encoded: Uint8Array): Uint8Array {
 export namespace Base64 {
 
 /**
- * Encode a Uint8Array using Base64 standard encoding
+ * Encode a Uint8Array using Base64.
  */
 export function encode(data: Uint8Array, padding = true): string {
-	// Calculate result size and rem (trailing bytes) size
+	// Calculate encoded size and rem (trailing bytes) size
   const dataRem = data.byteLength % 3
-  let resultRem = 0
+  let encRem = 0
   if (dataRem > 0) {
-    resultRem = padding ? 4 : dataRem + 1
+    encRem = padding ? 4 : dataRem + 1
   }
-	const resultSize = (Math.floor(data.byteLength / 3) * 4) + resultRem
-	const result = new Uint8Array(resultSize)
+	const encSize = (Math.floor(data.byteLength / 3) * 4) + encRem
+	const encoded = new Uint8Array(encSize)
 
 	// i is the offset from the beginning of data,
-	// j is the offset from the beginning of result
+	// j is the offset from the beginning of encoded
 	let i = 0
 	let j = 0
 	// Encode all possible groups of 3 bytes
 	for (; i < data.byteLength - 2; i += 3, j += 4) {
 		encodeGroup(
 			new Uint8Array(data.buffer, i, 3),
-			new Uint8Array(result.buffer, j, 4)
+			new Uint8Array(encoded.buffer, j, 4)
 		)
 	}
 
 	// Encode trailing bytes and add padding
   if (dataRem > 0) {
-    const rTrailSize = dataRem + 1 // # of actual trailing encoded bytes in the result, the rest is optional padding
+    const rTrailSize = dataRem + 1 // # of actual trailing encoded bytes, the rest is optional padding
     const dTrail = new Uint8Array(data.buffer, data.byteLength - dataRem, dataRem)
-    const rTrail = new Uint8Array(result.buffer, resultSize - resultRem, rTrailSize)
+    const encTrail = new Uint8Array(encoded.buffer, encSize - encRem, rTrailSize)
 
     // Encode trail data
-    encodeGroup(dTrail, rTrail)
+    encodeGroup(dTrail, encTrail)
     // Encode trail padding
-    const paddingSize = resultRem - rTrailSize // Will be 0 if padding == false
-    for (let i = resultSize - paddingSize; i < resultSize; i++) {
-      result[i] = '='.charCodeAt(0)
+    const paddingSize = encRem - rTrailSize // Will be 0 if padding == false
+    for (let i = encSize - paddingSize; i < encSize; i++) {
+      encoded[i] = '='.charCodeAt(0)
     }
   }
 
 	// Finally, encode the Uint8Array as a UTF-8 string
-	return new TextDecoder().decode(result)
+  // (yes, TextDecoder is used to encode text and TextEncoder is used to decode text. They're backwards.)
+	return new TextDecoder().decode(encoded)
 }
 
 /**
- * Decode standard encoded Base64 to a Uint8Array.
+ * Decode Base64 to a Uint8Array.
  */
 export function decode(encoded: string): Uint8Array {
-	// Convert from ASCII encoding to indexes 0-63
+	// Convert from ASCII encoding to indexes 0-63 and strip padding
 	const indexes = atoi(new TextEncoder().encode(
 		encoded.replaceAll(/[\r\n]/g, '') // Standard base64 behavior requires ignoring newlines
 	))
 
-	// Calculate result length
-	const resultSize = (Math.floor(indexes.byteLength / 4) * 3) + // Each full group of 4 encoded -> 3 bytes
-    (indexes.byteLength % 4) - // Add trailing bytes
-    (indexes.byteLength % 4 > 0 ? 1 : 0) // If there are trailing bytes present, the decoded result will be 1 less byte than the encoded
-	const result = new Uint8Array(resultSize)
+	// Calculate decoded size and rem
+  const idRem  = indexes.byteLength % 4 // Trailing bytes without padding
+  const dataRem = idRem > 0 ? idRem - 1 : 0
+	const dataSize = (Math.floor(indexes.byteLength / 4) * 3) + dataRem
+	const data = new Uint8Array(dataSize)
 
-	// Decode each group of 4 characters (3 bytes)
+	// Decode each group of 4 characters -> 3 bytes
 	// i is the offset from the beginning of indexes
-	// j is the offset from the beginning of result
+	// j is the offset from the beginning of data
 	let i = 0
 	let j = 0
 	for (; i < indexes.byteLength - 3; i += 4, j += 3) {
 		decodeGroup(
 			new Uint8Array(indexes.buffer, i, 4),
-			new Uint8Array(result.buffer, j, 3)
+			new Uint8Array(data.buffer, j, 3)
 		)
 	}
 
-	switch (indexes.byteLength % 4) {
-	case 2:
-		decodeGroup(
-			new Uint8Array(indexes.buffer, indexes.byteLength - 2, 2),
-			new Uint8Array(result.buffer, result.byteLength - 1, 1)
-		)
-		break
+  // Decode trailing bytes
+  if (dataRem > 0) {
+    const idTrail = new Uint8Array(indexes.buffer, indexes.byteLength - idRem, idRem)
+    const dTrail = new Uint8Array(data.buffer, dataSize - dataRem, dataRem)
 
-	case 3:
-		decodeGroup(
-			new Uint8Array(indexes.buffer, indexes.byteLength - 3, 3),
-			new Uint8Array(result.buffer, result.byteLength - 2, 2)
-		)
-		break
-	}
+    // Decode trail data
+    decodeGroup(idTrail, dTrail)
+  }
 
-	return result
+	return data
 }
 
 }
