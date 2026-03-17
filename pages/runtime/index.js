@@ -33,20 +33,19 @@ class WorkerConnection {
     }
 }
 
-const StdEncoding = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
-function encodeGroup(data, result) {
-    result[0] = StdEncoding.charCodeAt(data[0] >> 2);
+function encodeGroup(data, result, encoding) {
+    result[0] = encoding.charCodeAt(data[0] >> 2);
     if (data.byteLength === 1) {
-        result[1] = StdEncoding.charCodeAt(data[0] << 4 & 0x30);
+        result[1] = encoding.charCodeAt(data[0] << 4 & 0x30);
         return;
     }
-    result[1] = StdEncoding.charCodeAt(data[0] << 4 & 0x30 | data[1] >> 4);
+    result[1] = encoding.charCodeAt(data[0] << 4 & 0x30 | data[1] >> 4);
     if (data.byteLength === 2) {
-        result[2] = StdEncoding.charCodeAt(data[1] << 2 & 0x3C);
+        result[2] = encoding.charCodeAt(data[1] << 2 & 0x3C);
         return;
     }
-    result[2] = StdEncoding.charCodeAt(data[1] << 2 & 0x3C | data[2] >> 6);
-    result[3] = StdEncoding.charCodeAt(data[2] & 0x3F);
+    result[2] = encoding.charCodeAt(data[1] << 2 & 0x3C | data[2] >> 6);
+    result[3] = encoding.charCodeAt(data[2] & 0x3F);
 }
 function decodeGroup(data, result) {
     result[0] = data[0] << 2 | data[1] >> 4;
@@ -59,13 +58,15 @@ function decodeGroup(data, result) {
     }
     result[2] = data[2] << 6 | data[3];
 }
-function atoi(encoded) {
+function atoi(encoded, encoding) {
     let unpaddedLength = encoded.byteLength;
     for (let i = encoded.byteLength - 2; i < encoded.byteLength; i++) {
         if (encoded[i] === '='.charCodeAt(0)) {
             unpaddedLength--;
         }
     }
+    const sym1 = (encoding === Base64.UrlEncoding ? '-' : '+').charCodeAt(0);
+    const sym2 = (encoding === Base64.UrlEncoding ? '_' : '/').charCodeAt(0);
     const indexes = new Uint8Array(unpaddedLength);
     for (let i = 0; i < unpaddedLength; i++) {
         if (encoded[i] >= 48 && encoded[i] <= 57) {
@@ -78,63 +79,89 @@ function atoi(encoded) {
             indexes[i] = encoded[i] - 71;
         }
         else {
-            if (encoded[i] === 43) {
+            if (encoded[i] === sym1) {
                 indexes[i] = 62;
             }
-            else if (encoded[i] === 47) {
+            else if (encoded[i] === sym2) {
                 indexes[i] = 63;
             }
             else {
-                throw new Error('invalid base64 input (StdEncoding)');
+                throw new Error(`invalid base64 input (${encodingName(encoding)})`);
             }
         }
     }
     return indexes;
 }
+function encodingName(encoding) {
+    switch (encoding) {
+        case Base64.StdEncoding:
+            return 'StdEncoding';
+        case Base64.UrlEncoding:
+            return 'UrlEncoding';
+    }
+}
 var Base64;
 (function (Base64) {
-    function encode(data) {
-        const resultSize = (Math.floor(data.byteLength / 3) * 4) + (data.byteLength % 3 !== 0 ? 4 : 0);
-        const result = new Uint8Array(resultSize);
+    Base64.StdEncoding = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+    Base64.UrlEncoding = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+    function encode(data, ...args) {
+        let encoding = Base64.StdEncoding, padding = true;
+        switch (args.length) {
+            case 1:
+                switch (typeof args[0]) {
+                    case 'string':
+                        encoding = args[0];
+                        break;
+                    case 'boolean':
+                        padding = args[0];
+                }
+                break;
+            case 2:
+                encoding = args[0];
+                padding = args[1];
+        }
+        const dataRem = data.byteLength % 3;
+        let encRem = 0;
+        if (dataRem > 0) {
+            encRem = padding ? 4 : dataRem + 1;
+        }
+        const encSize = (Math.floor(data.byteLength / 3) * 4) + encRem;
+        const encoded = new Uint8Array(encSize);
         let i = 0;
         let j = 0;
         for (; i < data.byteLength - 2; i += 3, j += 4) {
-            encodeGroup(new Uint8Array(data.buffer, i, 3), new Uint8Array(result.buffer, j, 4));
+            encodeGroup(new Uint8Array(data.buffer, i, 3), new Uint8Array(encoded.buffer, j, 4), encoding);
         }
-        switch (data.byteLength % 3) {
-            case 1:
-                encodeGroup(new Uint8Array(data.buffer, data.byteLength - 1, 1), new Uint8Array(result.buffer, resultSize - 4, 2));
-                result[result.byteLength - 2] = '='.charCodeAt(0);
-                result[result.byteLength - 1] = '='.charCodeAt(0);
-                break;
-            case 2:
-                encodeGroup(new Uint8Array(data.buffer, data.byteLength - 2, 2), new Uint8Array(result.buffer, resultSize - 4, 3));
-                result[result.byteLength - 1] = '='.charCodeAt(0);
-                break;
+        if (dataRem > 0) {
+            const rTrailSize = dataRem + 1;
+            const dTrail = new Uint8Array(data.buffer, data.byteLength - dataRem, dataRem);
+            const encTrail = new Uint8Array(encoded.buffer, encSize - encRem, rTrailSize);
+            encodeGroup(dTrail, encTrail, encoding);
+            const paddingSize = encRem - rTrailSize;
+            for (let i = encSize - paddingSize; i < encSize; i++) {
+                encoded[i] = '='.charCodeAt(0);
+            }
         }
-        return new TextDecoder().decode(result);
+        return new TextDecoder().decode(encoded);
     }
     Base64.encode = encode;
-    function decode(encoded) {
-        const indexes = atoi(new TextEncoder().encode(encoded.replaceAll(/[\r\n]/g, '')));
-        const resultSize = (Math.floor(indexes.byteLength / 4) * 3) +
-            (indexes.byteLength % 4) -
-            (indexes.byteLength % 4 > 0 ? 1 : 0);
-        const result = new Uint8Array(resultSize);
+    function decode(encoded, encoding = Base64.StdEncoding) {
+        const indexes = atoi(new TextEncoder().encode(encoded.replaceAll(/[\r\n]/g, '')), encoding);
+        const idRem = indexes.byteLength % 4;
+        const dataRem = idRem > 0 ? idRem - 1 : 0;
+        const dataSize = (Math.floor(indexes.byteLength / 4) * 3) + dataRem;
+        const data = new Uint8Array(dataSize);
         let i = 0;
         let j = 0;
         for (; i < indexes.byteLength - 3; i += 4, j += 3) {
-            decodeGroup(new Uint8Array(indexes.buffer, i, 4), new Uint8Array(result.buffer, j, 3));
+            decodeGroup(new Uint8Array(indexes.buffer, i, 4), new Uint8Array(data.buffer, j, 3));
         }
-        switch (indexes.byteLength % 4) {
-            case 2:
-                decodeGroup(new Uint8Array(indexes.buffer, indexes.byteLength - 2, 2), new Uint8Array(result.buffer, result.byteLength - 1, 1));
-                break;
-            case 3:
-                decodeGroup(new Uint8Array(indexes.buffer, indexes.byteLength - 3, 3), new Uint8Array(result.buffer, result.byteLength - 2, 2));
-                break;
+        if (dataRem > 0) {
+            const idTrail = new Uint8Array(indexes.buffer, indexes.byteLength - idRem, idRem);
+            const dTrail = new Uint8Array(data.buffer, dataSize - dataRem, dataRem);
+            decodeGroup(idTrail, dTrail);
         }
-        return result;
+        return data;
     }
     Base64.decode = decode;
 })(Base64 || (Base64 = {}));
@@ -205,8 +232,8 @@ var Argon2;
         return `$argon${params.mode}`
             + `$v=${Argon2.Versions.ARGON2_VERSION_NUMBER}`
             + `$m=${params.memoryCost},t=${params.timeCost},p=${params.threads}`
-            + `$${Base64.encode(params.salt)}`
-            + `$${Base64.encode(hash)}`;
+            + `$${Base64.encode(params.salt, false)}`
+            + `$${Base64.encode(hash, false)}`;
     }
     Argon2.encode = encode;
 })(Argon2 || (Argon2 = {}));
